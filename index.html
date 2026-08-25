@@ -13,7 +13,11 @@
 <body>
   <header class="top">
     <div class="wrap">
-      <div class="brand">MD<b>Tech</b><small>Tecnologia que abre caminhos</small></div>
+      <a class="brand" href="index.html" aria-label="MDTech — início">
+        <img class="logo" src="img/logo.png" alt="MDTech"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="brand-txt">MD<b>Tech</b><small>Tecnologia que abre caminhos</small></span>
+      </a>
       <div class="busca">
         <input id="busca" type="search" placeholder="Buscar por código ou nome (ex.: maryland, trocarter, A153)" aria-label="Buscar produtos">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -26,6 +30,10 @@
       <aside class="side" id="filtros" aria-label="Filtros"></aside>
       <section>
         <div class="barra">
+          <button class="btn-filtrar" id="btn-filtrar" aria-label="Abrir filtros">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+            Filtrar<span id="fnum"></span>
+          </button>
           <div class="cont" id="cont"></div>
           <div class="chips" id="chips"></div>
         </div>
@@ -33,6 +41,8 @@
       </section>
     </div>
   </main>
+
+  <div class="backdrop" id="backdrop"></div>
 
   <div class="bandeja" id="bandeja" aria-live="polite">
     <div class="wrap">

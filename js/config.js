@@ -4,9 +4,9 @@ window.MDTECH = {
   empresa: "MDTech",
   contato: {
     // WhatsApp: só dígitos, com DDI+DDD. Ex.: "5511999998888". Deixe "" para ocultar o botão.
-    whatsapp: "5516997726466",
+    whatsapp: "",
     // E-mail que recebe os pedidos de orçamento. Deixe "" para ocultar o botão.
-    email: "mkt@triomed.com.br"
+    email: "contato@mdtechsm.com.br"
   },
   // cor de destaque por especialidade (irmã dos catálogos/fichas)
   accent: {

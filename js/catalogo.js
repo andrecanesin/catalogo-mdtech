@@ -1,7 +1,9 @@
-/* Grade do catálogo: busca + filtros (client-side) + bandeja de orçamento. */
+/* Grade do catálogo: busca + filtros (client-side) + bandeja de orçamento.
+   Especialidade é o filtro principal. Família só aparece no desktop.
+   No mobile os filtros abrem numa gaveta (botão "Filtrar"). */
 (function () {
   let PRODUTOS = [], META = null;
-  const estado = { termo: "", especialidades: new Set(), fornecedores: new Set(), familias: new Set() };
+  const estado = { termo: "", especialidades: new Set(), familias: new Set() };
 
   const $ = s => document.querySelector(s);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
@@ -15,13 +17,12 @@
   }
 
   function passaFiltro(p) {
-    const { termo, especialidades, fornecedores, familias } = estado;
+    const { termo, especialidades, familias } = estado;
     if (termo) {
       const alvo = MD.norm(`${p.codigo} ${p.nome} ${p.descricao}`);
       if (!alvo.includes(termo)) return false;
     }
     if (especialidades.size && !(p.especialidades || []).some(e => especialidades.has(e))) return false;
-    if (fornecedores.size && !fornecedores.has(p.fornecedor)) return false;
     if (familias.size && !(p.familias || []).some(f => familias.has(f))) return false;
     return true;
   }
@@ -30,16 +31,14 @@
     const cor = MD.corEsp(p.especialidade);
     const card = el("article", "card");
 
-    // foto ou placeholder
     let foto;
+    const href = `produto.html?codigo=${encodeURIComponent(p.codigo)}`;
     if (p.foto) {
-      foto = el("a", "foto");
-      foto.href = `produto.html?codigo=${encodeURIComponent(p.codigo)}`;
-      foto.appendChild(el("img")).src = p.foto;
-      foto.querySelector("img").alt = p.nome;
+      foto = el("a", "foto"); foto.href = href;
+      const im = el("img"); im.src = p.foto; im.alt = p.nome; im.loading = "lazy";
+      foto.appendChild(im);
     } else {
-      foto = el("a", "foto sem");
-      foto.href = `produto.html?codigo=${encodeURIComponent(p.codigo)}`;
+      foto = el("a", "foto sem"); foto.href = href;
       foto.innerHTML = `<span class="t">sem foto</span><span class="c mono">${p.codigo}</span>`;
     }
     const tag = el("span", "tag", p.especialidade || "—");
@@ -48,7 +47,7 @@
     card.appendChild(foto);
 
     const corpo = el("div", "corpo");
-    const link = el("a"); link.href = `produto.html?codigo=${encodeURIComponent(p.codigo)}`;
+    const link = el("a"); link.href = href;
     link.innerHTML = `<div class="cod mono">${p.codigo}</div><div class="nome">${p.nome || p.codigo}</div>`;
     link.querySelector(".cod").style.color = cor;
     corpo.appendChild(link);
@@ -67,8 +66,8 @@
     return card;
   }
 
-  function facet(nome, valores, chave, contagem) {
-    const box = el("div");
+  function facetGrupo(nome, valores, chave, contagem, classe) {
+    const box = el("div", "grupo" + (classe ? " " + classe : ""));
     box.appendChild(el("h3", null, nome));
     valores.forEach(v => {
       const lab = el("label", "facet");
@@ -97,27 +96,42 @@
 
   function montarFiltros() {
     const side = $("#filtros"); side.innerHTML = "";
+
+    // cabeçalho da gaveta (só aparece no mobile, via CSS)
+    const head = el("div", "drawer-head");
+    head.appendChild(el("strong", null, "Filtros"));
+    const fechar = el("button", "drawer-x", "×");
+    fechar.setAttribute("aria-label", "Fechar filtros");
+    fechar.addEventListener("click", fecharGaveta);
+    head.appendChild(fechar);
+    side.appendChild(head);
+
     const esp = (META && META.especialidades) || Object.keys(contar("especialidades"));
-    const forn = (META && META.fornecedores) || Object.keys(contar("fornecedor"));
     const fam = (META && META.familias) || Object.keys(contar("familias"));
-    side.appendChild(facet("Especialidade", esp, "especialidades", contar("especialidades")));
-    side.appendChild(facet("Fornecedor", forn, "fornecedores", contar("fornecedor")));
-    side.appendChild(facet("Família", fam, "familias", contar("familias")));
+
+    // especialidade = filtro principal (destacado). família = secundário, só desktop.
+    side.appendChild(facetGrupo("Especialidade", esp, "especialidades", contar("especialidades"), "grupo-esp"));
+    side.appendChild(facetGrupo("Família", fam, "familias", contar("familias"), "so-desktop"));
+
     const limpar = el("button", "limpar", "Limpar filtros");
     limpar.addEventListener("click", () => {
-      estado.especialidades.clear(); estado.fornecedores.clear(); estado.familias.clear();
+      estado.especialidades.clear(); estado.familias.clear();
       estado.termo = ""; $("#busca").value = "";
       side.querySelectorAll("input").forEach(i => i.checked = false);
       render();
     });
     side.appendChild(limpar);
+
+    // aplicar / ver resultados (só mobile)
+    const aplicar = el("button", "aplicar so-mobile", "Ver resultados");
+    aplicar.addEventListener("click", fecharGaveta);
+    side.appendChild(aplicar);
   }
 
   function chipsAtivos() {
     const cont = $("#chips"); cont.innerHTML = "";
     const todos = [];
     estado.especialidades.forEach(v => todos.push(["especialidades", v]));
-    estado.fornecedores.forEach(v => todos.push(["fornecedores", v]));
     estado.familias.forEach(v => todos.push(["familias", v]));
     todos.forEach(([chave, v]) => {
       const c = el("span", "chip", v);
@@ -133,6 +147,8 @@
     });
   }
 
+  function nAtivos() { return estado.especialidades.size + estado.familias.size; }
+
   function render() {
     const grade = $("#grade");
     const lista = PRODUTOS.filter(passaFiltro);
@@ -146,32 +162,23 @@
     }
     $("#cont").innerHTML = `<b>${lista.length}</b> de ${PRODUTOS.length} produtos`;
     chipsAtivos();
+    const n = nAtivos();
+    $("#fnum").textContent = n ? ` (${n})` : "";
   }
+
+  // ---- gaveta mobile ----
+  function abrirGaveta() { $("#filtros").classList.add("aberto"); $("#backdrop").classList.add("on"); }
+  function fecharGaveta() { $("#filtros").classList.remove("aberto"); $("#backdrop").classList.remove("on"); }
 
   // ---- bandeja de orçamento ----
   function atualizarBandeja() {
     const n = MD.lista().length;
-    const b = $("#bandeja");
-    b.classList.toggle("on", n > 0);
+    $("#bandeja").classList.toggle("on", n > 0);
     $("#qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} na lista`;
     const wpp = MD.linkWhatsApp(PRODUTOS), mail = MD.linkEmail(PRODUTOS);
     const bw = $("#bt-wpp"), bm = $("#bt-mail");
-    if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; }
-    else bw.style.display = "none";
-    if (mail) { bm.style.display = ""; bm.onclick = () => location.href = mail; }
-    else bm.style.display = "none";
-  }
-
-  function ligarBandeja() {
-    $("#bt-limpar").addEventListener("click", () => { MD.limpar(); });
-    document.addEventListener("orcamento:mudou", () => {
-      atualizarBandeja();
-      // re-sincroniza botões dos cards visíveis
-      document.querySelectorAll(".card .add").forEach(btn => {
-        // rerender é mais simples/seguro:
-      });
-      render();
-    });
+    if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";
+    if (mail) { bm.style.display = ""; bm.onclick = () => location.href = mail; } else bm.style.display = "none";
   }
 
   async function iniciar() {
@@ -183,11 +190,13 @@
         Rode <code>python gerar.py site</code> e sirva a pasta por um servidor (ex.: <code>python -m http.server</code>).</div>`;
       return;
     }
-    $("#busca").addEventListener("input", e => {
-      estado.termo = MD.norm(e.target.value.trim()); render();
-    });
+    $("#busca").addEventListener("input", e => { estado.termo = MD.norm(e.target.value.trim()); render(); });
+    $("#btn-filtrar").addEventListener("click", abrirGaveta);
+    $("#backdrop").addEventListener("click", fecharGaveta);
+    $("#bt-limpar").addEventListener("click", () => MD.limpar());
+    document.addEventListener("orcamento:mudou", () => { atualizarBandeja(); render(); });
+
     montarFiltros();
-    ligarBandeja();
     render();
     atualizarBandeja();
   }

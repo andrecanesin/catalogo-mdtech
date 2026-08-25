@@ -21,9 +21,11 @@ img{display:block;max-width:100%;}
 .top::after{content:"";display:block;height:4px;
   background:linear-gradient(90deg,var(--ciano),var(--uro),var(--gine),var(--otica));}
 .top .wrap{display:flex;align-items:center;gap:20px;padding:16px 20px;}
-.brand{font-size:20px;font-weight:700;letter-spacing:.3px;}
-.brand b{color:var(--ciano);font-weight:800;}
-.brand small{display:block;font-size:10px;font-weight:400;letter-spacing:.22em;
+.brand{font-size:20px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;}
+.brand .logo{height:38px;width:auto;display:block;}
+.brand-txt{display:none;}
+.brand-txt b{color:var(--ciano);font-weight:800;}
+.brand-txt small{display:block;font-size:10px;font-weight:400;letter-spacing:.22em;
   text-transform:uppercase;color:#aeb9cc;margin-top:1px;}
 .top .busca{flex:1;max-width:520px;margin-left:auto;position:relative;}
 .top .busca input{width:100%;border:0;border-radius:24px;padding:11px 44px 11px 18px;
@@ -39,6 +41,26 @@ img{display:block;max-width:100%;}
 .side h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);
   margin:18px 0 8px;font-weight:600;}
 .side h3:first-child{margin-top:0;}
+
+/* grupo de especialidade em destaque (filtro principal) */
+.grupo{margin-bottom:6px;}
+.grupo-esp{background:#fff;border:1px solid var(--line);border-left:4px solid var(--ciano);
+  border-radius:10px;padding:12px 14px;box-shadow:var(--sombra);margin-bottom:16px;}
+.grupo-esp h3{margin-top:0;color:var(--navy);font-size:12px;}
+.grupo-esp .facet{font-size:14px;font-weight:500;}
+.grupo-esp .facet input{width:16px;height:16px;}
+
+/* botão Filtrar (só mobile) */
+.btn-filtrar{display:none;align-items:center;gap:7px;border:1px solid var(--navy);
+  background:var(--navy);color:#fff;border-radius:8px;padding:9px 14px;font:inherit;
+  font-size:13.5px;font-weight:600;cursor:pointer;}
+.btn-filtrar svg{stroke:#fff;}
+.btn-filtrar:hover{filter:brightness(1.08);}
+.aplicar{display:none;width:100%;margin-top:14px;border:0;border-radius:8px;
+  background:var(--ciano);color:#fff;padding:12px;font:inherit;font-size:14px;
+  font-weight:600;cursor:pointer;}
+.drawer-head{display:none;}
+.backdrop{display:none;}
 .facet{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13.5px;
   cursor:pointer;color:#33404f;}
 .facet input{accent-color:var(--navy);width:15px;height:15px;flex:none;cursor:pointer;}
@@ -158,7 +180,28 @@ img{display:block;max-width:100%;}
 /* ---------- responsivo ---------- */
 @media (max-width:900px){
   .layout{grid-template-columns:1fr;}
-  .side{position:static;max-height:none;order:2;border-top:1px solid var(--line);padding-top:18px;}
+  .btn-filtrar{display:inline-flex;}
+
+  /* filtros viram gaveta lateral off-canvas */
+  .side{position:fixed;top:0;left:0;height:100%;width:290px;max-width:84vw;z-index:60;
+    background:#fff;box-shadow:2px 0 24px rgba(0,0,0,.18);padding:16px 18px 24px;
+    max-height:none;overflow:auto;transform:translateX(-100%);
+    transition:transform .22s ease;border-radius:0;}
+  .side.aberto{transform:translateX(0);}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .drawer-head strong{color:var(--navy);font-size:16px;}
+  .drawer-x{border:0;background:none;font-size:26px;line-height:1;color:var(--mut);
+    cursor:pointer;padding:0 4px;}
+  .backdrop{display:block;position:fixed;inset:0;background:rgba(15,25,45,.45);z-index:55;
+    opacity:0;visibility:hidden;transition:opacity .2s ease;}
+  .backdrop.on{opacity:1;visibility:visible;}
+  .aplicar.so-mobile{display:block;}
+
+  /* no mobile, só o filtro de especialidade */
+  .so-desktop{display:none;}
+  .grupo-esp{box-shadow:none;border-left-width:4px;}
+
   .ph{grid-template-columns:1fr;}
   .ph .foto-g{border-right:0;border-bottom:1px solid var(--line);}
   .ph .info{padding:26px;}

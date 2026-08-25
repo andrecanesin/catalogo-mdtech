@@ -51,7 +51,6 @@
           <div class="cod-g mono" style="color:${cor}">${p.codigo}</div>
           <table class="tabela">
             <tr><td class="k">Família</td><td class="v">${v(p.familia)}</td></tr>
-            <tr><td class="k">Fornecedor</td><td class="v">${v(p.fornecedor)}</td></tr>
             <tr><td class="k">Diâmetro (Ø)</td><td class="v">${p.diametro ? p.diametro + " mm" : miss}</td></tr>
             <tr><td class="k">Comprimento útil</td><td class="v">${p.comprimento ? p.comprimento + " mm" : miss}</td></tr>
             <tr><td class="k">Ângulo</td><td class="v">${v(p.angulo)}</td></tr>
