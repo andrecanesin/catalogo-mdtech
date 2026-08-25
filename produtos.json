@@ -1,0 +1,3216 @@
+[
+  {
+    "codigo": "A153.C",
+    "nome": "Pinça de Apreensão e Dissecção Golfinho",
+    "descricao": "PINÇA DE APREENSÃO E DISSECÇÃO GOLFINHO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A153.C.png"
+  },
+  {
+    "codigo": "A215-2.C",
+    "nome": "Pinça de Apreensão tipo Endoclinch",
+    "descricao": "PINÇA DE APREENSÃO TIPO ENDOCLINCH MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A215-2.C.png"
+  },
+  {
+    "codigo": "A215.C",
+    "nome": "Pinça de Apreensão Fenestrada",
+    "descricao": "PINÇA DE APREENSÃO FENESTRADA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A215.C.png"
+  },
+  {
+    "codigo": "A213.C",
+    "nome": "Pinça de Apreensão e Dissecção Mixter",
+    "descricao": "PINÇA DE APREENSÃO E DISSECÇÃO MIXTER MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A213.C.png"
+  },
+  {
+    "codigo": "A113.C",
+    "nome": "Pinça de Apreensão e Dissecção Mixter 90°",
+    "descricao": "PINÇA DE APREENSÃO E DISSECÇÃO MIXTER 90° MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "90°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A113.C.png"
+  },
+  {
+    "codigo": "A111.C",
+    "nome": "Pinça de Apreensão e Dissecção Maryland",
+    "descricao": "PINÇA DE APREENSÃO E DISSECÇÃO MARYLAND MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A111.C.png"
+  },
+  {
+    "codigo": "A242.C",
+    "nome": "Pinça de Apreensão",
+    "descricao": "PINÇA DE APREENSÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A242.C.png"
+  },
+  {
+    "codigo": "A264.C",
+    "nome": "Pinça de Biopsia Dupla Ação",
+    "descricao": "PINÇA DE BIOPSIA DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A264.C.png"
+  },
+  {
+    "codigo": "A127.C",
+    "nome": "Pinça de Apreensão Dente de Rato Simples Ação",
+    "descricao": "PINÇA DE APREENSÃO DENTE DE RATO SIMPLES AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A127.C.png"
+  },
+  {
+    "codigo": "A325.C",
+    "nome": "Pinça de Apreensão Fenestrada Atraumatica",
+    "descricao": "PINÇA DE APREENSÃO FENESTRADA ATRAUMATICA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A325.C.png"
+  },
+  {
+    "codigo": "A307.C",
+    "nome": "Pinça Atraumatica Curva tipo Croce",
+    "descricao": "PINÇA ATRAUMATICA CURVA TIPO CROCE MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A307.C.png"
+  },
+  {
+    "codigo": "A318.C",
+    "nome": "Pinça de Apreensão Dupla Ação",
+    "descricao": "PINÇA DE APREENSÃO DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A318.C.png"
+  },
+  {
+    "codigo": "A316.C",
+    "nome": "Pinça de Apreensão 2X3 Dentes",
+    "descricao": "PINÇA DE APREENSÃO 2X3 DENTES MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A263.C",
+    "nome": "Pinça de Apreensão Bico de Pato Dupla Ação",
+    "descricao": "PINÇA DE APREENSÃO BICO DE PATO DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A263.C.png"
+  },
+  {
+    "codigo": "A305.C",
+    "nome": "Pinça de Apreensão Atraumatica Fenestrada Côncava Dupla Ação",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA FENESTRADA CÔNCAVA DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A305.C.png"
+  },
+  {
+    "codigo": "A142.C",
+    "nome": "Pinça de Apreensão de Vesícula Biliar Dupla Ação",
+    "descricao": "PINÇA DE APREENSÃO DE VESÍCULA BILIAR DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A142.C.png"
+  },
+  {
+    "codigo": "A310.C",
+    "nome": "Pinça de Apreensão Forte",
+    "descricao": "PINÇA DE APREENSÃO FORTE MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A310.C.png"
+  },
+  {
+    "codigo": "A143-4.C",
+    "nome": "Pinça de Apreensão Fenestrada para Intestino Dorsey (bowel)",
+    "descricao": "PINÇA DE APREENSÃO FENESTRADA PARA INTESTINO DORSEY (BOWEL) MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A143-4.C.png"
+  },
+  {
+    "codigo": "A143-1.C",
+    "nome": "Pinça de Apreensão Fenestrada para Intestino tipo (bowel)",
+    "descricao": "PINÇA DE APREENSÃO FENESTRADA PARA INTESTINO TIPO (BOWEL) MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A143-1.C.png"
+  },
+  {
+    "codigo": "A126.C",
+    "nome": "Pinças de Biopsia com Espícula",
+    "descricao": "PINÇAS DE BIOPSIA COM ESPÍCULA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A126.C.png"
+  },
+  {
+    "codigo": "A312.C",
+    "nome": "Pinça de Apreensão Dente Invertido (aligator)",
+    "descricao": "PINÇA DE APREENSÃO DENTE INVERTIDO (ALIGATOR) MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A312.C.png"
+  },
+  {
+    "codigo": "A307-1.C",
+    "nome": "Pinça de Apreensão Atraumatica Curva (three Hole)",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA CURVA (THREE HOLE) MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A307-1.C.png"
+  },
+  {
+    "codigo": "A143-3.C",
+    "nome": "Pinça de Apreensão Atraumatica Dente Largo para Intestino",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA DENTE LARGO PARA INTESTINO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A143-3.C.png"
+  },
+  {
+    "codigo": "A300.C",
+    "nome": "Pinça de Apreensão Atraumatica para Apêndice",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA PARA APÊNDICE MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A300.C.png"
+  },
+  {
+    "codigo": "A110.C",
+    "nome": "Pinça de Apreensão tipo \"blunt\"",
+    "descricao": "PINÇA DE APREENSÃO TIPO \"BLUNT\" MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A110.C.png"
+  },
+  {
+    "codigo": "A313.C",
+    "nome": "Pinça de Apreensão Dente Invertido (six Hole)",
+    "descricao": "PINÇA DE APREENSÃO DENTE INVERTIDO (SIX HOLE) MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A313.C.png"
+  },
+  {
+    "codigo": "A302.C",
+    "nome": "Pinça de Apreensão Atraumatica tipo Babcock",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA TIPO BABCOCK MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A302.C.png"
+  },
+  {
+    "codigo": "A299-3",
+    "nome": "Pinça Bipolar tipo Maryland Dupla Ação",
+    "descricao": "PINÇA BIPOLAR TIPO MARYLAND DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A299-3.png"
+  },
+  {
+    "codigo": "A299",
+    "nome": "Pinça Bipolar de Apreensão Atraumatica Dupla Ação",
+    "descricao": "PINÇA BIPOLAR DE APREENSÃO ATRAUMATICA DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A299.png"
+  },
+  {
+    "codigo": "A407",
+    "nome": "Pinça de Apreensão Atraumatica",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA MDTECH D=10MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A407.png"
+  },
+  {
+    "codigo": "A408",
+    "nome": "Pinça de Apreensão Atraumatica tipo Babcock",
+    "descricao": "PINÇA DE APREENSÃO ATRAUMATICA TIPO BABCOCK MDTECH D=10MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A408.png"
+  },
+  {
+    "codigo": "A216",
+    "nome": "Pinça de Apreensão 2X3 Dentes",
+    "descricao": "PINÇA DE APREENSÃO 2X3 DENTES MDTECH D=10MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças de apreensão e dissecção",
+    "familias": [
+      "Pinças de apreensão e dissecção"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A216.png"
+  },
+  {
+    "codigo": "A227.C",
+    "nome": "Tesoura tipo Hook Simples Ação",
+    "descricao": "TESOURA TIPO HOOK SIMPLES AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Tesouras",
+    "familias": [
+      "Tesouras"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A227.C.png"
+  },
+  {
+    "codigo": "A118.C",
+    "nome": "Tesoura de Metzembaum Curva Dupla Ação",
+    "descricao": "TESOURA DE METZEMBAUM CURVA DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Tesouras",
+    "familias": [
+      "Tesouras"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A118.C.png"
+  },
+  {
+    "codigo": "A141.C",
+    "nome": "Tesoura de Metzembaum Reta Dupla Ação",
+    "descricao": "TESOURA DE METZEMBAUM RETA DUPLA AÇÃO MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Tesouras",
+    "familias": [
+      "Tesouras"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A141.C.png"
+  },
+  {
+    "codigo": "A149.2-1",
+    "nome": "Porta Agulha Mandibula Curva para a Esquerda Manopla Axial",
+    "descricao": "PORTA AGULHA MANDIBULA CURVA PARA A ESQUERDA MANOPLA AXIAL MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Porta-agulhas",
+    "familias": [
+      "Porta-agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A149.2-1.png"
+  },
+  {
+    "codigo": "A149.2-2",
+    "nome": "Porta Agulha Mandibula Reta Manopla Axial",
+    "descricao": "PORTA AGULHA MANDIBULA RETA MANOPLA AXIAL MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Porta-agulhas",
+    "familias": [
+      "Porta-agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A149.3-1",
+    "nome": "Porta Agulha Mandibula Curva para a Esquerda Manopla Axial Reta",
+    "descricao": "PORTA AGULHA MANDIBULA CURVA PARA A ESQUERDA MANOPLA AXIAL RETA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Porta-agulhas",
+    "familias": [
+      "Porta-agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A149.3-1.jpg"
+  },
+  {
+    "codigo": "A149.3-2",
+    "nome": "Porta Agulha Mandibula Reta Manopla Axial Reta",
+    "descricao": "PORTA AGULHA MANDIBULA RETA MANOPLA AXIAL RETA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Porta-agulhas",
+    "familias": [
+      "Porta-agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A149.5-1",
+    "nome": "Porta Agulha Mandibula Curva para a Esquerda Manopla Curva",
+    "descricao": "PORTA AGULHA MANDIBULA CURVA PARA A ESQUERDA MANOPLA CURVA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Porta-agulhas",
+    "familias": [
+      "Porta-agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A149.5-1.jpg"
+  },
+  {
+    "codigo": "A149.5-2",
+    "nome": "Porta Agulha Mandibula Reta Manopla Curva",
+    "descricao": "PORTA AGULHA MANDIBULA RETA MANOPLA CURVA MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Porta-agulhas",
+    "familias": [
+      "Porta-agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A206",
+    "nome": "Aplicador de Clipe de Titanio Rotatorio Simples Ação",
+    "descricao": "APLICADOR DE CLIPE DE TITANIO ROTATORIO SIMPLES AÇÃO MDTECH D=10MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Aplicadores de clip e clips",
+    "familias": [
+      "Aplicadores de clip e clips"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.95",
+    "foto": "fotos/A206.png"
+  },
+  {
+    "codigo": "A145",
+    "nome": "Aplicador de Clipe de Titanio Rotatorio Dupla Ação",
+    "descricao": "APLICADOR DE CLIPE DE TITANIO ROTATORIO DUPLA AÇÃO MDTECH D=10MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Aplicadores de clip e clips",
+    "familias": [
+      "Aplicadores de clip e clips"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.95",
+    "foto": "fotos/A145.png"
+  },
+  {
+    "codigo": "A194-1",
+    "nome": "Clips de Titanio Tamanho S COR Branco",
+    "descricao": "CLIPS DE TITANIO TAMANHO S COR BRANCO MDTECH",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Aplicadores de clip e clips",
+    "familias": [
+      "Aplicadores de clip e clips"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.95",
+    "foto": null
+  },
+  {
+    "codigo": "A194-2",
+    "nome": "Clips de Titanio Tamanho ML COR Amarelo",
+    "descricao": "CLIPS DE TITANIO TAMANHO ML COR AMARELO MDTECH",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Aplicadores de clip e clips",
+    "familias": [
+      "Aplicadores de clip e clips"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.95",
+    "foto": null
+  },
+  {
+    "codigo": "A194-3",
+    "nome": "Clips de Titanio Tamanho ML COR Verde",
+    "descricao": "CLIPS DE TITANIO TAMANHO ML COR VERDE MDTECH",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Aplicadores de clip e clips",
+    "familias": [
+      "Aplicadores de clip e clips"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.95",
+    "foto": null
+  },
+  {
+    "codigo": "A194-4",
+    "nome": "Clips de Titanio Tamanho L COR Laranja",
+    "descricao": "CLIPS DE TITANIO TAMANHO L COR LARANJA MDTECH",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Aplicadores de clip e clips",
+    "familias": [
+      "Aplicadores de clip e clips"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.95",
+    "foto": null
+  },
+  {
+    "codigo": "A271",
+    "nome": "Pinça Aplicadora de Clamp Bulldog",
+    "descricao": "PINÇA APLICADORA DE CLAMP BULLDOG MDTECH D=10MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A271.png"
+  },
+  {
+    "codigo": "A270",
+    "nome": "Pinça Aplicadora de Clamp Bulldog Desmontavel",
+    "descricao": "PINÇA APLICADORA DE CLAMP BULLDOG DESMONTAVEL MDTECH D=10MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A270.png"
+  },
+  {
+    "codigo": "A272",
+    "nome": "Clamp tipo Bulldog",
+    "descricao": "CLAMP TIPO BULLDOG 65MM RETO MDTECH AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A272.png"
+  },
+  {
+    "codigo": "A273",
+    "nome": "Clamp tipo Bulldog",
+    "descricao": "CLAMP TIPO BULLDOG 45MM RETO MDTECH AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A275",
+    "nome": "Clamp tipo Bulldog",
+    "descricao": "CLAMP TIPO BULLDOG 25MM CURVO MDTECH AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A276",
+    "nome": "Clamp tipo Bulldog",
+    "descricao": "CLAMP TIPO BULLDOG 25MM RETO MDTECH AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A277",
+    "nome": "Clamp tipo Bulldog",
+    "descricao": "CLAMP TIPO BULLDOG 55MM RETO MDTECH AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Pinças - Clamps / Bulldog",
+    "familias": [
+      "Pinças - Clamps / Bulldog"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A282",
+    "nome": "Afastador Articulado com Cinco PÁS",
+    "descricao": "AFASTADOR ARTICULADO COM CINCO PÁS MDTECH D=05MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Afastadores",
+    "familias": [
+      "Afastadores"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "05",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A282.png"
+  },
+  {
+    "codigo": "A284",
+    "nome": "Afastador Articulado com Cinco PÁS",
+    "descricao": "AFASTADOR ARTICULADO COM CINCO PÁS MDTECH D=10MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Afastadores",
+    "familias": [
+      "Afastadores"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290004",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A284.png"
+  },
+  {
+    "codigo": "A202.4-1",
+    "nome": "Canula com Rosca",
+    "descricao": "CANULA COM ROSCA MDTECH D=5MM C=110MM E TROCATER PIRAMIDAL AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "110",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A203.4-1",
+    "nome": "Canula com Rosca",
+    "descricao": "CANULA COM ROSCA MDTECH D=10MM C=110MM E TROCATER PIRAMIDAL AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "110",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A202-A.1-1",
+    "nome": "Trocater de Ponta Protegida",
+    "descricao": "TROCATER DE PONTA PROTEGIDA MDTECH D=5MM C=110MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "110",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A202-A.1-1.png"
+  },
+  {
+    "codigo": "A219",
+    "nome": "Redutor para Trocater de",
+    "descricao": "REDUTOR PARA TROCATER DE 10MM PARA 05MM MDTECH C=10CM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290003",
+    "ncm": "9018.39.99",
+    "foto": "fotos/A219.png"
+  },
+  {
+    "codigo": "A203-A.1-1",
+    "nome": "Trocater de Ponta Protegida",
+    "descricao": "TROCATER DE PONTA PROTEGIDA MDTECH D=10MM C=110MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "110",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A151",
+    "nome": "Canula de Dissecção Monopolar tipo Blunt com Conector HF",
+    "descricao": "CANULA DE DISSECÇÃO MONOPOLAR TIPO BLUNT COM CONECTOR HF MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Eletrodos e Cabos HF",
+    "familias": [
+      "Eletrodos e Cabos HF"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A204",
+    "nome": "Canula de Dissecção Monopolar tipo Hook com Conector HF",
+    "descricao": "CANULA DE DISSECÇÃO MONOPOLAR TIPO HOOK COM CONECTOR HF MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Eletrodos e Cabos HF",
+    "familias": [
+      "Eletrodos e Cabos HF"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A204.png"
+  },
+  {
+    "codigo": "A207-4-1",
+    "nome": "Canula de Dissecção Monopolar com Sucção tipo Blunt com Conector HF",
+    "descricao": "CANULA DE DISSECÇÃO MONOPOLAR COM SUCÇÃO TIPO BLUNT COM CONECTOR HF MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Eletrodos e Cabos HF",
+    "familias": [
+      "Eletrodos e Cabos HF"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A207-4-1.png"
+  },
+  {
+    "codigo": "A207-4",
+    "nome": "Canula de Dissecção Monopolar com Sucção tipo Hook com Conector HF",
+    "descricao": "CANULA DE DISSECÇÃO MONOPOLAR COM SUCÇÃO TIPO HOOK COM CONECTOR HF MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Eletrodos e Cabos HF",
+    "familias": [
+      "Eletrodos e Cabos HF"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A108",
+    "nome": "Cabo Monopolar",
+    "descricao": "CABO MONOPOLAR MDTECH D=5MM C=3M AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Eletrodos e Cabos HF",
+    "familias": [
+      "Eletrodos e Cabos HF"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A108.png"
+  },
+  {
+    "codigo": "A108-2",
+    "nome": "Cabo Bipolar (hf)",
+    "descricao": "CABO BIPOLAR (HF) MDTECH PLUG DUPLO D=4MM C=3M AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Eletrodos e Cabos HF",
+    "familias": [
+      "Eletrodos e Cabos HF"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "4",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "012-A",
+    "nome": "Cabo de Fibra Ótica com Conector Padrão",
+    "descricao": "CABO DE FIBRA ÓTICA COM CONECTOR PADRÃO MDTECH D=4MM C=1.80M AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Cabos de fibra ótica",
+    "familias": [
+      "Cabos de fibra ótica"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "4",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9001.10.20",
+    "foto": null
+  },
+  {
+    "codigo": "012-1-A",
+    "nome": "Cabo de Fibra Ótica com Conector Padrão",
+    "descricao": "CABO DE FIBRA ÓTICA COM CONECTOR PADRÃO MDTECH D=4MM C=2.0M AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Cabos de fibra ótica",
+    "familias": [
+      "Cabos de fibra ótica"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "4",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9001.10.20",
+    "foto": null
+  },
+  {
+    "codigo": "012-2-A",
+    "nome": "Cabo de Fibra Ótica com Conector Padrão",
+    "descricao": "CABO DE FIBRA ÓTICA COM CONECTOR PADRÃO MDTECH D=4MM C=2.50M AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Cabos de fibra ótica",
+    "familias": [
+      "Cabos de fibra ótica"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "4",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9001.10.20",
+    "foto": null
+  },
+  {
+    "codigo": "012-3-A",
+    "nome": "Cabo de Fibra Ótica com Conector Padrão",
+    "descricao": "CABO DE FIBRA ÓTICA COM CONECTOR PADRÃO MDTECH D=5MM C=2.50M AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Cabos de fibra ótica",
+    "familias": [
+      "Cabos de fibra ótica"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9001.10.20",
+    "foto": null
+  },
+  {
+    "codigo": "A201",
+    "nome": "Agulha de Verres",
+    "descricao": "AGULHA DE VERRES MDTECH D=2.2MM C=100MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "2,2",
+    "comprimento": "100",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": null
+  },
+  {
+    "codigo": "A201-1",
+    "nome": "Agulha de Verres",
+    "descricao": "AGULHA DE VERRES MDTECH D=2.2MM C=120MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "2,2",
+    "comprimento": "120",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": "fotos/A201-1.png"
+  },
+  {
+    "codigo": "A201-2",
+    "nome": "Agulha de Verres",
+    "descricao": "AGULHA DE VERRES MDTECH D=2.2MM C=140MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "2,2",
+    "comprimento": "140",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": null
+  },
+  {
+    "codigo": "A189",
+    "nome": "Agulha de Punçao 1.8MM",
+    "descricao": "AGULHA DE PUNÇAO 1.8MM MDTECH D=5 C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": "fotos/A189.jpg"
+  },
+  {
+    "codigo": "A189-1",
+    "nome": "Agulha de Punçao 1.5MM",
+    "descricao": "AGULHA DE PUNÇAO 1.5MM MDTECH D=5 C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": null
+  },
+  {
+    "codigo": "A189-2",
+    "nome": "Agulha de Punçao 1.0MM",
+    "descricao": "AGULHA DE PUNÇAO 1.0MM MDTECH D=5 C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": null
+  },
+  {
+    "codigo": "A189-3",
+    "nome": "Agulha de Punçao 1.2MM",
+    "descricao": "AGULHA DE PUNÇAO 1.2MM MDTECH D=5 C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.39.10",
+    "foto": null
+  },
+  {
+    "codigo": "A193.C",
+    "nome": "Pinça para NÓ",
+    "descricao": "PINÇA PARA NÓ MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": "fotos/A193.C.png"
+  },
+  {
+    "codigo": "A210",
+    "nome": "Pinça para Fechamento de Aponeurose \"upward'",
+    "descricao": "PINÇA PARA FECHAMENTO DE APONEUROSE \"UPWARD' MDTECH D=2.5MM C=150MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Agulhas",
+    "familias": [
+      "Agulhas"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "2,5",
+    "comprimento": "150",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "A207",
+    "nome": "Tubo para Irrigação e Aspiração com Válvula Multifuncional",
+    "descricao": "TUBO PARA IRRIGAÇÃO E ASPIRAÇÃO COM VÁLVULA MULTIFUNCIONAL MDTECH D=5MM C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Irrigação e aspiração",
+    "familias": [
+      "Irrigação e aspiração"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.95",
+    "foto": null
+  },
+  {
+    "codigo": "A207-2",
+    "nome": "Conjunto de Tubos para Irrigação e Aspiração com Válvula Multifuncional",
+    "descricao": "CONJUNTO DE TUBOS PARA IRRIGAÇÃO E ASPIRAÇÃO COM VÁLVULA MULTIFUNCIONAL MDTECH (D=10MM) E (D=5MM) C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Irrigação e aspiração",
+    "familias": [
+      "Irrigação e aspiração"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.95",
+    "foto": null
+  },
+  {
+    "codigo": "A207-3",
+    "nome": "Conjunto de Tubos para Irrigação e Aspiração com Válvula tipo Pistão",
+    "descricao": "CONJUNTO DE TUBOS PARA IRRIGAÇÃO E ASPIRAÇÃO COM VÁLVULA TIPO PISTÃO MDTECH (D=10MM) E (D=5MM) C=330MM AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Irrigação e aspiração",
+    "familias": [
+      "Irrigação e aspiração"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10",
+    "comprimento": "330",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.95",
+    "foto": "fotos/A207-3.png"
+  },
+  {
+    "codigo": "814",
+    "nome": "Manipulador Uterino com Sistema de Injeção para Cromotubagem",
+    "descricao": "MANIPULADOR UTERINO COM SISTEMA DE INJEÇÃO PARA CROMOTUBAGEM MDTECH AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Manipulador uterino",
+    "familias": [
+      "Manipulador uterino"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "9018.90.99",
+    "foto": null
+  },
+  {
+    "codigo": "E2016.64",
+    "nome": "Trocarter com Valvula Multifuncional",
+    "descricao": "TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=5.5MM COM OBTURADOR PIRAMIDAL, AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "E2016.65",
+    "nome": "Trocarter com Valvula Multifuncional",
+    "descricao": "TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=10,5MM COM OBTURADOR PIRAMIDAL, AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "E2016.73",
+    "nome": "Trocarter com Valvula Multifuncional",
+    "descricao": "TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=10,5MM, C=95MM COM OBTURADOR PIRAMIDAL, AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "10,5",
+    "comprimento": "95",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "E2016.74",
+    "nome": "Trocarter com Valvula Multifuncional",
+    "descricao": "TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=5.5MM, C=95MM COM OBTURADOR PIRAMIDAL, AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "5,5",
+    "comprimento": "95",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "E2017.8",
+    "nome": "Redutor para Trocarter",
+    "descricao": "REDUTOR PARA TROCARTER MDTECH REDUÇÃO DE 10MM PARA 05MM, AUTOCLAVAVEL (134°)",
+    "especialidade": "Laparoscopia",
+    "especialidades": [
+      "Laparoscopia"
+    ],
+    "familia": "Trocateres",
+    "familias": [
+      "Trocateres"
+    ],
+    "fornecedor": "TONGLU",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "A0320",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=0°, D=4MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Endoscópios autoclaváveis",
+    "familias": [
+      "Endoscópios autoclaváveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "4",
+    "comprimento": "302",
+    "angulo": "0°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "A0322",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=30°, D=4MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Endoscópios autoclaváveis",
+    "familias": [
+      "Endoscópios autoclaváveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "4",
+    "comprimento": "302",
+    "angulo": "30°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "A0323",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=70°, D=4MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Endoscópios autoclaváveis",
+    "familias": [
+      "Endoscópios autoclaváveis",
+      "Litotripsia para cálculo de bexiga"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "4",
+    "comprimento": "302",
+    "angulo": "70°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "A0011.3",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=12°, D=4MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Endoscópios autoclaváveis",
+    "familias": [
+      "Endoscópios autoclaváveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "4",
+    "comprimento": "302",
+    "angulo": "12°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "A1101.1",
+    "nome": "Camisa",
+    "descricao": "CAMISA MDTECH PARA CISTOURETROSCOPIA D=16,5FR COM OBTURADOR - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "16,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1102.1",
+    "nome": "Camisa",
+    "descricao": "CAMISA MDTECH PARA CISTOURETROSCOPIA D=18,5FR COM OBTURADOR - AUTOCLAVAEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "18,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1103.1",
+    "nome": "Camisa",
+    "descricao": "CAMISA MDTECH PARA CISTOURETROSCOPIA D=21FR COM OBTURADOR - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "21",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1104.1",
+    "nome": "Camisa",
+    "descricao": "CAMISA MDTECH PARA CISTOURETROSCOPIA D=23FR COM OBTURADOR - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "23",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1105.1",
+    "nome": "Peça Guia",
+    "descricao": "PEÇA GUIA MDTECH COM SISTEMA DE DEFLEXÃO E DOIS CANAIS - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1106.1",
+    "nome": "Peça Guia",
+    "descricao": "PEÇA GUIA MDTECH PARA USO EM CAMISAS DE CISTOURETROSCOPIA COM UM CANAL - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1106.2",
+    "nome": "Peça Guia",
+    "descricao": "PEÇA GUIA MDTECH PARA USO EM CAMISAS DE CISTOURETROSCOPIA COM DOIS CANAIS - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto de camisas para cistoscopia",
+    "familias": [
+      "Conjunto de camisas para cistoscopia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2101",
+    "nome": "Pinça para Biópsia Flexível",
+    "descricao": "PINÇA PARA BIÓPSIA FLEXÍVEL MDTECH D=7FR, CM=395MM, BOCA TIPO CÔNCOVA - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Pinças endoscópicas flexíveis",
+    "familias": [
+      "Pinças endoscópicas flexíveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "7",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2102",
+    "nome": "Pinça para Corpo Estranho Flexível",
+    "descricao": "PINÇA PARA CORPO ESTRANHO FLEXÍVEL MDTECH D=7FR, CM= 395MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Pinças endoscópicas flexíveis",
+    "familias": [
+      "Pinças endoscópicas flexíveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "7",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2103",
+    "nome": "Pinça Serrilhada Flexível",
+    "descricao": "PINÇA SERRILHADA FLEXÍVEL MDTECH D=7FR, CM =395MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Pinças endoscópicas flexíveis",
+    "familias": [
+      "Pinças endoscópicas flexíveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "7",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3101",
+    "nome": "Elemento de Trabalho",
+    "descricao": "ELEMENTO DE TRABALHO MDTECH - MONOPOLAR, PASSIVO, PARA USO COM CAMISA DE URETROTOMIA MDTECH - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto para uretrotomia",
+    "familias": [
+      "Conjunto para uretrotomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568299001",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3102",
+    "nome": "Camisa para Uretrotomia",
+    "descricao": "CAMISA PARA URETROTOMIA MDTECH D=21FR COM CANAL E COM OBTURADOR - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto para uretrotomia",
+    "familias": [
+      "Conjunto para uretrotomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "21",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3104",
+    "nome": "Faca para Uretrotomia tipo Faca Reta",
+    "descricao": "FACA PARA URETROTOMIA TIPO FACA RETA MDTECH",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Conjunto para uretrotomia",
+    "familias": [
+      "Conjunto para uretrotomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568299001",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "T1001",
+    "nome": "Adaptador para Irrigação tipo Luer",
+    "descricao": "ADAPTADOR PARA IRRIGAÇÃO TIPO LUER MDTECH - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Conjunto para uretrotomia",
+    "familias": [
+      "Conjunto para uretrotomia",
+      "Acessórios"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "T1009.1",
+    "nome": "Adaptador tipo Luer - Lock",
+    "descricao": "ADAPTADOR TIPO LUER - LOCK MDTECH - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Conjunto para uretrotomia",
+    "familias": [
+      "Conjunto para uretrotomia",
+      "Acessórios"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3160.4S",
+    "nome": "Elemento de Trabalho",
+    "descricao": "ELEMENTO DE TRABALHO MDTECH - MONOPOLAR, PASSIVO, PARA USO COM CAMISA DE RESSECTOSCOPIA 24/26FR - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3163.3S",
+    "nome": "Camisa Interna",
+    "descricao": "CAMISA INTERNA MDTECH COM OBTURADOR D=24FR PARA USO COM CAMISA EXTERNA D=26FR, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "24",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3165.3S",
+    "nome": "Camisa para Ressectoscopia",
+    "descricao": "CAMISA PARA RESSECTOSCOPIA MDTECH - D=26FR DE FLUXO CONTÍNUO, ROTATORIA, PARA USO COM ELEMENTO DE TRABALHO, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "26",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "1.3-DS-24",
+    "nome": "Eletrodo Monopolar tipo Loop 30°",
+    "descricao": "ELETRODO MONOPOLAR TIPO LOOP 30° MDTECH - PARA USO COM ELEMENTO DE TRABALHO",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "30°",
+    "autoclavavel": "",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "4-DS-24",
+    "nome": "Eletrodo Monopolar tipo Roller",
+    "descricao": "ELETRODO MONOPOLAR TIPO ROLLER MDTECH - PARA USO COM ELEMENTO DE TRABALHO",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "5-DS-24",
+    "nome": "Eletrodo Monopolar tipo Spike",
+    "descricao": "ELETRODO MONOPOLAR TIPO SPIKE MDTECH - PARA USO COM ELEMENTO DE TRABALHO",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "3.1-DS-24",
+    "nome": "Eletrodo Monopolar tipo Spud 30°",
+    "descricao": "ELETRODO MONOPOLAR TIPO SPUD 30° MDTECH - PARA USO COM ELEMENTO DE TRABALHO",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "30°",
+    "autoclavavel": "",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "M1015",
+    "nome": "Cabo de Alto Frequencia Monopolar",
+    "descricao": "CABO DE ALTO FREQUENCIA MONOPOLAR MDTECH - C=300CM PARA USO COM ELEMENTO DE TRABALHO, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio monopolar 4mm",
+    "familias": [
+      "Ressectoscópio monopolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3160.4SS",
+    "nome": "Elemento de Trabalho",
+    "descricao": "ELEMENTO DE TRABALHO MDTECH - BIPOLAR, PASSIVO, PARA USO COM CAMISA DE RESSECTOSCOPIA 24/26FR - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio bipolar 4mm",
+    "familias": [
+      "Ressectoscópio bipolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3163.3SS",
+    "nome": "Camisa Interna Engate Rapido Click",
+    "descricao": "CAMISA INTERNA ENGATE RAPIDO CLICK MDTECH COM OBTURADOR D= 24FR PARA USO COM CAMISA EXTERNA DE RESSECTOSCOPIA D=26FR, AUTOCLAVAVEL",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio bipolar 4mm",
+    "familias": [
+      "Ressectoscópio bipolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "24",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3165.3SS",
+    "nome": "Camisa para Ressectoscopia Engate Rapido Click",
+    "descricao": "CAMISA PARA RESSECTOSCOPIA ENGATE RAPIDO CLICK MDTECH D=26FR DE FLUXO CONTÍNUO, ROTATORIA,PARA USO COM ELEMENTO DE TRABALHO, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio bipolar 4mm",
+    "familias": [
+      "Ressectoscópio bipolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "26",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A3131",
+    "nome": "Eletrodo Bipolar tipo Loop 30°",
+    "descricao": "ELETRODO BIPOLAR TIPO LOOP 30° MDTECH - DUPLA HASTE DE GUIA, PARA USO COM ELEMENTO DE TRABALHO BIPOLAR",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio bipolar 4mm",
+    "familias": [
+      "Ressectoscópio bipolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "30°",
+    "autoclavavel": "",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "M1026",
+    "nome": "Cabo de Alto Frequencia Bipolar",
+    "descricao": "CABO DE ALTO FREQUENCIA BIPOLAR MDTECH - C=300CM PARA USO COM ELEMENTO DE TRABALHO BIPOLAR , AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Ressectoscópio bipolar 4mm",
+    "familias": [
+      "Ressectoscópio bipolar 4mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A0210.1",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=0°, D=2.7MM, C=205MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "2,7",
+    "comprimento": "205",
+    "angulo": "0°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "A0211.1",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=30°, D=2.7MM, C=205MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO. Registro Anvisa: ........./NCM:......../ Peso........",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "2,7",
+    "comprimento": "205",
+    "angulo": "30°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "A1201",
+    "nome": "Camisa para Cistoscopia Pediatrica",
+    "descricao": "CAMISA PARA CISTOSCOPIA PEDIATRICA MDTECH D=11FR COM OBTURADOR, AUTOCLAVAVEL (134°).",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "11",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1202",
+    "nome": "Camisa para Cistoscopia Pediatrica",
+    "descricao": "CAMISA PARA CISTOSCOPIA PEDIATRICA MDTECH D=13,5FR COM OBTURADOR, AUTOCLAVAVEL (134°).",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "13,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1203",
+    "nome": "Peça Guia para Cistoscopia Pediatrica",
+    "descricao": "PEÇA GUIA PARA CISTOSCOPIA PEDIATRICA MDTECH COM SISTEMA DE DEFLEXÃO - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A1204",
+    "nome": "Peça Guia para Cistoscopia Pediatrica",
+    "descricao": "PEÇA GUIA PARA CISTOSCOPIA PEDIATRICA MDTECH - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2201",
+    "nome": "Pinça para Biópsia Flexível Cistoscopia Pediatrica",
+    "descricao": "PINÇA PARA BIÓPSIA FLEXÍVEL CISTOSCOPIA PEDIATRICA MDTECH D=5,5FR, CM=260MM, BOCA TIPO CÔNCOVA - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2202",
+    "nome": "Pinça Serrilhada Flexível para Cistoscopia Pediatrica",
+    "descricao": "PINÇA SERRILHADA FLEXÍVEL PARA CISTOSCOPIA PEDIATRICA MDTECH D=5,5FR, CM =260MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2203",
+    "nome": "Pinça para Corpo Estranho Flexível para Cistoscopia Pediatrica",
+    "descricao": "PINÇA PARA CORPO ESTRANHO FLEXÍVEL PARA CISTOSCOPIA PEDIATRICA MDTECH D=5,5FR, CM= 260MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Cistoscopia pediátrica",
+    "familias": [
+      "Cistoscopia pediátrica"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A4001",
+    "nome": "Pinça para Litotripsia em Urologia",
+    "descricao": "PINÇA PARA LITOTRIPSIA EM UROLOGIA MDTECH D=24FR, PARA USO COM ENDOSCOPIO RIGIDO DE 70°, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Litotripsia para cálculo de bexiga",
+    "familias": [
+      "Litotripsia para cálculo de bexiga"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "24",
+    "comprimento": "",
+    "angulo": "70°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2131.1a",
+    "nome": "Trocarter de Cistostomia",
+    "descricao": "TROCARTER DE CISTOSTOMIA MDTECH D=20FR, COMPOSTO DE TROCARTER, CAMISA E FIXADOR, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Trocater de cistostomia",
+    "familias": [
+      "Trocater de cistostomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "20",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "A2131.1b",
+    "nome": "Trocarter de Cistostomia",
+    "descricao": "TROCARTER DE CISTOSTOMIA MDTECH D=16FR, COMPOSTO DE TROCARTER, CAMISA E FIXADOR, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Trocater de cistostomia",
+    "familias": [
+      "Trocater de cistostomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "16",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "A2131.1c",
+    "nome": "Trocarter de Cistostomia",
+    "descricao": "TROCARTER DE CISTOSTOMIA MDTECH D=18FR, COMPOSTO DE TROCARTER, CAMISA E FIXADOR, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Trocater de cistostomia",
+    "familias": [
+      "Trocater de cistostomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "18",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "A2131.1d",
+    "nome": "Trocarter de Cistostomia",
+    "descricao": "TROCARTER DE CISTOSTOMIA MDTECH D=22FR, COMPOSTO DE TROCARTER, CAMISA E FIXADOR, AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Trocater de cistostomia",
+    "familias": [
+      "Trocater de cistostomia"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "22",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290001",
+    "ncm": "90183999",
+    "foto": null
+  },
+  {
+    "codigo": "T4003",
+    "nome": "Evacuador de Hoffman",
+    "descricao": "EVACUADOR DE HOFFMAN MDTECH",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Evacuador de Hoffman",
+    "familias": [
+      "Evacuador de Hoffman"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568299001",
+    "ncm": "90183190",
+    "foto": null
+  },
+  {
+    "codigo": "T4002",
+    "nome": "Evacuador de Ellik",
+    "descricao": "EVACUADOR DE ELLIK MDTECH - PARA USO COM CAMISAS DE CISTO-URETRO-RESSECTOSCOPIA, CONSTITUIDO POR: BULBO, PERA DE BORRACHA E MANGUEIRA DE SILICONE",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Evacuador de Ellik",
+    "familias": [
+      "Evacuador de Ellik"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568299001",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "T1001.6",
+    "nome": "Adaptador de Evacuador de Ellik",
+    "descricao": "ADAPTADOR DE EVACUADOR DE ELLIK MDTECH - PARA USO COM CAMISAS DE CISTO-URETRO-RESSECTOSCOPIA",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia"
+    ],
+    "familia": "Adaptador de Ev. Ellik",
+    "familias": [
+      "Adaptador de Ev. Ellik"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "",
+    "anvisa": "82568299001",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A2145",
+    "nome": "Borracha tipo Carretel",
+    "descricao": "BORRACHA TIPO CARRETEL MDTECH PARA USO COM CAMISAS - AUTOCLAVAVEL (134°)",
+    "especialidade": "Urologia",
+    "especialidades": [
+      "Urologia",
+      "Histeroscopia"
+    ],
+    "familia": "Acessórios",
+    "familias": [
+      "Acessórios"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "A0222",
+    "nome": "Endoscópio Rígido",
+    "descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=30°, D=2.9MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO. Registro Anvisa: ........./NCM:......../ Peso........",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Endoscópios autoclaváveis",
+    "familias": [
+      "Endoscópios autoclaváveis"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "2,9",
+    "comprimento": "302",
+    "angulo": "30°",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189094",
+    "foto": null
+  },
+  {
+    "codigo": "F1116",
+    "nome": "Camisa Externa para Histeroscopia",
+    "descricao": "CAMISA EXTERNA PARA HISTEROSCOPIA MDTECH D=16,5FR, PARA USO COM CAMISA INTERNA E ENDOSCOPIO DE 2.9MM, AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "16,5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1117",
+    "nome": "Camisa Interna com Canal de Trabalho para Histeroscopia",
+    "descricao": "CAMISA INTERNA COM CANAL DE TRABALHO PARA HISTEROSCOPIA MDTECH PARA USO COM CAMISA EXTERNA REF.F1116 E ENDOSCOPIO RIGIDO DE 2.9MM, AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1104",
+    "nome": "Camisa Externa para Histeroscopia Diagnostica",
+    "descricao": "CAMISA EXTERNA PARA HISTEROSCOPIA DIAGNOSTICA MDTECH D=15FR PARA USO COM CAMISA INTERNA E ENDOSCOPIO DE 2.9MM, AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "15",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1105",
+    "nome": "Camisa Interna para Histeroscopia Diagnostica",
+    "descricao": "CAMISA INTERNA PARA HISTEROSCOPIA DIAGNOSTICA MDTECH D=11,7FRFR PARA USO COM CAMISA EXTERNA REF.F1104 E ENDOSCOPIO RIGIDO DE 2.9MM, AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "11,7",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1110.1",
+    "nome": "Pinça para Biópsia Rigida",
+    "descricao": "PINÇA PARA BIÓPSIA RIGIDA MDTECH D=5FR, C=340MM, BOCA TIPO CÔNCOVA - AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5",
+    "comprimento": "340",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1113.1",
+    "nome": "Tesoura Rigida",
+    "descricao": "TESOURA RIGIDA MDTECH D=5FR, C=340MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5",
+    "comprimento": "340",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1111.1",
+    "nome": "Pinça para Corpo Estranho Rigida",
+    "descricao": "PINÇA PARA CORPO ESTRANHO RIGIDA MDTECH D=5FR, CM= 340MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "F1111.4",
+    "nome": "Pinça Serrilhada Rigida",
+    "descricao": "PINÇA SERRILHADA RIGIDA MDTECH D=5FR, CM =340MM - AUTOCLAVAVEL (134°)",
+    "especialidade": "Histeroscopia",
+    "especialidades": [
+      "Histeroscopia"
+    ],
+    "familia": "Histeroscopia 2.9mm",
+    "familias": [
+      "Histeroscopia 2.9mm"
+    ],
+    "fornecedor": "TIAN SONG",
+    "diametro": "5",
+    "comprimento": "",
+    "angulo": "",
+    "autoclavavel": "Sim",
+    "anvisa": "82568290002",
+    "ncm": "90189099",
+    "foto": null
+  },
+  {
+    "codigo": "10-2023-00",
+    "nome": "Endoscópio Rígido 4K High Definition",
+    "descricao": "ENDOSCÓPIO RÍGIDO 4K HIGH DEFINITION MDTECH AV=30°, D=4MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Óticas HD-4K",
+    "especialidades": [
+      "Óticas HD-4K"
+    ],
+    "familia": "Endoscópios",
+    "familias": [
+      "Endoscópios"
+    ],
+    "fornecedor": "ASAP",
+    "diametro": "4",
+    "comprimento": "302",
+    "angulo": "30°",
+    "autoclavavel": "Sim",
+    "anvisa": "80088370038",
+    "ncm": "9018.90.94",
+    "foto": "fotos/10-2023-00.jpg"
+  },
+  {
+    "codigo": "10-0385-00",
+    "nome": "Endoscópio Rígido High Definition",
+    "descricao": "ENDOSCÓPIO RÍGIDO HIGH DEFINITION MDTECH AV=30°, D=2.9MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Óticas HD-4K",
+    "especialidades": [
+      "Óticas HD-4K"
+    ],
+    "familia": "Endoscópios",
+    "familias": [
+      "Endoscópios"
+    ],
+    "fornecedor": "ASAP",
+    "diametro": "2,9",
+    "comprimento": "302",
+    "angulo": "30°",
+    "autoclavavel": "Sim",
+    "anvisa": "80088370038",
+    "ncm": "9018.90.94",
+    "foto": "fotos/10-0385-00.jpg"
+  },
+  {
+    "codigo": "10-0393-00",
+    "nome": "Endoscópio Rígido High Definition",
+    "descricao": "ENDOSCÓPIO RÍGIDO HIGH DEFINITION MDTECH AV=12°, D=2.9MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Óticas HD-4K",
+    "especialidades": [
+      "Óticas HD-4K"
+    ],
+    "familia": "Endoscópios",
+    "familias": [
+      "Endoscópios"
+    ],
+    "fornecedor": "ASAP",
+    "diametro": "2,9",
+    "comprimento": "302",
+    "angulo": "12°",
+    "autoclavavel": "Sim",
+    "anvisa": "80088370038",
+    "ncm": "9018.90.94",
+    "foto": "fotos/10-0393-00.jpg"
+  },
+  {
+    "codigo": "10-2516-00",
+    "nome": "Endoscópio Rígido 4K High Definition",
+    "descricao": "ENDOSCÓPIO RÍGIDO 4K HIGH DEFINITION MDTECH AV=30°, D=10MM, C=310MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA DE SISTEMA ÓTICO COM LENTES EM FORMA DE BASTÃO, COM EXCELENTE RESULTADO EM CONTRASTE, BRILHO E RESOLUÇÃO.",
+    "especialidade": "Óticas HD-4K",
+    "especialidades": [
+      "Óticas HD-4K"
+    ],
+    "familia": "Endoscópios",
+    "familias": [
+      "Endoscópios"
+    ],
+    "fornecedor": "ASAP",
+    "diametro": "10",
+    "comprimento": "310",
+    "angulo": "30°",
+    "autoclavavel": "Sim",
+    "anvisa": "80088379006",
+    "ncm": "9018.90.94",
+    "foto": "fotos/10-2516-00.jpg"
+  }
+]

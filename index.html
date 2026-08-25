@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo MDTech — Instrumentais e óticas cirúrgicas</title>
+  <meta name="description" content="Catálogo de instrumentais cirúrgicos e óticas HD-4K MDTech: laparoscopia, urologia, histeroscopia. Busque por código ou nome e peça orçamento.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">MD<b>Tech</b><small>Tecnologia que abre caminhos</small></div>
+      <div class="busca">
+        <input id="busca" type="search" placeholder="Buscar por código ou nome (ex.: maryland, trocarter, A153)" aria-label="Buscar produtos">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="layout">
+      <aside class="side" id="filtros" aria-label="Filtros"></aside>
+      <section>
+        <div class="barra">
+          <div class="cont" id="cont"></div>
+          <div class="chips" id="chips"></div>
+        </div>
+        <div class="grade" id="grade"></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="bandeja" id="bandeja" aria-live="polite">
+    <div class="wrap">
+      <span class="qt" id="qt"></span>
+      <span class="cresc">Monte sua lista e peça o orçamento — sem compromisso.</span>
+      <button class="bt-ver" id="bt-limpar">Limpar lista</button>
+      <button class="bt-mail" id="bt-mail">Pedir por e-mail</button>
+      <button class="bt-wpp" id="bt-wpp">Pedir no WhatsApp</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/catalogo.js"></script>
+</body>
+</html>
