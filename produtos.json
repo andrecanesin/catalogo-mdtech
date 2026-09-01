@@ -257,7 +257,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A316.C.png"
   },
   {
     "codigo": "A263.C",
@@ -737,7 +737,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A149.2-2.jpg"
   },
   {
     "codigo": "A149.3-1",
@@ -777,7 +777,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A149.3-2.jpg"
   },
   {
     "codigo": "A149.5-1",
@@ -817,7 +817,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A149.5-2.jpg"
   },
   {
     "codigo": "A206",
@@ -877,7 +877,7 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": null
+    "foto": "fotos/A194-1.jpg"
   },
   {
     "codigo": "A194-2",
@@ -897,7 +897,7 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": null
+    "foto": "fotos/A194-2.jpg"
   },
   {
     "codigo": "A194-3",
@@ -917,7 +917,7 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": null
+    "foto": "fotos/A194-3.jpg"
   },
   {
     "codigo": "A194-4",
@@ -937,7 +937,7 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": null
+    "foto": "fotos/A194-4.jpg"
   },
   {
     "codigo": "A271",
@@ -1017,7 +1017,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A273.png"
   },
   {
     "codigo": "A275",
@@ -1037,7 +1037,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A275.png"
   },
   {
     "codigo": "A276",
@@ -1057,7 +1057,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A276.png"
   },
   {
     "codigo": "A277",
@@ -1077,7 +1077,7 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A277.png"
   },
   {
     "codigo": "A282",
@@ -1237,7 +1237,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A151.png"
   },
   {
     "codigo": "A204",
@@ -1297,7 +1297,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A207-4.png"
   },
   {
     "codigo": "A108",
@@ -1337,7 +1337,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A108-2.jpg"
   },
   {
     "codigo": "012-A",
@@ -1597,7 +1597,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A210.png"
   },
   {
     "codigo": "A207",
@@ -1617,7 +1617,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.95",
-    "foto": null
+    "foto": "fotos/A207.jpg"
   },
   {
     "codigo": "A207-2",
@@ -1637,7 +1637,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.95",
-    "foto": null
+    "foto": "fotos/A207-2.png"
   },
   {
     "codigo": "A207-3",
@@ -1677,7 +1677,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/814.png"
   },
   {
     "codigo": "E2016.64",
