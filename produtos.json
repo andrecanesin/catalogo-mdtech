@@ -1137,7 +1137,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A202.4-1.png"
   },
   {
     "codigo": "A203.4-1",
@@ -1157,7 +1157,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A203.4-1.png"
   },
   {
     "codigo": "A202-A.1-1",
@@ -1217,7 +1217,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": null
+    "foto": "fotos/A203-A.1-1.png"
   },
   {
     "codigo": "A151",
@@ -1357,7 +1357,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": null
+    "foto": "fotos/012-A.jpg"
   },
   {
     "codigo": "012-1-A",
@@ -1377,7 +1377,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": null
+    "foto": "fotos/012-1-A.jpg"
   },
   {
     "codigo": "012-2-A",
@@ -1397,7 +1397,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": null
+    "foto": "fotos/012-2-A.jpg"
   },
   {
     "codigo": "012-3-A",
@@ -1417,7 +1417,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": null
+    "foto": "fotos/012-3-A.jpg"
   },
   {
     "codigo": "A201",
@@ -1437,7 +1437,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": null
+    "foto": "fotos/A201.png"
   },
   {
     "codigo": "A201-1",
@@ -1477,7 +1477,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": null
+    "foto": "fotos/A201-2.png"
   },
   {
     "codigo": "A189",
@@ -1517,7 +1517,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": null
+    "foto": "fotos/A189-1.jpg"
   },
   {
     "codigo": "A189-2",
@@ -1537,7 +1537,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": null
+    "foto": "fotos/A189-2.jpg"
   },
   {
     "codigo": "A189-3",
@@ -1557,7 +1557,7 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": null
+    "foto": "fotos/A189-3.jpg"
   },
   {
     "codigo": "A193.C",
