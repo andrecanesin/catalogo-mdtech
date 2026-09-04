@@ -17,13 +17,15 @@ window.MDTECH = {
     "Óticas HD-4K":  "#F5A623"
   },
   // Catálogos em PDF disponíveis para download (botão "Baixar catálogos" no topo).
-  // Os arquivos devem estar em site/catalogos/. Deixe o array vazio para ocultar o botão.
+  // Os arquivos devem estar em site/catalogos/ (nomes = saída de
+  // `gerar.py catalogo --todos` + `gerar.py site`, prefixo "Miolo_" removido).
+  // Deixe o array vazio para ocultar o botão.
   catalogos: [
-    { nome: "Catálogo completo",   arquivo: "catalogos/Catalogo_Completo_MDTech.pdf",      completo: true },
+    { nome: "Catálogo completo",   arquivo: "catalogos/Catalogo_Completo_MDTech.pdf",        completo: true },
     { nome: "Laparoscopia",        arquivo: "catalogos/Catalogo_Laparoscopia_MDTech.pdf" },
     { nome: "Urologia",            arquivo: "catalogos/Catalogo_Urologia_MDTech.pdf" },
-    { nome: "Ginecologia",         arquivo: "catalogos/Catalogo_Ginecologia_MDTech.pdf" },
-    { nome: "Óticas HD-4K",        arquivo: "catalogos/Catalogo_Oticas_MDTech.pdf" }
+    { nome: "Histeroscopia",       arquivo: "catalogos/Catalogo_Histeroscopia_MDTech.pdf" },
+    { nome: "Óticas HD-4K",        arquivo: "catalogos/Catalogo_Oticas_HD-4K_MDTech.pdf" }
   ],
   // Quantidade de produtos por página na grade (mobile-friendly).
   produtosPorPagina: 20

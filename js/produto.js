@@ -23,14 +23,27 @@
   }
 
   // ---- zoom da foto (lightbox) ----
+  // Cria o próprio markup do lightbox via JS (não depende de nada estar
+  // pré-existente no produto.html — funciona mesmo se o HTML ficar desatualizado).
+  function garantirZoomDom() {
+    let bg = $("#zoom-bg");
+    if (bg) return bg;
+    bg = document.createElement("div");
+    bg.id = "zoom-bg"; bg.className = "zoom-bg"; bg.setAttribute("aria-hidden", "true");
+    bg.innerHTML = `<button class="zoom-x" id="zoom-x" aria-label="Fechar zoom">×</button>
+      <img id="zoom-img" alt="">`;
+    document.body.appendChild(bg);
+    return bg;
+  }
+
   function ligarZoom(src, alt) {
-    const bg = $("#zoom-bg"), img = $("#zoom-img");
-    if (!bg || !img) return;
-    const abrir = () => { img.src = src; img.alt = alt; bg.classList.add("on"); };
+    const bg = garantirZoomDom();
+    const img = bg.querySelector("#zoom-img"), botaoX = bg.querySelector("#zoom-x");
+    const abrir = (e) => { e.preventDefault(); img.src = src; img.alt = alt; bg.classList.add("on"); };
     const fechar = () => bg.classList.remove("on");
     document.querySelectorAll(".foto-g img.principal").forEach(el => el.addEventListener("click", abrir));
     bg.addEventListener("click", fechar);
-    $("#zoom-x").addEventListener("click", fechar);
+    botaoX.addEventListener("click", (e) => { e.stopPropagation(); fechar(); });
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
 
