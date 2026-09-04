@@ -18,7 +18,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A153.C.png"
+    "foto": "fotos/A153.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A215-2.C",
@@ -39,7 +40,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A215-2.C.png"
+    "foto": "fotos/A215-2.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A215.C",
@@ -60,7 +62,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A215.C.png"
+    "foto": "fotos/A215.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A213.C",
@@ -81,7 +84,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A213.C.png"
+    "foto": "fotos/A213.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A113.C",
@@ -102,7 +106,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A113.C.png"
+    "foto": "fotos/A113.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A111.C",
@@ -123,7 +128,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A111.C.png"
+    "foto": "fotos/A111.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A242.C",
@@ -144,7 +150,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A242.C.png"
+    "foto": "fotos/A242.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A264.C",
@@ -165,7 +172,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A264.C.png"
+    "foto": "fotos/A264.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A127.C",
@@ -186,7 +194,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A127.C.png"
+    "foto": "fotos/A127.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A325.C",
@@ -207,7 +216,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A325.C.png"
+    "foto": "fotos/A325.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A307.C",
@@ -228,7 +238,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A307.C.png"
+    "foto": "fotos/A307.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A318.C",
@@ -249,7 +260,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A318.C.png"
+    "foto": "fotos/A318.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A316.C",
@@ -270,7 +282,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A316.C.png"
+    "foto": "fotos/A316.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A263.C",
@@ -291,7 +304,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A263.C.png"
+    "foto": "fotos/A263.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A305.C",
@@ -312,7 +326,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A305.C.png"
+    "foto": "fotos/A305.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A142.C",
@@ -333,7 +348,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A142.C.png"
+    "foto": "fotos/A142.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A310.C",
@@ -354,7 +370,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A310.C.png"
+    "foto": "fotos/A310.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A143-4.C",
@@ -375,7 +392,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A143-4.C.png"
+    "foto": "fotos/A143-4.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A143-1.C",
@@ -396,7 +414,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A143-1.C.png"
+    "foto": "fotos/A143-1.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A126.C",
@@ -417,7 +436,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A126.C.png"
+    "foto": "fotos/A126.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A312.C",
@@ -438,7 +458,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A312.C.png"
+    "foto": "fotos/A312.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A307-1.C",
@@ -459,7 +480,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A307-1.C.png"
+    "foto": "fotos/A307-1.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A143-3.C",
@@ -480,7 +502,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A143-3.C.png"
+    "foto": "fotos/A143-3.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A300.C",
@@ -501,7 +524,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A300.C.png"
+    "foto": "fotos/A300.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A110.C",
@@ -522,7 +546,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A110.C.png"
+    "foto": "fotos/A110.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A313.C",
@@ -543,7 +568,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A313.C.png"
+    "foto": "fotos/A313.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A302.C",
@@ -564,7 +590,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A302.C.png"
+    "foto": "fotos/A302.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A299-3",
@@ -585,7 +612,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A299-3.png"
+    "foto": "fotos/A299-3.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A299",
@@ -606,7 +634,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A299.png"
+    "foto": "fotos/A299.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A407",
@@ -627,7 +656,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A407.png"
+    "foto": "fotos/A407.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A408",
@@ -648,7 +678,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A408.png"
+    "foto": "fotos/A408.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A216",
@@ -669,7 +700,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A216.png"
+    "foto": "fotos/A216.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A227.C",
@@ -690,7 +722,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A227.C.png"
+    "foto": "fotos/A227.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A118.C",
@@ -711,7 +744,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A118.C.png"
+    "foto": "fotos/A118.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A141.C",
@@ -732,7 +766,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A141.C.png"
+    "foto": "fotos/A141.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.2-1",
@@ -753,7 +788,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A149.2-1.png"
+    "foto": "fotos/A149.2-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.2-2",
@@ -774,7 +810,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A149.2-2.jpg"
+    "foto": "fotos/A149.2-2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.3-1",
@@ -795,7 +832,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A149.3-1.jpg"
+    "foto": "fotos/A149.3-1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.3-2",
@@ -816,7 +854,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A149.3-2.jpg"
+    "foto": "fotos/A149.3-2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.5-1",
@@ -837,7 +876,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A149.5-1.jpg"
+    "foto": "fotos/A149.5-1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.5-2",
@@ -858,7 +898,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A149.5-2.jpg"
+    "foto": "fotos/A149.5-2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A206",
@@ -879,7 +920,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": "fotos/A206.png"
+    "foto": "fotos/A206.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A145",
@@ -900,7 +942,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": "fotos/A145.png"
+    "foto": "fotos/A145.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-1",
@@ -921,7 +964,8 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": "fotos/A194-1.jpg"
+    "foto": "fotos/A194-1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-2",
@@ -942,7 +986,8 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": "fotos/A194-2.jpg"
+    "foto": "fotos/A194-2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-3",
@@ -963,7 +1008,8 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": "fotos/A194-3.jpg"
+    "foto": "fotos/A194-3.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-4",
@@ -984,7 +1030,8 @@
     "autoclavavel": "",
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
-    "foto": "fotos/A194-4.jpg"
+    "foto": "fotos/A194-4.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A271",
@@ -1005,7 +1052,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A271.png"
+    "foto": "fotos/A271.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A270",
@@ -1026,7 +1074,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A270.png"
+    "foto": "fotos/A270.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A272",
@@ -1047,7 +1096,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A272.png"
+    "foto": "fotos/A272.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A273",
@@ -1068,7 +1118,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A273.png"
+    "foto": "fotos/A273.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A275",
@@ -1089,7 +1140,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A275.png"
+    "foto": "fotos/A275.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A276",
@@ -1110,7 +1162,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A276.png"
+    "foto": "fotos/A276.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A277",
@@ -1131,7 +1184,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A277.png"
+    "foto": "fotos/A277.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A282",
@@ -1152,7 +1206,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A282.png"
+    "foto": "fotos/A282.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A284",
@@ -1173,7 +1228,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
-    "foto": "fotos/A284.png"
+    "foto": "fotos/A284.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A202.4-1",
@@ -1194,7 +1250,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A202.4-1.png"
+    "foto": "fotos/A202.4-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A203.4-1",
@@ -1215,7 +1272,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A203.4-1.png"
+    "foto": "fotos/A203.4-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A202-A.1-1",
@@ -1236,7 +1294,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A202-A.1-1.png"
+    "foto": "fotos/A202-A.1-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A219",
@@ -1257,7 +1316,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290003",
     "ncm": "9018.39.99",
-    "foto": "fotos/A219.png"
+    "foto": "fotos/A219.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A203-A.1-1",
@@ -1278,7 +1338,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A203-A.1-1.png"
+    "foto": "fotos/A203-A.1-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A151",
@@ -1299,7 +1360,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A151.png"
+    "foto": "fotos/A151.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A204",
@@ -1320,7 +1382,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A204.png"
+    "foto": "fotos/A204.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-4-1",
@@ -1341,7 +1404,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A207-4-1.png"
+    "foto": "fotos/A207-4-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-4",
@@ -1362,7 +1426,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A207-4.png"
+    "foto": "fotos/A207-4.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A108",
@@ -1383,7 +1448,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A108.png"
+    "foto": "fotos/A108.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A108-2",
@@ -1404,7 +1470,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A108-2.jpg"
+    "foto": "fotos/A108-2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "012-A",
@@ -1425,7 +1492,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": "fotos/012-A.jpg"
+    "foto": "fotos/012-A.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "012-1-A",
@@ -1446,7 +1514,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": "fotos/012-1-A.jpg"
+    "foto": "fotos/012-1-A.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "012-2-A",
@@ -1467,7 +1536,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": "fotos/012-2-A.jpg"
+    "foto": "fotos/012-2-A.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "012-3-A",
@@ -1488,7 +1558,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9001.10.20",
-    "foto": "fotos/012-3-A.jpg"
+    "foto": "fotos/012-3-A.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A201",
@@ -1509,7 +1580,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A201.png"
+    "foto": "fotos/A201.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A201-1",
@@ -1530,7 +1602,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A201-1.png"
+    "foto": "fotos/A201-1.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A201-2",
@@ -1551,7 +1624,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A201-2.png"
+    "foto": "fotos/A201-2.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A189",
@@ -1572,7 +1646,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A189.jpg"
+    "foto": "fotos/A189.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A189-1",
@@ -1593,7 +1668,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A189-1.jpg"
+    "foto": "fotos/A189-1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A189-2",
@@ -1614,7 +1690,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A189-2.jpg"
+    "foto": "fotos/A189-2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A189-3",
@@ -1635,7 +1712,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.39.10",
-    "foto": "fotos/A189-3.jpg"
+    "foto": "fotos/A189-3.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A193.C",
@@ -1656,7 +1734,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A193.C.png"
+    "foto": "fotos/A193.C.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A210",
@@ -1677,7 +1756,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/A210.png"
+    "foto": "fotos/A210.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A207",
@@ -1698,7 +1778,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.95",
-    "foto": "fotos/A207.jpg"
+    "foto": "fotos/A207.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-2",
@@ -1719,7 +1800,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.95",
-    "foto": "fotos/A207-2.png"
+    "foto": "fotos/A207-2.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-3",
@@ -1740,7 +1822,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.95",
-    "foto": "fotos/A207-3.png"
+    "foto": "fotos/A207-3.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "814",
@@ -1761,7 +1844,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "9018.90.99",
-    "foto": "fotos/814.png"
+    "foto": "fotos/814.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.64",
@@ -1782,7 +1866,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/E2016.64.jpg"
+    "foto": "fotos/E2016.64.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.65",
@@ -1803,7 +1888,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/E2016.65.jpg"
+    "foto": "fotos/E2016.65.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.73",
@@ -1824,7 +1910,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/E2016.73.jpg"
+    "foto": "fotos/E2016.73.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.74",
@@ -1845,7 +1932,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/E2016.74.jpg"
+    "foto": "fotos/E2016.74.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "E2017.8",
@@ -1866,7 +1954,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/E2017.8.jpg"
+    "foto": "fotos/E2017.8.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0320",
@@ -1888,7 +1977,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0320.jpg"
+    "foto": "fotos/A0320.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0322",
@@ -1910,7 +2000,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0322.jpg"
+    "foto": "fotos/A0322.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0323",
@@ -1932,7 +2023,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0323.jpg"
+    "foto": "fotos/A0323.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0011.3",
@@ -1954,7 +2046,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0011.3.jpg"
+    "foto": "fotos/A0011.3.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1101.1",
@@ -1975,7 +2068,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1101.1.jpg"
+    "foto": "fotos/A1101.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1102.1",
@@ -1996,7 +2090,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1102.1.jpg"
+    "foto": "fotos/A1102.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1103.1",
@@ -2017,7 +2112,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1103.1.jpg"
+    "foto": "fotos/A1103.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1104.1",
@@ -2038,7 +2134,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1104.1.jpg"
+    "foto": "fotos/A1104.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1105.1",
@@ -2059,7 +2156,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1105.1.jpg"
+    "foto": "fotos/A1105.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1106.1",
@@ -2080,7 +2178,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1106.1.jpg"
+    "foto": "fotos/A1106.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1106.2",
@@ -2101,7 +2200,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1106.2.jpg"
+    "foto": "fotos/A1106.2.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2101",
@@ -2122,7 +2222,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/A2101.jpg"
+    "foto": "fotos/A2101.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2102",
@@ -2143,7 +2244,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/A2102.jpg"
+    "foto": "fotos/A2102.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2103",
@@ -2164,7 +2266,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/A2103.jpg"
+    "foto": "fotos/A2103.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3101",
@@ -2185,7 +2288,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568299001",
     "ncm": "90189099",
-    "foto": "fotos/A3101.jpg"
+    "foto": "fotos/A3101.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3102",
@@ -2206,7 +2310,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3102.jpg"
+    "foto": "fotos/A3102.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3104",
@@ -2227,7 +2332,8 @@
     "autoclavavel": "",
     "anvisa": "82568299001",
     "ncm": "90189099",
-    "foto": "fotos/A3104.jpg"
+    "foto": "fotos/A3104.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "T1001",
@@ -2250,7 +2356,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/T1001.jpg"
+    "foto": "fotos/T1001.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "T1009.1",
@@ -2273,7 +2380,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/T1009.1.jpg"
+    "foto": "fotos/T1009.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3160.4S",
@@ -2295,7 +2403,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3160.4S.jpg"
+    "foto": "fotos/A3160.4S.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3163.3S",
@@ -2317,7 +2426,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3163.3S.jpg"
+    "foto": "fotos/A3163.3S.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3165.3S",
@@ -2339,7 +2449,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3165.3S.jpg"
+    "foto": "fotos/A3165.3S.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "1.3-DS-24",
@@ -2361,7 +2472,8 @@
     "autoclavavel": "",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/1.3-DS-24.jpg"
+    "foto": "fotos/1.3-DS-24.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "4-DS-24",
@@ -2383,7 +2495,8 @@
     "autoclavavel": "",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/4-DS-24.jpg"
+    "foto": "fotos/4-DS-24.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "5-DS-24",
@@ -2405,7 +2518,8 @@
     "autoclavavel": "",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/5-DS-24.jpg"
+    "foto": "fotos/5-DS-24.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "3.1-DS-24",
@@ -2427,7 +2541,8 @@
     "autoclavavel": "",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/3.1-DS-24.jpg"
+    "foto": "fotos/3.1-DS-24.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "M1015",
@@ -2449,7 +2564,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/M1015.jpg"
+    "foto": "fotos/M1015.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3160.4SS",
@@ -2471,7 +2587,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3160.4SS.jpg"
+    "foto": "fotos/A3160.4SS.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3163.3SS",
@@ -2493,7 +2610,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3163.3SS.jpg"
+    "foto": "fotos/A3163.3SS.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3165.3SS",
@@ -2515,7 +2633,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3165.3SS.jpg"
+    "foto": "fotos/A3165.3SS.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A3131",
@@ -2537,7 +2656,8 @@
     "autoclavavel": "",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A3131.jpg"
+    "foto": "fotos/A3131.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "M1026",
@@ -2559,7 +2679,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/M1026.jpg"
+    "foto": "fotos/M1026.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0210.1",
@@ -2580,7 +2701,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0210.1.jpg"
+    "foto": "fotos/A0210.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0211.1",
@@ -2601,7 +2723,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0211.1.jpg"
+    "foto": "fotos/A0211.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1201",
@@ -2622,7 +2745,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1201.jpg"
+    "foto": "fotos/A1201.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1202",
@@ -2643,7 +2767,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1202.jpg"
+    "foto": "fotos/A1202.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1203",
@@ -2664,7 +2789,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1203.jpg"
+    "foto": "fotos/A1203.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A1204",
@@ -2685,7 +2811,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A1204.jpg"
+    "foto": "fotos/A1204.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2201",
@@ -2706,7 +2833,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/A2201.jpg"
+    "foto": "fotos/A2201.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2202",
@@ -2727,7 +2855,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/A2202.jpg"
+    "foto": "fotos/A2202.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2203",
@@ -2748,7 +2877,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/A2203.jpg"
+    "foto": "fotos/A2203.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A4001",
@@ -2769,7 +2899,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A4001.jpg"
+    "foto": "fotos/A4001.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1a",
@@ -2790,7 +2921,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/A2131.1a.jpg"
+    "foto": "fotos/A2131.1a.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1b",
@@ -2811,7 +2943,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/A2131.1b.jpg"
+    "foto": "fotos/A2131.1b.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1c",
@@ -2832,7 +2965,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/A2131.1c.jpg"
+    "foto": "fotos/A2131.1c.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1d",
@@ -2853,7 +2987,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290001",
     "ncm": "90183999",
-    "foto": "fotos/A2131.1d.jpg"
+    "foto": "fotos/A2131.1d.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "T4003",
@@ -2874,7 +3009,8 @@
     "autoclavavel": "",
     "anvisa": "82568299001",
     "ncm": "90183190",
-    "foto": "fotos/T4003.jpg"
+    "foto": "fotos/T4003.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "T4002",
@@ -2895,7 +3031,8 @@
     "autoclavavel": "",
     "anvisa": "82568299001",
     "ncm": "90189099",
-    "foto": "fotos/T4002.jpg"
+    "foto": "fotos/T4002.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "T1001.6",
@@ -2916,7 +3053,8 @@
     "autoclavavel": "",
     "anvisa": "82568299001",
     "ncm": "90189099",
-    "foto": "fotos/T1001.6.jpg"
+    "foto": "fotos/T1001.6.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A2145",
@@ -2938,7 +3076,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/A2145.jpg"
+    "foto": "fotos/A2145.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "A0222",
@@ -2959,7 +3098,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189094",
-    "foto": "fotos/A0222.png"
+    "foto": "fotos/A0222.png",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1116",
@@ -2980,7 +3120,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/F1116.jpg"
+    "foto": "fotos/F1116.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1117",
@@ -3001,7 +3142,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/F1117.jpg"
+    "foto": "fotos/F1117.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1104",
@@ -3022,7 +3164,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/F1104.jpg"
+    "foto": "fotos/F1104.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1105",
@@ -3043,7 +3186,8 @@
     "autoclavavel": "Sim",
     "anvisa": "",
     "ncm": "90189099",
-    "foto": "fotos/F1105.jpg"
+    "foto": "fotos/F1105.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1110.1",
@@ -3064,7 +3208,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/F1110.1.jpg"
+    "foto": "fotos/F1110.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1113.1",
@@ -3085,7 +3230,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/F1113.1.jpg"
+    "foto": "fotos/F1113.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1111.1",
@@ -3106,7 +3252,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/F1111.1.jpg"
+    "foto": "fotos/F1111.1.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "F1111.4",
@@ -3127,7 +3274,8 @@
     "autoclavavel": "Sim",
     "anvisa": "82568290002",
     "ncm": "90189099",
-    "foto": "fotos/F1111.4.jpg"
+    "foto": "fotos/F1111.4.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "10-2023-00",
@@ -3148,7 +3296,8 @@
     "autoclavavel": "Sim",
     "anvisa": "80088370038",
     "ncm": "9018.90.94",
-    "foto": "fotos/10-2023-00.jpg"
+    "foto": "fotos/10-2023-00.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "10-0385-00",
@@ -3169,7 +3318,8 @@
     "autoclavavel": "Sim",
     "anvisa": "80088370038",
     "ncm": "9018.90.94",
-    "foto": "fotos/10-0385-00.jpg"
+    "foto": "fotos/10-0385-00.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "10-0393-00",
@@ -3190,7 +3340,8 @@
     "autoclavavel": "Sim",
     "anvisa": "80088370038",
     "ncm": "9018.90.94",
-    "foto": "fotos/10-0393-00.jpg"
+    "foto": "fotos/10-0393-00.jpg",
+    "ficha_pdf": null
   },
   {
     "codigo": "10-2516-00",
@@ -3211,6 +3362,7 @@
     "autoclavavel": "Sim",
     "anvisa": "80088379006",
     "ncm": "9018.90.94",
-    "foto": "fotos/10-2516-00.jpg"
+    "foto": "fotos/10-2516-00.jpg",
+    "ficha_pdf": null
   }
 ]

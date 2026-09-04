@@ -22,8 +22,19 @@
         <input id="busca" type="search" placeholder="Buscar por código ou nome (ex.: maryland, trocarter, A153)" aria-label="Buscar produtos">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </div>
+      <button class="btn-catalogos" id="btn-catalogos" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+        Baixar catálogos
+      </button>
     </div>
   </header>
+
+  <div class="menu-catalogos" id="menu-catalogos" role="menu"></div>
+  <div class="backdrop" id="backdrop-catalogos"></div>
+
+  <div class="faixa-ajuda wrap">
+    Monte sua lista e peça um orçamento sem compromisso — clique em <b>“+ Adicionar na lista”</b> nos itens que interessam.
+  </div>
 
   <main class="wrap">
     <div class="layout">
@@ -38,6 +49,7 @@
           <div class="chips" id="chips"></div>
         </div>
         <div class="grade" id="grade"></div>
+        <div class="paginacao" id="paginacao"></div>
       </section>
     </div>
   </main>
@@ -47,7 +59,7 @@
   <div class="bandeja" id="bandeja" aria-live="polite">
     <div class="wrap">
       <span class="qt" id="qt"></span>
-      <span class="cresc">Monte sua lista e peça o orçamento — sem compromisso.</span>
+      <span class="cresc">Monte sua lista e peça um orçamento — sem compromisso.</span>
       <button class="bt-ver" id="bt-limpar">Limpar lista</button>
       <button class="bt-mail" id="bt-mail">Pedir por e-mail</button>
       <button class="bt-wpp" id="bt-wpp">Pedir no WhatsApp</button>

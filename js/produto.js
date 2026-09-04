@@ -7,9 +7,31 @@
   const miss = '<span class="miss">—</span>';
   const v = x => (x != null && String(x).trim() !== "") ? String(x) : miss;
 
+  // Diâmetro: usa diametro_fmt (já vem pronto "16,5 Fr" ou "5 mm" do site.py);
+  // se o produtos.json ainda for antigo (sem diametro_fmt), cai pro comportamento
+  // anterior (mm) e por último tenta diametro_fr, senão mostra "—".
+  function fmtDiametro(p) {
+    if (p.diametro_fmt && String(p.diametro_fmt).trim() !== "") return p.diametro_fmt;
+    if (p.diametro && String(p.diametro).trim() !== "") return p.diametro + " mm";
+    if (p.diametro_fr && String(p.diametro_fr).trim() !== "") return p.diametro_fr + " Fr";
+    return null;
+  }
+
   function normEq(a, b) {
     const n = s => (s || "").toUpperCase().replace(/\s|\.C$/g, "").replace(/\.$/, "");
     return n(a) === n(b);
+  }
+
+  // ---- zoom da foto (lightbox) ----
+  function ligarZoom(src, alt) {
+    const bg = $("#zoom-bg"), img = $("#zoom-img");
+    if (!bg || !img) return;
+    const abrir = () => { img.src = src; img.alt = alt; bg.classList.add("on"); };
+    const fechar = () => bg.classList.remove("on");
+    document.querySelectorAll(".foto-g img.principal").forEach(el => el.addEventListener("click", abrir));
+    bg.addEventListener("click", fechar);
+    $("#zoom-x").addEventListener("click", fechar);
+    document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
 
   async function iniciar() {
@@ -28,9 +50,13 @@
     document.title = `${p.codigo} — ${p.nome} · MDTech`;
     const cor = MD.corEsp(p.especialidade);
 
-    // foto
+    // foto (com zoom + selo de ângulo)
     const foto = p.foto
-      ? `<div class="foto-g"><img src="${p.foto}" alt="${p.nome}"></div>`
+      ? `<div class="foto-g">
+           <img class="principal" src="${p.foto}" alt="${p.nome}">
+           <span class="zoom-hint">🔍 Ampliar</span>
+           ${MD.seloAngulo(p.angulo, p.familia)}
+         </div>`
       : `<div class="foto-g sem"><span class="t">sem foto</span><span class="mono" style="color:var(--mut)">${p.codigo}</span></div>`;
 
     // especialidades (cross-listing) como tags
@@ -40,6 +66,7 @@
 
     const anvisaMiss = !(p.anvisa && p.anvisa.trim());
     const ncmMiss = !(p.ncm && p.ncm.trim());
+    const diametroTxt = fmtDiametro(p);
 
     $("#alvo").innerHTML = `
       <a class="voltar" href="index.html">← Voltar ao catálogo</a>
@@ -51,7 +78,7 @@
           <div class="cod-g mono" style="color:${cor}">${p.codigo}</div>
           <table class="tabela">
             <tr><td class="k">Família</td><td class="v">${v(p.familia)}</td></tr>
-            <tr><td class="k">Diâmetro (Ø)</td><td class="v">${p.diametro ? p.diametro + " mm" : miss}</td></tr>
+            <tr><td class="k">Diâmetro (Ø)</td><td class="v">${diametroTxt ? diametroTxt : miss}</td></tr>
             <tr><td class="k">Comprimento útil</td><td class="v">${p.comprimento ? p.comprimento + " mm" : miss}</td></tr>
             <tr><td class="k">Ângulo</td><td class="v">${v(p.angulo)}</td></tr>
             <tr><td class="k">Autoclavável</td><td class="v">${v(p.autoclavavel)}</td></tr>
@@ -72,13 +99,22 @@
     const acoes = $("#acoes");
     const add = document.createElement("button");
     add.className = "b-add" + (MD.tem(p.codigo) ? " in" : "");
-    add.textContent = MD.tem(p.codigo) ? "✓ Na lista de orçamento" : "+ Adicionar ao orçamento";
+    add.textContent = MD.tem(p.codigo) ? "✓ Na lista" : "+ Adicionar na lista";
     add.addEventListener("click", () => {
       const dentro = MD.alternar(p.codigo);
       add.classList.toggle("in", dentro);
-      add.textContent = dentro ? "✓ Na lista de orçamento" : "+ Adicionar ao orçamento";
+      add.textContent = dentro ? "✓ Na lista" : "+ Adicionar na lista";
     });
     acoes.appendChild(add);
+
+    // ficha técnica em PDF (gerada por `python gerar.py fichas --separados`
+    // e copiada para site/fichas/<codigo>.pdf pelo gerar.py site)
+    if (p.ficha_pdf) {
+      const bf = document.createElement("a");
+      bf.className = "b-ficha"; bf.href = p.ficha_pdf; bf.download = "";
+      bf.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg> Baixar ficha técnica (PDF)`;
+      acoes.appendChild(bf);
+    }
 
     const wpp = MD.linkWhatsApp(produtos);
     if (wpp && (MD.cfg.contato && MD.cfg.contato.whatsapp)) {
@@ -90,6 +126,8 @@
       });
       acoes.appendChild(b);
     }
+
+    if (p.foto) ligarZoom(p.foto, p.nome);
   }
 
   document.addEventListener("DOMContentLoaded", iniciar);
