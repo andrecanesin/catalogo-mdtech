@@ -1,7 +1,7 @@
 {
   "total": 152,
-  "com_foto": 146,
-  "sem_foto": 6,
+  "com_foto": 152,
+  "sem_foto": 0,
   "especialidades": [
     "Histeroscopia",
     "Laparoscopia",
@@ -36,5 +36,10 @@
     "Tesouras",
     "Trocater de cistostomia",
     "Trocateres"
+  ],
+  "fornecedores": [
+    "ASAP",
+    "TIAN SONG",
+    "TONGLU"
   ]
 }
