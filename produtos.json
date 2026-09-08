@@ -19,7 +19,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A153.C.png",
-    "ficha_pdf": "fichas/A153.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A215-2.C",
@@ -41,7 +41,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A215-2.C.png",
-    "ficha_pdf": "fichas/A215-2.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A215.C",
@@ -63,7 +63,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A215.C.png",
-    "ficha_pdf": "fichas/A215.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A213.C",
@@ -85,7 +85,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A213.C.png",
-    "ficha_pdf": "fichas/A213.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A113.C",
@@ -107,7 +107,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A113.C.png",
-    "ficha_pdf": "fichas/A113.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A111.C",
@@ -129,7 +129,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A111.C.png",
-    "ficha_pdf": "fichas/A111.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A242.C",
@@ -151,7 +151,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A242.C.png",
-    "ficha_pdf": "fichas/A242.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A264.C",
@@ -173,7 +173,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A264.C.png",
-    "ficha_pdf": "fichas/A264.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A127.C",
@@ -195,7 +195,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A127.C.png",
-    "ficha_pdf": "fichas/A127.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A325.C",
@@ -217,7 +217,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A325.C.png",
-    "ficha_pdf": "fichas/A325.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A307.C",
@@ -239,7 +239,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A307.C.png",
-    "ficha_pdf": "fichas/A307.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A318.C",
@@ -261,7 +261,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A318.C.png",
-    "ficha_pdf": "fichas/A318.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A316.C",
@@ -283,7 +283,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A316.C.png",
-    "ficha_pdf": "fichas/A316.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A263.C",
@@ -305,7 +305,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A263.C.png",
-    "ficha_pdf": "fichas/A263.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A305.C",
@@ -327,7 +327,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A305.C.png",
-    "ficha_pdf": "fichas/A305.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A142.C",
@@ -349,7 +349,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A142.C.png",
-    "ficha_pdf": "fichas/A142.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A310.C",
@@ -371,7 +371,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A310.C.png",
-    "ficha_pdf": "fichas/A310.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A143-4.C",
@@ -393,7 +393,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A143-4.C.png",
-    "ficha_pdf": "fichas/A143-4.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A143-1.C",
@@ -415,7 +415,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A143-1.C.png",
-    "ficha_pdf": "fichas/A143-1.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A126.C",
@@ -437,7 +437,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A126.C.png",
-    "ficha_pdf": "fichas/A126.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A312.C",
@@ -459,7 +459,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A312.C.png",
-    "ficha_pdf": "fichas/A312.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A307-1.C",
@@ -481,7 +481,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A307-1.C.png",
-    "ficha_pdf": "fichas/A307-1.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A143-3.C",
@@ -503,7 +503,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A143-3.C.png",
-    "ficha_pdf": "fichas/A143-3.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A300.C",
@@ -525,7 +525,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A300.C.png",
-    "ficha_pdf": "fichas/A300.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A110.C",
@@ -547,7 +547,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A110.C.png",
-    "ficha_pdf": "fichas/A110.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A313.C",
@@ -569,7 +569,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A313.C.png",
-    "ficha_pdf": "fichas/A313.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A302.C",
@@ -591,7 +591,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A302.C.png",
-    "ficha_pdf": "fichas/A302.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A299-3",
@@ -613,7 +613,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A299-3.png",
-    "ficha_pdf": "fichas/A299-3.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A299",
@@ -635,7 +635,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A299.png",
-    "ficha_pdf": "fichas/A299.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A407",
@@ -657,7 +657,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A407.png",
-    "ficha_pdf": "fichas/A407.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A408",
@@ -679,7 +679,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A408.png",
-    "ficha_pdf": "fichas/A408.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A216",
@@ -701,7 +701,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A216.png",
-    "ficha_pdf": "fichas/A216.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A227.C",
@@ -723,7 +723,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A227.C.png",
-    "ficha_pdf": "fichas/A227.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A118.C",
@@ -745,7 +745,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A118.C.png",
-    "ficha_pdf": "fichas/A118.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A141.C",
@@ -767,7 +767,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A141.C.png",
-    "ficha_pdf": "fichas/A141.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.2-1",
@@ -789,7 +789,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A149.2-1.png",
-    "ficha_pdf": "fichas/A149.2-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.2-2",
@@ -811,7 +811,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A149.2-2.jpg",
-    "ficha_pdf": "fichas/A149.2-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.3-1",
@@ -833,7 +833,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A149.3-1.jpg",
-    "ficha_pdf": "fichas/A149.3-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.3-2",
@@ -855,7 +855,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A149.3-2.jpg",
-    "ficha_pdf": "fichas/A149.3-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.5-1",
@@ -877,7 +877,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A149.5-1.jpg",
-    "ficha_pdf": "fichas/A149.5-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A149.5-2",
@@ -899,7 +899,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A149.5-2.jpg",
-    "ficha_pdf": "fichas/A149.5-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A206",
@@ -921,7 +921,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
     "foto": "fotos/A206.png",
-    "ficha_pdf": "fichas/A206.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A145",
@@ -943,7 +943,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
     "foto": "fotos/A145.png",
-    "ficha_pdf": "fichas/A145.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-1",
@@ -965,7 +965,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
     "foto": "fotos/A194-1.jpg",
-    "ficha_pdf": "fichas/A194-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-2",
@@ -987,7 +987,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
     "foto": "fotos/A194-2.jpg",
-    "ficha_pdf": "fichas/A194-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-3",
@@ -1009,7 +1009,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
     "foto": "fotos/A194-3.jpg",
-    "ficha_pdf": "fichas/A194-3.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A194-4",
@@ -1031,7 +1031,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.95",
     "foto": "fotos/A194-4.jpg",
-    "ficha_pdf": "fichas/A194-4.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A271",
@@ -1053,7 +1053,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A271.png",
-    "ficha_pdf": "fichas/A271.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A270",
@@ -1075,7 +1075,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A270.png",
-    "ficha_pdf": "fichas/A270.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A272",
@@ -1097,7 +1097,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A272.png",
-    "ficha_pdf": "fichas/A272.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A273",
@@ -1119,7 +1119,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A273.png",
-    "ficha_pdf": "fichas/A273.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A275",
@@ -1141,7 +1141,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A275.png",
-    "ficha_pdf": "fichas/A275.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A276",
@@ -1163,7 +1163,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A276.png",
-    "ficha_pdf": "fichas/A276.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A277",
@@ -1185,7 +1185,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A277.png",
-    "ficha_pdf": "fichas/A277.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A282",
@@ -1207,7 +1207,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A282.png",
-    "ficha_pdf": "fichas/A282.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A284",
@@ -1229,7 +1229,7 @@
     "anvisa": "82568290004",
     "ncm": "9018.90.99",
     "foto": "fotos/A284.png",
-    "ficha_pdf": "fichas/A284.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A202.4-1",
@@ -1251,7 +1251,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A202.4-1.png",
-    "ficha_pdf": "fichas/A202.4-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A203.4-1",
@@ -1273,7 +1273,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A203.4-1.png",
-    "ficha_pdf": "fichas/A203.4-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A202-A.1-1",
@@ -1295,7 +1295,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A202-A.1-1.png",
-    "ficha_pdf": "fichas/A202-A.1-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A219",
@@ -1317,7 +1317,7 @@
     "anvisa": "82568290003",
     "ncm": "9018.39.99",
     "foto": "fotos/A219.png",
-    "ficha_pdf": "fichas/A219.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A203-A.1-1",
@@ -1339,7 +1339,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A203-A.1-1.png",
-    "ficha_pdf": "fichas/A203-A.1-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A151",
@@ -1361,7 +1361,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A151.png",
-    "ficha_pdf": "fichas/A151.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A204",
@@ -1383,7 +1383,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A204.png",
-    "ficha_pdf": "fichas/A204.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-4-1",
@@ -1405,7 +1405,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A207-4-1.png",
-    "ficha_pdf": "fichas/A207-4-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-4",
@@ -1427,7 +1427,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A207-4.png",
-    "ficha_pdf": "fichas/A207-4.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A108",
@@ -1449,7 +1449,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A108.png",
-    "ficha_pdf": "fichas/A108.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A108-2",
@@ -1471,7 +1471,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A108-2.jpg",
-    "ficha_pdf": "fichas/A108-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "012-A",
@@ -1493,7 +1493,7 @@
     "anvisa": "",
     "ncm": "9001.10.20",
     "foto": "fotos/012-A.jpg",
-    "ficha_pdf": "fichas/012-A.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "012-1-A",
@@ -1515,7 +1515,7 @@
     "anvisa": "",
     "ncm": "9001.10.20",
     "foto": "fotos/012-1-A.jpg",
-    "ficha_pdf": "fichas/012-1-A.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "012-2-A",
@@ -1537,7 +1537,7 @@
     "anvisa": "",
     "ncm": "9001.10.20",
     "foto": "fotos/012-2-A.jpg",
-    "ficha_pdf": "fichas/012-2-A.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "012-3-A",
@@ -1559,7 +1559,7 @@
     "anvisa": "",
     "ncm": "9001.10.20",
     "foto": "fotos/012-3-A.jpg",
-    "ficha_pdf": "fichas/012-3-A.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A201",
@@ -1581,7 +1581,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A201.png",
-    "ficha_pdf": "fichas/A201.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A201-1",
@@ -1603,7 +1603,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A201-1.png",
-    "ficha_pdf": "fichas/A201-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A201-2",
@@ -1625,7 +1625,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A201-2.png",
-    "ficha_pdf": "fichas/A201-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A189",
@@ -1647,7 +1647,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A189.jpg",
-    "ficha_pdf": "fichas/A189.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A189-1",
@@ -1669,7 +1669,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A189-1.jpg",
-    "ficha_pdf": "fichas/A189-1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A189-2",
@@ -1691,7 +1691,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A189-2.jpg",
-    "ficha_pdf": "fichas/A189-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A189-3",
@@ -1713,7 +1713,7 @@
     "anvisa": "",
     "ncm": "9018.39.10",
     "foto": "fotos/A189-3.jpg",
-    "ficha_pdf": "fichas/A189-3.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A193.C",
@@ -1735,7 +1735,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A193.C.png",
-    "ficha_pdf": "fichas/A193.C.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A210",
@@ -1757,7 +1757,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/A210.png",
-    "ficha_pdf": "fichas/A210.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A207",
@@ -1779,7 +1779,7 @@
     "anvisa": "",
     "ncm": "9018.90.95",
     "foto": "fotos/A207.jpg",
-    "ficha_pdf": "fichas/A207.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-2",
@@ -1801,7 +1801,7 @@
     "anvisa": "",
     "ncm": "9018.90.95",
     "foto": "fotos/A207-2.png",
-    "ficha_pdf": "fichas/A207-2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A207-3",
@@ -1823,7 +1823,7 @@
     "anvisa": "",
     "ncm": "9018.90.95",
     "foto": "fotos/A207-3.png",
-    "ficha_pdf": "fichas/A207-3.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "814",
@@ -1845,7 +1845,7 @@
     "anvisa": "",
     "ncm": "9018.90.99",
     "foto": "fotos/814.png",
-    "ficha_pdf": "fichas/814.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.64",
@@ -1867,7 +1867,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/E2016.64.jpg",
-    "ficha_pdf": "fichas/E2016.64.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.65",
@@ -1889,7 +1889,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/E2016.65.jpg",
-    "ficha_pdf": "fichas/E2016.65.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.73",
@@ -1911,7 +1911,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/E2016.73.jpg",
-    "ficha_pdf": "fichas/E2016.73.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "E2016.74",
@@ -1933,7 +1933,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/E2016.74.jpg",
-    "ficha_pdf": "fichas/E2016.74.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "E2017.8",
@@ -1955,7 +1955,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/E2017.8.jpg",
-    "ficha_pdf": "fichas/E2017.8.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0320",
@@ -1978,7 +1978,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0320.jpg",
-    "ficha_pdf": "fichas/A0320.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0322",
@@ -2001,7 +2001,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0322.jpg",
-    "ficha_pdf": "fichas/A0322.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0323",
@@ -2024,7 +2024,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0323.jpg",
-    "ficha_pdf": "fichas/A0323.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0011.3",
@@ -2047,7 +2047,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0011.3.jpg",
-    "ficha_pdf": "fichas/A0011.3.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1101.1",
@@ -2069,7 +2069,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1101.1.jpg",
-    "ficha_pdf": "fichas/A1101.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1102.1",
@@ -2091,7 +2091,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1102.1.jpg",
-    "ficha_pdf": "fichas/A1102.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1103.1",
@@ -2113,7 +2113,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1103.1.jpg",
-    "ficha_pdf": "fichas/A1103.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1104.1",
@@ -2135,7 +2135,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1104.1.jpg",
-    "ficha_pdf": "fichas/A1104.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1105.1",
@@ -2157,7 +2157,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1105.1.jpg",
-    "ficha_pdf": "fichas/A1105.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1106.1",
@@ -2179,7 +2179,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1106.1.jpg",
-    "ficha_pdf": "fichas/A1106.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1106.2",
@@ -2201,7 +2201,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1106.2.jpg",
-    "ficha_pdf": "fichas/A1106.2.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2101",
@@ -2223,7 +2223,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/A2101.jpg",
-    "ficha_pdf": "fichas/A2101.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2102",
@@ -2245,7 +2245,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/A2102.jpg",
-    "ficha_pdf": "fichas/A2102.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2103",
@@ -2267,7 +2267,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/A2103.jpg",
-    "ficha_pdf": "fichas/A2103.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3101",
@@ -2289,7 +2289,7 @@
     "anvisa": "82568299001",
     "ncm": "90189099",
     "foto": "fotos/A3101.jpg",
-    "ficha_pdf": "fichas/A3101.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3102",
@@ -2311,7 +2311,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3102.jpg",
-    "ficha_pdf": "fichas/A3102.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3104",
@@ -2333,7 +2333,7 @@
     "anvisa": "82568299001",
     "ncm": "90189099",
     "foto": "fotos/A3104.jpg",
-    "ficha_pdf": "fichas/A3104.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "T1001",
@@ -2357,7 +2357,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/T1001.jpg",
-    "ficha_pdf": "fichas/T1001.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "T1009.1",
@@ -2381,7 +2381,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/T1009.1.jpg",
-    "ficha_pdf": "fichas/T1009.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3160.4S",
@@ -2404,7 +2404,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3160.4S.jpg",
-    "ficha_pdf": "fichas/A3160.4S.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3163.3S",
@@ -2427,7 +2427,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3163.3S.jpg",
-    "ficha_pdf": "fichas/A3163.3S.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3165.3S",
@@ -2450,7 +2450,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3165.3S.jpg",
-    "ficha_pdf": "fichas/A3165.3S.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "1.3-DS-24",
@@ -2473,7 +2473,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/1.3-DS-24.jpg",
-    "ficha_pdf": "fichas/1.3-DS-24.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "4-DS-24",
@@ -2496,7 +2496,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/4-DS-24.jpg",
-    "ficha_pdf": "fichas/4-DS-24.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "5-DS-24",
@@ -2519,7 +2519,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/5-DS-24.jpg",
-    "ficha_pdf": "fichas/5-DS-24.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "3.1-DS-24",
@@ -2542,7 +2542,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/3.1-DS-24.jpg",
-    "ficha_pdf": "fichas/3.1-DS-24.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "M1015",
@@ -2565,7 +2565,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/M1015.jpg",
-    "ficha_pdf": "fichas/M1015.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3160.4SS",
@@ -2588,7 +2588,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3160.4SS.jpg",
-    "ficha_pdf": "fichas/A3160.4SS.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3163.3SS",
@@ -2611,7 +2611,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3163.3SS.jpg",
-    "ficha_pdf": "fichas/A3163.3SS.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3165.3SS",
@@ -2634,7 +2634,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3165.3SS.jpg",
-    "ficha_pdf": "fichas/A3165.3SS.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A3131",
@@ -2657,7 +2657,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A3131.jpg",
-    "ficha_pdf": "fichas/A3131.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "M1026",
@@ -2680,7 +2680,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/M1026.jpg",
-    "ficha_pdf": "fichas/M1026.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0210.1",
@@ -2702,7 +2702,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0210.1.jpg",
-    "ficha_pdf": "fichas/A0210.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0211.1",
@@ -2724,7 +2724,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0211.1.jpg",
-    "ficha_pdf": "fichas/A0211.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1201",
@@ -2746,7 +2746,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1201.jpg",
-    "ficha_pdf": "fichas/A1201.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1202",
@@ -2768,7 +2768,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1202.jpg",
-    "ficha_pdf": "fichas/A1202.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1203",
@@ -2790,7 +2790,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1203.jpg",
-    "ficha_pdf": "fichas/A1203.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A1204",
@@ -2812,7 +2812,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A1204.jpg",
-    "ficha_pdf": "fichas/A1204.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2201",
@@ -2834,7 +2834,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/A2201.jpg",
-    "ficha_pdf": "fichas/A2201.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2202",
@@ -2856,7 +2856,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/A2202.jpg",
-    "ficha_pdf": "fichas/A2202.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2203",
@@ -2878,7 +2878,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/A2203.jpg",
-    "ficha_pdf": "fichas/A2203.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A4001",
@@ -2900,7 +2900,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A4001.jpg",
-    "ficha_pdf": "fichas/A4001.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1a",
@@ -2922,7 +2922,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/A2131.1a.jpg",
-    "ficha_pdf": "fichas/A2131.1a.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1b",
@@ -2944,7 +2944,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/A2131.1b.jpg",
-    "ficha_pdf": "fichas/A2131.1b.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1c",
@@ -2966,7 +2966,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/A2131.1c.jpg",
-    "ficha_pdf": "fichas/A2131.1c.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2131.1d",
@@ -2988,7 +2988,7 @@
     "anvisa": "82568290001",
     "ncm": "90183999",
     "foto": "fotos/A2131.1d.jpg",
-    "ficha_pdf": "fichas/A2131.1d.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "T4003",
@@ -3010,7 +3010,7 @@
     "anvisa": "82568299001",
     "ncm": "90183190",
     "foto": "fotos/T4003.jpg",
-    "ficha_pdf": "fichas/T4003.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "T4002",
@@ -3032,7 +3032,7 @@
     "anvisa": "82568299001",
     "ncm": "90189099",
     "foto": "fotos/T4002.jpg",
-    "ficha_pdf": "fichas/T4002.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "T1001.6",
@@ -3054,7 +3054,7 @@
     "anvisa": "82568299001",
     "ncm": "90189099",
     "foto": "fotos/T1001.6.jpg",
-    "ficha_pdf": "fichas/T1001.6.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A2145",
@@ -3077,7 +3077,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/A2145.jpg",
-    "ficha_pdf": "fichas/A2145.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "A0222",
@@ -3099,7 +3099,7 @@
     "anvisa": "",
     "ncm": "90189094",
     "foto": "fotos/A0222.png",
-    "ficha_pdf": "fichas/A0222.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1116",
@@ -3121,7 +3121,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/F1116.jpg",
-    "ficha_pdf": "fichas/F1116.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1117",
@@ -3143,7 +3143,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/F1117.jpg",
-    "ficha_pdf": "fichas/F1117.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1104",
@@ -3165,7 +3165,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/F1104.jpg",
-    "ficha_pdf": "fichas/F1104.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1105",
@@ -3187,7 +3187,7 @@
     "anvisa": "",
     "ncm": "90189099",
     "foto": "fotos/F1105.jpg",
-    "ficha_pdf": "fichas/F1105.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1110.1",
@@ -3209,7 +3209,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/F1110.1.jpg",
-    "ficha_pdf": "fichas/F1110.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1113.1",
@@ -3231,7 +3231,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/F1113.1.jpg",
-    "ficha_pdf": "fichas/F1113.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1111.1",
@@ -3253,7 +3253,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/F1111.1.jpg",
-    "ficha_pdf": "fichas/F1111.1.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "F1111.4",
@@ -3275,7 +3275,7 @@
     "anvisa": "82568290002",
     "ncm": "90189099",
     "foto": "fotos/F1111.4.jpg",
-    "ficha_pdf": "fichas/F1111.4.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "10-2023-00",
@@ -3297,7 +3297,7 @@
     "anvisa": "80088370038",
     "ncm": "9018.90.94",
     "foto": "fotos/10-2023-00.jpg",
-    "ficha_pdf": "fichas/10-2023-00.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "10-0385-00",
@@ -3319,7 +3319,7 @@
     "anvisa": "80088370038",
     "ncm": "9018.90.94",
     "foto": "fotos/10-0385-00.jpg",
-    "ficha_pdf": "fichas/10-0385-00.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "10-0393-00",
@@ -3341,7 +3341,7 @@
     "anvisa": "80088370038",
     "ncm": "9018.90.94",
     "foto": "fotos/10-0393-00.jpg",
-    "ficha_pdf": "fichas/10-0393-00.pdf"
+    "ficha_pdf": null
   },
   {
     "codigo": "10-2516-00",
@@ -3363,6 +3363,6 @@
     "anvisa": "80088379006",
     "ncm": "9018.90.94",
     "foto": "fotos/10-2516-00.jpg",
-    "ficha_pdf": "fichas/10-2516-00.pdf"
+    "ficha_pdf": null
   }
 ]
