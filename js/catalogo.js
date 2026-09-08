@@ -43,10 +43,14 @@
       foto = el("a", "foto sem"); foto.href = href;
       foto.innerHTML = `<span class="t">sem foto</span><span class="c mono">${p.codigo}</span>`;
     }
-    const tag = el("span", "tag", p.especialidade || "—");
-    tag.style.background = cor;
-    foto.appendChild(tag);
-    foto.insertAdjacentHTML("beforeend", MD.seloAngulo(p.angulo, p.familia));
+    const esps = (p.especialidades && p.especialidades.length ? p.especialidades : [p.especialidade]).filter(Boolean);
+    const tags = el("span", "tags");
+    esps.forEach(e => {
+      const t = el("span", "tag", e);
+      t.style.background = MD.corEsp(e);
+      tags.appendChild(t);
+    });
+    foto.appendChild(tags);
     card.appendChild(foto);
 
     const corpo = el("div", "corpo");
@@ -57,11 +61,11 @@
     corpo.appendChild(el("div", "specs", specsLinha(p) || "&nbsp;"));
 
     const add = el("button", "add" + (MD.tem(p.codigo) ? " in" : ""));
-    add.innerHTML = MD.tem(p.codigo) ? "✓ Na lista" : "+ Adicionar na lista";
+    add.innerHTML = MD.tem(p.codigo) ? "✓ No orçamento" : "+ Adicionar no orçamento";
     add.addEventListener("click", () => {
       const dentro = MD.alternar(p.codigo);
       add.classList.toggle("in", dentro);
-      add.innerHTML = dentro ? "✓ Na lista" : "+ Adicionar na lista";
+      add.innerHTML = dentro ? "✓ No orçamento" : "+ Adicionar no orçamento";
     });
     corpo.appendChild(add);
 
@@ -214,12 +218,16 @@
   // ---- menu "Baixar catálogos" ----
   function montarMenuCatalogos() {
     const btn = $("#btn-catalogos"), menu = $("#menu-catalogos"), bd = $("#backdrop-catalogos");
-    const cats = (MD.cfg.catalogos) || [];
+    const ativo = MD.cfg.catalogosAtivo;
+    const base = MD.cfg.catalogosBase || "";
+    const cats = (ativo && MD.cfg.catalogos) || [];
     if (!btn) return;
     if (!cats.length) { btn.style.display = "none"; return; }
 
+    const externo = /^https?:\/\//i.test(base);
     menu.innerHTML = cats.map(c => `
-      <a href="${c.arquivo}" download class="${c.completo ? "completo" : ""}">
+      <a href="${base}${c.arquivo}" ${externo ? 'target="_blank" rel="noopener"' : "download"}
+         class="${c.completo ? "completo" : ""}">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
         ${c.nome}
       </a>${c.completo ? '<div class="sep"></div>' : ""}`).join("");
@@ -234,7 +242,7 @@
   function atualizarBandeja() {
     const n = MD.lista().length;
     $("#bandeja").classList.toggle("on", n > 0);
-    $("#qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} na lista`;
+    $("#qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento`;
     const wpp = MD.linkWhatsApp(PRODUTOS), mail = MD.linkEmail(PRODUTOS);
     const bw = $("#bt-wpp"), bm = $("#bt-mail");
     if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";

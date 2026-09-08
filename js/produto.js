@@ -67,7 +67,7 @@
     const foto = p.foto
       ? `<div class="foto-g">
            <img class="principal" src="${p.foto}" alt="${p.nome}">
-           <span class="zoom-hint">🔍 Ampliar</span>
+           <span class="zoom-hint">🔍 Clique na imagem para ampliar</span>
            ${MD.seloAngulo(p.angulo, p.familia)}
          </div>`
       : `<div class="foto-g sem"><span class="t">sem foto</span><span class="mono" style="color:var(--mut)">${p.codigo}</span></div>`;
@@ -112,11 +112,11 @@
     const acoes = $("#acoes");
     const add = document.createElement("button");
     add.className = "b-add" + (MD.tem(p.codigo) ? " in" : "");
-    add.textContent = MD.tem(p.codigo) ? "✓ Na lista" : "+ Adicionar na lista";
+    add.textContent = MD.tem(p.codigo) ? "✓ No orçamento" : "+ Adicionar no orçamento";
     add.addEventListener("click", () => {
       const dentro = MD.alternar(p.codigo);
       add.classList.toggle("in", dentro);
-      add.textContent = dentro ? "✓ Na lista" : "+ Adicionar na lista";
+      add.textContent = dentro ? "✓ No orçamento" : "+ Adicionar no orçamento";
     });
     acoes.appendChild(add);
 

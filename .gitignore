@@ -1,0 +1,9 @@
+# PDFs pesados — fora do git enquanto o site não está em produção.
+# Local (funcionam normal no seu navegador/servidor local), só não sobem pro repo.
+# Ver PRODUCAO.md pra saber exatamente o que fazer quando for a hora de ligar isso.
+catalogos/*.pdf
+fichas/*.pdf
+
+# arquivos de sistema comuns
+.DS_Store
+Thumbs.db
