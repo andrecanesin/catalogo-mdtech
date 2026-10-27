@@ -8,7 +8,8 @@ window.MDTECH = {
     // E-mail que recebe os pedidos de orçamento. Deixe "" para ocultar o botão.
     email: "contato@mdtechsm.com.br"
   },
-  // cor de destaque por especialidade (irmã dos catálogos/fichas)
+  // cor de destaque por especialidade — ESPELHO MANUAL de mdtech/marca.py::ACCENT
+  // (fonte única da verdade). JS não importa Python, então mudou lá, muda aqui também à mão.
   accent: {
     "Laparoscopia":  "#36A9E1",
     "Urologia":      "#2FA9A2",
