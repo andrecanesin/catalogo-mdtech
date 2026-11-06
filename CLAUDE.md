@@ -43,6 +43,14 @@ Todas as flags: `LEIA-ME.md`.
 5. Foto = arquivo nomeado pelo código em `assets/imagens/<FORNECEDOR>/` (matcher tolerante, `mdtech/fotos.py`).
 6. Não editar arquivos gerados à mão. Não commitar PDF grande (GitHub bloqueia > 100 MB).
 
+## Modelo por tipo de tarefa
+O padrão do projeto é **Sonnet 5.5 com esforço médio**. Antes de começar uma tarefa, avisar o André se ela
+exigir outro modelo, dizendo qual e por quê.
+- **Subir para Opus 5.5:** refatoração grande de `mdtech/` ou `geradores/`; redesenho do layout do catálogo ou
+  do site; auditoria completa de código; depuração que não resolveu em duas tentativas.
+- **Descer para Haiku 5.5:** tarefas repetitivas e simples (renomear, formatar, conferir listas).
+- **Todo o resto:** seguir no Sonnet 5.5, sem avisar.
+
 ## Estado dos dados (base de 27/10/2026, 174 linhas / 152 SKUs únicos)
 - ANVISA vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /
   14 códigos sem registro e sem processo: A0320, A0322, A0323, A0210.1, A0211.1, A0222, A1101.1–A1104.1, A1105.1,
