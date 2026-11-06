@@ -1,0 +1,64 @@
+# Publica o catálogo digital no GitHub Pages a cada push na main.
+# Gera as fichas e os dados do site a partir da planilha; nada gerado precisa ser commitado.
+# Catálogos em PDF (grandes) NÃO são gerados aqui — ver site/PRODUCAO.md.
+name: Publicar site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Dependências do sistema (WeasyPrint)
+        run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
+
+      - name: Dependências Python
+        run: pip install -r requirements.txt
+
+      - name: Fichas técnicas (1 PDF por código)
+        run: python gerar.py fichas --separados
+
+      - name: Dados do site (produtos.json, fotos, fichas)
+        run: python gerar.py site
+
+      - name: Conferir resultado
+        run: |
+          test -s site/produtos.json
+          test -n "$(ls site/fotos)"
+          test -n "$(ls site/fichas)"
+          python -c "import json; d=json.load(open('site/meta.json',encoding='utf-8')); print(d); assert d['total']>0 and d['com_foto']>0"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

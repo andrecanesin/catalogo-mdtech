@@ -1,9 +1,22 @@
-# PDFs pesados — fora do git enquanto o site não está em produção.
-# Local (funcionam normal no seu navegador/servidor local), só não sobem pro repo.
-# Ver PRODUCAO.md pra saber exatamente o que fazer quando for a hora de ligar isso.
-catalogos/*.pdf
-fichas/*.pdf
+# build local
+saida/
+__pycache__/
+*.pyc
+.venv/
 
-# arquivos de sistema comuns
+# backups e temporários da planilha
+dados/Base_backup*.xlsx
+dados/~$*
+
+# gerados por `python gerar.py site` — o GitHub Actions recria a cada publicação
+site/produtos.json
+site/meta.json
+site/fotos/
+site/fichas/
+site/catalogos/
+
 .DS_Store
 Thumbs.db
+
+*.zip
+correcoes_23-09/
