@@ -21,11 +21,12 @@ window.MDTECH = {
   //
   // ATIVAR EM PRODUÇÃO — 2 passos, é só isso:
   //   1) troque CATALOGOS_ATIVO para true
-  //   2) troque CATALOGOS_BASE pela URL onde os PDFs estão hospedados:
-  //        - se forem pequenos o bastante pra ir no git: "catalogos/" (pasta local, padrão)
-  //        - se forem hospedados fora do repo (ex.: assets de uma Release do GitHub,
-  //          por causa do limite de 100MB por arquivo): a URL completa terminando em "/",
-  //          ex.: "https://github.com/andrecanesin/catalogo-mdtech/releases/download/v1/"
+  //   2) troque CATALOGOS_BASE pela URL onde os PDFs estão hospedados. Os catálogos NÃO vão
+  //      no git nem são gerados no Actions (site/catalogos/ está no .gitignore; passam de
+  //      100MB por arquivo). Hospede como assets de uma Release do GitHub e use a URL
+  //      completa terminando em "/",
+  //      ex.: "https://github.com/andrecanesin/catalogo-mdtech/releases/download/catalogos-v1/"
+  //      Passo a passo: site/PRODUCAO.md.
   //   Os nomes de arquivo abaixo (Catalogo_Completo_MDTech.pdf etc.) são exatamente
   //   o que sai de `gerar.py catalogo --todos` + `gerar.py site` — não precisa mudar,
   //   só o BASE de onde eles são servidos.

@@ -4,26 +4,32 @@ Um único projeto que gera **fichas técnicas**, **catálogos (miolo)**, **cards
 promocionais**, um **dashboard de pendências** e alimenta o **catálogo digital
 (site)**, tudo a partir da **mesma base** e dos **mesmos assets**.
 
-## Dois repositórios git — não confundir
+## Um repositório só
 
-| | `materiais-mdtech/` (raiz) | `materiais-mdtech/site/` |
+Tudo mora neste repositório (`andrecanesin/catalogo-mdtech`, público): a
+automação Python e o catálogo digital. O `site/` é uma pasta comum dele.
+
+| | Raiz | `site/` |
 |---|---|---|
 | O que é | Projeto de automação (Python) | Catálogo digital (HTML/CSS/JS estático) |
-| Repo git próprio | — | **Sim** — GitHub Pages roda direto dessa pasta |
 | Quem edita | Só via `gerar.py` + módulos Python | HTML/CSS/JS editados **à mão**, direto ali |
 
-`site/` **não é gerado, não é copiado de lugar nenhum**. É uma pasta git de
-verdade, com HTML/CSS/JS escritos à mão e versionados ali dentro. O comando
-`python gerar.py site` só escreve `produtos.json`/`meta.json`/`fotos/`
-**direto dentro dela** — não existe pasta de build intermediária, não existe
-`site-fonte/`. Editar o front e gerar dado são duas ações independentes.
+`python gerar.py site` só escreve `produtos.json`/`meta.json`/`fotos/`/`fichas/`
+**dentro de `site/`** — não existe pasta de build intermediária. Editar o front e
+gerar dado são ações independentes.
 
-**Isso importa na prática**: antes de `git push`, confirme em qual pasta
-está (`pwd`) — historicamente essa foi a maior dor de cabeça do projeto.
+**Publicação:** cada `git push` na `main` dispara o workflow **Publicar site**
+(`.github/workflows/publicar.yml`), que gera as fichas e os dados e publica `site/`
+no GitHub Pages. Os arquivos gerados (`site/produtos.json`, `meta.json`, `fotos/`,
+`fichas/`, `catalogos/`) estão no `.gitignore` e o Actions os recria a cada
+publicação. Detalhes em `DOCUMENTACAO_PROJETO.md`.
 
 ## Estrutura
 ```
-materiais-mdtech/
+catalogo-mdtech/
+├── .github/workflows/publicar.yml   build + publicação no Pages a cada push na main
+├── .claude/skills/mdtech-ui-ux/     skill de UI/UX do projeto
+├── CLAUDE.md                        contexto e regras de ouro (lido pelo Claude Code)
 ├── dados/    Base_MDTech_Consolidada.xlsx        (fonte única da verdade)
 ├── assets/
 │   ├── imagens/   fotos por código — em subpastas por fornecedor:
@@ -42,19 +48,19 @@ materiais-mdtech/
 │   ├── textos.py  limpeza de nome (CAIXA ALTA + specs → nome curto) + ícone de ângulo (base64)
 │   └── layout.py  helpers de desenho + quebra de linha
 ├── geradores/  card.py · fichas.py · catalogo.py · dashboard.py · site.py  (só o LAYOUT)
-├── saida/    PDFs e previews gerados (git-ignorado, é lixeira de build)
+├── saida/    PDFs e previews gerados localmente (git-ignorado, é lixeira de build)
 ├── gerar.py  CLI único
-└── site/     catálogo digital — REPO GIT PRÓPRIO, front escrito à mão
-    ├── .gitignore          catalogos/*.pdf e fichas/*.pdf ficam de fora (ver PRODUCAO.md)
-    ├── PRODUCAO.md         checklist pra quando isso for pra produção de verdade
+├── requirements.txt
+└── site/     catálogo digital — pasta comum do repositório, front escrito à mão
+    ├── PRODUCAO.md         como ligar o download dos catálogos PDF (Release)
     ├── index.html / produto.html
     ├── css/estilo.css
     ├── js/{config,dados,catalogo,produto}.js
     ├── img/angulos/        mesmos ícones de assets/icones/angulos, versão site
     ├── produtos.json / meta.json   GERADOS por `gerar.py site` — não editar à mão
     ├── fotos/              GERADO — cópia das fotos casadas
-    ├── fichas/             GERADO (git-ignorado por ora) — 1 PDF por produto
-    └── catalogos/          GERADO (git-ignorado por ora) — PDFs por especialidade + completo
+    ├── fichas/             GERADO — 1 PDF por produto (o Actions recria)
+    └── catalogos/          GERADO local — PDFs grandes, nunca no git
 ```
 
 **Regra de ouro**: `produtos.json`, `meta.json`, `site/fotos/`, `site/fichas/`
@@ -93,12 +99,12 @@ python gerar.py tudo --sem-fichas                 # ex.: só dashboard + catálo
 python gerar.py tudo --sem-catalogo               # ex.: só dashboard + fichas
 ```
 Não inclui **cards** (precisam de código/preço específicos — rode `card` à
-parte) nem **site** (rode `site` à parte quando quiser publicar).
+parte) nem **site** (rode `site` à parte só para conferir local; quem publica é o Actions).
 
 **Atenção:** `tudo` gera fichas com `--todos` (o PDF mestre), **não**
 `--separados`. Se o botão "Baixar ficha técnica" não aparecer no site depois
 de rodar `tudo` + `site`, é por isso — rode `fichas --separados` manualmente
-antes de `gerar.py site`.
+antes de `gerar.py site`. (No GitHub Actions isso já é feito na ordem certa.)
 
 ### Preview rápido sem gerar PDF
 ```
@@ -151,9 +157,9 @@ fichas/catálogos casados por código, tudo direto dentro de `site/`.
 ```
 python gerar.py site
 ```
-Depois de rodar, confira dentro da pasta `site/` (`git status`) — é lá que
-mora o repositório de verdade do catálogo digital, publicado via GitHub
-Pages.
+Pra conferir local: `fichas --separados`, `site`, e depois `python -m http.server`
+dentro de `site/`. Os arquivos gerados não vão pro git; quem publica é o Actions
+(ver "Fluxo de produção").
 
 ## Fotos por código — subpastas (recursivo)
 
@@ -209,17 +215,25 @@ Laparoscopia, onde "ângulo" é geometria da ponta, não vista de lente). Ícone
 2. **Nomes de coluna moram em `mdtech/base.py` (dic COLUNAS).** Mudou a base?
    Ajusta só ali — os geradores continuam lendo por chave canônica. Inclui
    `diametro` (Ø mm) e `diametro_fr` (Ø Fr) — veja seção "Diâmetro: mm × Fr".
-3. **Identidade só em `mdtech/marca.py`.** Trocou cor/fonte? Reflete em tudo.
+3. **Identidade só em `mdtech/marca.py`.** Trocou cor/fonte? Reflete em tudo
+   (`site/js/config.js` tem a cor por especialidade como espelho manual).
 4. **Foto = arquivo nomeado pelo código** em `assets/imagens/` (em qualquer subpasta).
 5. **HTML/CSS/JS do site = só em `site/`, editados à mão.** `gerar.py site`
    nunca escreve HTML/CSS/JS — só dados. Não crie lógica de template em
    `geradores/site.py`.
 6. Cada gerador em `geradores/` cuida **apenas do layout** — nada de reler base
    ou reimplementar matcher.
+7. **Não editar arquivos gerados à mão.** Não commitar PDF grande (GitHub bloqueia
+   > 100 MB): catálogos em PDF são gerados local e sobem como Release (`site/PRODUCAO.md`).
 
 ## Fluxo de produção
-1. Editar a base (`dados/Base_MDTech_Consolidada.xlsx`).
+1. Editar a base (`dados/Base_MDTech_Consolidada.xlsx`) e/ou o HTML/CSS/JS de `site/`.
 2. Colocar fotos em `assets/imagens/<FORNECEDOR>/` (nome = código).
 3. `python gerar.py checklist` (ou `dashboard`) → ver o que falta.
-4. `python gerar.py catalogo --todos --perfil digital` / `fichas --separados` / `card` / `site`.
-5. Dentro de `site/`: `git status`, `git add`, `git commit`, `git push`.
+4. (Opcional) conferir local: `python gerar.py fichas --separados && python gerar.py site`,
+   depois `python -m http.server` dentro de `site/`. Materiais impressos:
+   `catalogo --todos --perfil digital` / `card`.
+5. Na raiz: `git status` (nenhum PDF nem arquivo gerado na lista), `git add`,
+   `git commit`, `git push origin main`.
+6. Abrir a aba **Actions** do GitHub: o workflow **Publicar site** deve terminar verde.
+   Só então o Pages está atualizado. Se ficar vermelho, abrir o passo com erro e ler o log.

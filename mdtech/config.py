@@ -10,10 +10,10 @@ LOGOS   = ASSETS / "logos"
 FONTES  = ASSETS / "fontes"
 SAIDA   = RAIZ / "saida"
 
-# Catálogo digital (site) = repositório git próprio, com HTML/CSS/JS
-# escritos à mão e versionados. python gerar.py site NÃO copia nada pra cá —
-# só escreve produtos.json/meta.json/fotos/ direto dentro dele, no lugar já
-# rastreado pelo git.
+# Catálogo digital (site) = pasta site/ deste repositório, com HTML/CSS/JS
+# escritos à mão e versionados. python gerar.py site NÃO copia HTML pra cá —
+# só escreve produtos.json/meta.json/fotos/fichas direto dentro dela (arquivos
+# gerados, no .gitignore; o GitHub Actions os recria a cada publicação).
 SITE = RAIZ / "site"
 
 # Base = fonte única da verdade
