@@ -88,16 +88,9 @@ def _tabela(linhas, produtos, com_preco):
     return f'<table class="it"><thead><tr>{"".join(cab)}</tr></thead><tbody>{corpo}</tbody></table>'
 
 
-def _resolver_precos(linhas, produtos):
-    """Preço do item no kit: o da aba KITS (se preenchido, ex.: preço especial do kit); senão, o da base (Preço (R$))."""
-    for r in linhas:
-        if r["preco"] is None:
-            it = B.por_codigo_exato(produtos, r["codigo"])
-            r["preco"] = T.preco_num(it) if it else None
-
-
 def _doc_html(nome, linhas, produtos):
-    _resolver_precos(linhas, produtos)
+    # Decisão do André (09/11): preço só no SITE; as propostas saem SEM preço. A coluna opcional "Preço unit. (R$)" da
+    # aba KITS continua existindo, mas fica vazia; os preços da base (coluna "Preço (R$)") NÃO entram aqui.
     ac = accent("Laparoscopia")
     faces = "".join([font_face("Poppins", "Poppins-Regular.ttf", 400), font_face("Poppins", "Poppins-Medium.ttf", 500),
                      font_face("Poppins", "Poppins-SemiBold.ttf", 600), font_face("Poppins", "Poppins-Bold.ttf", 700),

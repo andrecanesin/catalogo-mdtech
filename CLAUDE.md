@@ -104,8 +104,8 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 
 ## Antes do deploy em servidor (lembrete)
 O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o deploy:
-- **Preços:** a coluna `Preço (R$)` da base hoje traz valores **FICTÍCIOS** (`PRECOS_FICTICIOS = True` em `mdtech/config.py`); site, orçamento e
-  propostas mostram "valores ilustrativos". O repositório e o Pages são **públicos**: com preço REAL, **o workflow trava** (`SITE_PUBLICO=1` no
+- **Preços:** a coluna `Preço (R$)` da base hoje traz valores **FICTÍCIOS** (`PRECOS_FICTICIOS = True` em `mdtech/config.py`); site e orçamento
+  mostram "valores ilustrativos". **Preço só no site:** catálogos, fichas e propostas (kits) saem SEM preço (decisão do André, 09/11). O repositório e o Pages são **públicos**: com preço REAL, **o workflow trava** (`SITE_PUBLICO=1` no
   passo do site) e a publicação não vai ao ar. Para preço real: tirar os valores do repositório e servi-los só por onde houver controle de acesso.
 - **Publicação:** `.github/workflows/publicar.yml` hoje publica no Pages; trocar pelo envio ao servidor.
 - **Catálogos digitais:** hoje vão no artefato do site; no servidor, gerados e enviados junto. Os impressos continuam só locais.

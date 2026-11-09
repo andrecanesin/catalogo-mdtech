@@ -26,7 +26,7 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 
 ## Regras de produto
 - Site estático. **Preço** vem da coluna `Preço (R$)` da base e hoje é FICTÍCIO: aparece no card, no detalhe ("Preço de tabela"), no subtotal/total
-  do orçamento e na mensagem, sempre com o aviso "valores ilustrativos" (`config.js` → `precos`). Preço REAL só no servidor com acesso controlado
+  do orçamento e na mensagem (**só no site**: catálogos, fichas e propostas não levam preço), sempre com o aviso "valores ilustrativos" (`config.js` → `precos`). Preço REAL só no servidor com acesso controlado
   (o workflow trava a publicação no Pages). Ação do visitante:
   **"+ Adicionar no orçamento"** → "✓ No orçamento" → "Ver lista" (quantidade por item, remover) → pedido por WhatsApp/e-mail
   com códigos e quantidades. A lista fica no navegador como `[{codigo, qtd}]`.
