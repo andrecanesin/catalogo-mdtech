@@ -269,33 +269,7 @@
     $("#btn-filtrar").focus();
   }
 
-  // ---- menu "Baixar catálogos" ----
-  async function montarMenuCatalogos() {
-    const btn = $("#btn-catalogos"), menu = $("#menu-catalogos"), bd = $("#backdrop-catalogos");
-    const ativo = MD.cfg.catalogosAtivo;
-    const base = MD.cfg.catalogosBase || "";
-    const cats = (ativo && MD.cfg.catalogos) || [];
-    if (!btn) return;
-    // propostas básicas (kits): lista gerada em site/propostas.json (cada kit novo na planilha aparece sozinho)
-    let props = [];
-    try { const r = await fetch("propostas.json"); props = r.ok ? await r.json() : []; } catch (e) { props = []; }
-    if (!cats.length && !props.length) { btn.style.display = "none"; return; }
 
-    const externo = /^https?:\/\//i.test(base);
-    const seta = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>';
-    const secCats = cats.length ? '<div class="grupo-menu">Catálogos</div>' + cats.map(c => `
-      <a href="${MD.esc(base + c.arquivo)}" ${externo ? 'target="_blank" rel="noopener"' : "download"}
-         class="${c.completo ? "completo" : ""}">${seta}${MD.esc(c.nome)}</a>${c.completo ? '<div class="sep"></div>' : ""}`).join("") : "";
-    const secProps = props.length ? (cats.length ? '<div class="sep"></div>' : "") + '<div class="grupo-menu">Propostas básicas (kits)</div>'
-      + props.map(p => `<a href="${MD.esc(p.arquivo)}" download>${seta}${MD.esc(p.titulo)}
-          <small>${MD.esc(p.itens)} itens</small></a>`).join("") : "";
-    menu.innerHTML = secCats + secProps;
-
-    const abrir = () => { menu.classList.add("on"); bd.classList.add("on"); btn.setAttribute("aria-expanded", "true"); };
-    const fechar = () => { menu.classList.remove("on"); bd.classList.remove("on"); btn.setAttribute("aria-expanded", "false"); };
-    btn.addEventListener("click", () => menu.classList.contains("on") ? fechar() : abrir());
-    bd.addEventListener("click", fechar);
-  }
 
   async function iniciar() {
     try {
@@ -317,7 +291,7 @@
     document.addEventListener("orcamento:mudou", sincronizarBotoes);
 
     montarFiltros();
-    montarMenuCatalogos();
+    MD.montarMenuDownloads();
     render();
     MD.ligarBandeja(PRODUTOS);
   }

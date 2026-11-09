@@ -54,6 +54,7 @@
   }
 
   async function iniciar() {
+    MD.montarMenuDownloads();          // menu "Catálogos e propostas" (também no topo das páginas internas)
     let produtos;
     try { produtos = await fetch("produtos.json").then(r => r.json()); }
     catch (e) {
