@@ -22,8 +22,15 @@
         <input id="busca" name="q" type="search" placeholder="Buscar por código ou nome (ex.: maryland, trocarter, A153)" aria-label="Buscar produtos">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </form>
+      <button class="btn-catalogos" id="btn-catalogos" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+        Catálogos e propostas
+      </button>
     </div>
   </header>
+
+  <div class="menu-catalogos" id="menu-catalogos" role="menu"></div>
+  <div class="backdrop" id="backdrop-catalogos"></div>
 
   <main class="wrap" id="alvo"></main>
 
