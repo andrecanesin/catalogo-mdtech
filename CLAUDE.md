@@ -32,6 +32,7 @@ python gerar.py fichas --separados    # antes de 'site', para o botão de downlo
 python gerar.py site                  # produtos.json + fotos + fichas -> site/
 python gerar.py dashboard             # painel de pendências (inclui status das fotos)
 python gerar.py catalogo Laparoscopia --preview   # preview HTML sem gerar PDF
+python painel.py                      # painel local (127.0.0.1:8800) com botões para os comandos acima
 ```
 Todas as flags: `LEIA-ME.md`.
 
@@ -50,6 +51,13 @@ exigir outro modelo, dizendo qual e por quê.
   do site; auditoria completa de código; depuração que não resolveu em duas tentativas.
 - **Descer para Haiku 5.5:** tarefas repetitivas e simples (renomear, formatar, conferir listas).
 - **Todo o resto:** seguir no Sonnet 5.5, sem avisar.
+
+## Antes do deploy em servidor (lembrete)
+O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o deploy:
+- **Preços:** em desenvolvimento podem ficar no git, mas o repositório é **público**. Antes de ir ao ar, tirar os preços do
+  repositório (planilha, `produtos.json`) e servi-los só por onde houver controle de acesso; revisar a regra "sem preço" da skill.
+- **Publicação:** `.github/workflows/publicar.yml` hoje publica no Pages; trocar pelo envio ao servidor.
+- **Catálogos PDF:** continuam fora do git (Release ou envio direto ao servidor).
 
 ## Estado dos dados (base de 08/11/2026, 174 linhas / 152 SKUs únicos)
 - ANVISA: aguardando novos registros do regulatório. Vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /
