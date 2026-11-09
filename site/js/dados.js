@@ -148,6 +148,17 @@ window.MD = (function () {
     return `mailto:${mail}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto(produtos))}`;
   }
 
+  // ---- compartilhar link (produto ou proposta): menu nativo do celular; no computador, copia o link ----
+  async function compartilhar(titulo, url, botao) {
+    const avisar = t => { if (!botao) return; const o = botao.dataset.txt || botao.textContent; botao.dataset.txt = o;
+      botao.textContent = t; setTimeout(() => { botao.textContent = o; }, 2200); };
+    if (navigator.share && window.matchMedia("(pointer:coarse)").matches) {
+      try { await navigator.share({ title: titulo, url }); return; } catch (e) { if (e && e.name === "AbortError") return; }
+    }
+    try { await navigator.clipboard.writeText(url); avisar("✓ Link copiado"); }
+    catch (e) { window.prompt("Copie o link:", url); }
+  }
+
   // ---- trilha de navegação (breadcrumb): onde estou na hierarquia Catálogo › Especialidade › Família › Produto ----
   // passos: [{t: texto, href?: link}]; o último é a página atual (sem link, aria-current). Só aparece no desktop (CSS).
   const urlGrade = (esp, fam) => "index.html" + (esp || fam ? "?" + new URLSearchParams(
@@ -354,13 +365,15 @@ window.MD = (function () {
           <small>${MD.esc(p.itens)} itens</small></a>`).join("") : "";
     menu.innerHTML = secCats + secProps;
 
-    const abrir = () => { menu.classList.add("on"); bd.classList.add("on"); btn.setAttribute("aria-expanded", "true"); };
+    const abrir = () => { const topo = document.querySelector(".top");
+      if (topo) menu.style.top = Math.round(topo.getBoundingClientRect().bottom + 6) + "px";
+      menu.classList.add("on"); bd.classList.add("on"); btn.setAttribute("aria-expanded", "true"); };
     const fechar = () => { menu.classList.remove("on"); bd.classList.remove("on"); btn.setAttribute("aria-expanded", "false"); };
     btn.addEventListener("click", () => menu.classList.contains("on") ? fechar() : abrir());
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

@@ -234,6 +234,37 @@
     alvo.innerHTML = MD.trilha(passos);
   }
 
+  // ---- página inicial (sem busca nem filtro): entrada pelas linhas (especialidades) e pelas propostas básicas ----
+  function entrada() {
+    const alvo = $("#entrada"); if (!alvo) return;
+    const inicio = !estado.termo && !nAtivos() && estado.pagina === 1;
+    if (!inicio) { alvo.innerHTML = ""; return; }
+    const cont = contar("especialidades");
+    const esps = ((META && META.especialidades) || Object.keys(cont)).filter(e => cont[e]);
+    const usadas = new Set();   // uma foto diferente por linha (óticas aparecem em mais de uma especialidade)
+    // foto da linha: a escolhida em config.js (fotoLinha) ou, por padrão, o 1º instrumento só daquela linha (ótica por último)
+    const daLinha = x => (x.especialidades || [x.especialidade]).includes(e_) && (x.foto_thumb || x.foto) && !usadas.has(x.codigo);
+    let e_ = "";
+    const foto = e => { e_ = e;
+      const fixo = (MD.cfg.fotoLinha || {})[e];
+      const so = x => !(x.especialidades || []).some(o => o !== e);
+      const p = (fixo && PRODUTOS.find(x => x.codigo === fixo && (x.foto_thumb || x.foto)))
+        || PRODUTOS.find(x => daLinha(x) && so(x) && !MD.ehOtica(x)) || PRODUTOS.find(x => daLinha(x) && so(x))
+        || PRODUTOS.find(daLinha);
+      if (p) usadas.add(p.codigo);
+      return p ? `<img src="${MD.esc(p.foto_thumb || p.foto)}" alt="" loading="lazy">` : ""; };
+    alvo.innerHTML = `<section class="ent" aria-labelledby="ent-l"><h2 class="ent-t" id="ent-l">Linhas</h2>
+        <div class="ent-linhas">${esps.map(e => `<button type="button" class="ent-linha" data-esp="${MD.esc(e)}" style="--c:${MD.corEsp(e)}">
+          <span class="ent-foto">${foto(e)}</span><span class="ent-txt"><b>${MD.esc(e)}</b><small>${cont[e]} produtos</small></span></button>`).join("")}</div>
+      ${PROPOSTAS.length ? `<h2 class="ent-t">Propostas básicas</h2><div class="ent-props">${PROPOSTAS.map(k => `
+          <button type="button" class="ent-prop" data-prop="${MD.esc(k.id)}"><b>${MD.esc(k.titulo)}</b>
+          <small>${k.itens_lista.length} itens · ${k.itens_lista.reduce((s, i) => s + i.qtd, 0)} unidades</small></button>`).join("")}</div>` : ""}
+      <h2 class="ent-t">Todos os produtos</h2></section>`;
+    const ir = () => { montarFiltros(); estado.pagina = 1; render(); window.scrollTo({ top: 0 }); };
+    alvo.querySelectorAll("[data-esp]").forEach(b => b.onclick = () => { estado.especialidades.add(b.dataset.esp); ir(); });
+    alvo.querySelectorAll("[data-prop]").forEach(b => b.onclick = () => { estado.proposta = b.dataset.prop; ir(); });
+  }
+
   function nAtivos() { return estado.especialidades.size + estado.familias.size + (estado.proposta ? 1 : 0); }
 
   // faixa da proposta escolhida: resumo, PDF e "adicionar tudo ao orçamento" (depois, "Pedir por e-mail" na bandeja)
@@ -246,8 +277,12 @@
     const tudo = kit.itens_lista.every(i => MD.qtd(i.codigo) >= i.qtd);
     f.innerHTML = `<div><b>Proposta básica: ${MD.esc(kit.titulo)}</b><span>${kit.itens_lista.length} itens · ${un} unidades</span></div>
       <div class="acoes"><button class="pr-add${tudo ? " in" : ""}" type="button">${tudo ? "✓ Proposta no orçamento" : "Adicionar a proposta ao orçamento"}</button>
-      <a class="pr-pdf" href="${MD.esc(kit.arquivo)}" download>Baixar PDF</a></div>`;
+      <a class="pr-pdf" href="${MD.esc(kit.arquivo)}" download>Baixar PDF</a>
+      <button class="pr-pdf pr-share" type="button">Compartilhar</button></div>`;
     f.querySelector(".pr-add").onclick = () => { if (!tudo) MD.adicionarVarios(kit.itens_lista); };
+    const sh = f.querySelector(".pr-share");
+    sh.onclick = () => MD.compartilhar("Proposta básica " + kit.titulo + " · MDTech",
+      location.origin + location.pathname + "?prop=" + encodeURIComponent(kit.id), sh);
   }
 
   // ---- paginação ----
@@ -299,7 +334,7 @@
     const ilustr = MD.mostrarPreco() && PRODUTOS.some(p => p.preco && p.preco_ficticio);
     $("#cont").innerHTML = `<b>${listaFiltrada.length}</b> de ${PRODUTOS.length} produtos` +
       (ilustr ? ` <span class="cont-aviso">· preços ilustrativos</span>` : "");
-    chipsAtivos(); faixaProposta(); trilhaGrade();
+    chipsAtivos(); faixaProposta(); trilhaGrade(); entrada();
     const n = nAtivos();
     $("#fnum").textContent = n ? ` (${n})` : "";
     montarPaginacao(listaFiltrada.length);
