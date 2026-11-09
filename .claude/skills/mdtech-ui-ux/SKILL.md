@@ -54,6 +54,8 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - **Trilha (breadcrumb) no desktop** (`MD.trilha`): produto = Catálogo › Especialidade › Família › Produto (links levam à grade já
   filtrada, `?esp=&fam=`); grade = conforme o filtro (some na página inicial sem filtro). No celular fica o "← Voltar ao catálogo".
   Hierarquia, não histórico (Nielsen); último passo sem link, com `aria-current="page"`.
+- **Filtro de famílias agrupado por especialidade**, com a cor da linha na borda esquerda e no título do grupo (família em mais de uma
+  especialidade fica na que tem mais produtos).
 - Mobile primeiro (a equipe comercial usa celular): grade com paginação (`produtosPorPagina` em `config.js`), 2 cards por linha
   até 560 px, alvos de toque ≥ 44px, sem rolagem horizontal. Busca, filtros e página ficam na URL.
 - Contraste AA mínimo, foco visível por teclado, `alt` nas fotos (código + nome), rótulos nos filtros.

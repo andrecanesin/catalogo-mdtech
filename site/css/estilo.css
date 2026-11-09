@@ -481,3 +481,7 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .card .preco:not(.sem){font-size:18px;line-height:1.2;}
 .preco-g b{font-size:30px;}
 @media (max-width:560px){ .card .preco:not(.sem){font-size:16px;} }
+
+/* famílias agrupadas por especialidade, com a cor da linha (borda e título) */
+.fam-sub{border-left:3px solid var(--c);padding-left:10px;margin:10px 0 14px;}
+.fam-sub h3{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin:0 0 2px;}
