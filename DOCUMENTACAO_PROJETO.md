@@ -251,6 +251,10 @@ completo em **`site/PRODUCAO.md`** — não duplicar aqui, esse arquivo é a ref
   `mdtech/base.py::COLUNAS`) ou "Conferir resultado" falhando porque `fotos/` ou
   `fichas/` saiu vazio. Reproduzir local com `fichas --separados` + `site` antes de
   tentar de novo.
+- **Publicar site: `build` verde, mas o `deploy` falha com "Timeout reached, aborting!"** → o Pages ficou em `syncing_files`
+  por 10 min. Causa provável: artefato grande demais (as fichas embutiam a foto original e o site chegou a 158 MB). Hoje as
+  fichas usam foto de 1200 px (site de ~18 MB). Re-executar o job no mesmo commit **não funciona** (o Pages guarda a
+  publicação pelo SHA e ela já foi cancelada: "Deployment cancelled"); é preciso um **commit novo** na `main`.
 - **Pushed e o site não mudou** → conferir se o Pages está com Source = GitHub Actions
   e se o último workflow da `main` terminou verde.
 - **`python gerar.py catalogo todos`** (sem `--`) → dá erro
