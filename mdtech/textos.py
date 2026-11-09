@@ -3,6 +3,25 @@
 import re, base64, unicodedata
 from . import config
 
+def preco_num(item):
+    """Preço do item (float) ou None. Aceita 1250, "1250.5" e "1.250,50"."""
+    v = str((item or {}).get("preco") or "").strip().replace("R$", "").replace(" ", "")
+    if not v:
+        return None
+    if "," in v:
+        v = v.replace(".", "").replace(",", ".")
+    try:
+        n = float(v)
+    except ValueError:
+        return None
+    return n if n > 0 else None
+
+def brl(v):
+    """1250 -> 'R$ 1.250,00' (formato brasileiro)."""
+    if v is None:
+        return ""
+    return "R$ " + f"{v:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
 def slug_arquivo(texto):
     """'Kit - Proposta Básica - Hérnia de Hiato' -> 'Kit_Proposta_Basica_Hernia_de_Hiato' (nome de arquivo)."""
     s = unicodedata.normalize("NFKD", str(texto)).encode("ascii", "ignore").decode()

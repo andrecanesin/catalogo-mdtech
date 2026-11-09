@@ -99,19 +99,35 @@ window.MD = (function () {
   function remover(cod) { _gravar(_ler().filter(x => x.codigo !== cod)); }
   function limpar() { _gravar([]); }
 
+  // ---- preços (coluna "Preço (R$)" da base; hoje fictícios) ----
+  const _pc = cfg.precos || {};
+  const mostrarPreco = () => _pc.mostrar !== false;
+  const brl = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // total do orçamento: soma preço × quantidade dos itens que têm preço
+  function totalLista(produtos) {
+    const byCod = {}; produtos.forEach(p => byCod[p.codigo] = p);
+    let total = 0, semPreco = 0, ficticio = false;
+    _ler().forEach(x => { const p = byCod[x.codigo];
+      if (p && p.preco) { total += p.preco * x.qtd; if (p.preco_ficticio) ficticio = true; } else semPreco++; });
+    return { total, semPreco, ficticio };
+  }
+
   // ---- mensagem de orçamento ----
   function _linhas(produtos) {
     const byCod = {}; produtos.forEach(p => byCod[p.codigo] = p);
     return _ler().map((x, i) => {
       const p = byCod[x.codigo];
-      return `${i + 1}. ${x.codigo}${p ? " — " + p.nome : ""} — qtd: ${x.qtd}`;
+      const pr = mostrarPreco() && p && p.preco ? ` — ${brl(p.preco)} × ${x.qtd} = ${brl(p.preco * x.qtd)}` : "";
+      return `${i + 1}. ${x.codigo}${p ? " — " + p.nome : ""} — qtd: ${x.qtd}${pr}`;
     });
   }
   function texto(produtos) {
     const l = _linhas(produtos);
     const un = _ler().reduce((s, x) => s + x.qtd, 0);
+    const t = totalLista(produtos);
+    const tot = mostrarPreco() && t.total ? `\nTotal estimado: ${brl(t.total)}${t.ficticio ? " (" + (_pc.aviso || "valores ilustrativos") + ")" : ""}` : "";
     return `Olá! Gostaria de um orçamento dos seguintes itens MDTech:\n\n${l.join("\n")}\n\n` +
-      `(${l.length} ite${l.length === 1 ? "m" : "ns"}, ${un} unidade${un === 1 ? "" : "s"})`;
+      `(${l.length} ite${l.length === 1 ? "m" : "ns"}, ${un} unidade${un === 1 ? "" : "s"})` + tot;
   }
   function linkWhatsApp(produtos) {
     const num = (cfg.contato && cfg.contato.whatsapp) || "";
@@ -140,13 +156,23 @@ window.MD = (function () {
     document.body.appendChild(pop);
     const btLista = $("bt-lista");
 
+    function rodapeTotal() {
+      if (!mostrarPreco()) return "";
+      const t = totalLista(produtos);
+      if (!t.total) return "";
+      return `<div class="lista-total"><span>Total estimado</span><b>${brl(t.total)}</b></div>` +
+        (t.ficticio ? `<p class="aviso-preco">${esc(_pc.aviso || "Valores ilustrativos.")}</p>` : "") +
+        (t.semPreco ? `<p class="aviso-preco">${t.semPreco} ite${t.semPreco === 1 ? "m" : "ns"} sem preço não entra${t.semPreco === 1 ? "" : "m"} no total.</p>` : "");
+    }
+
     function renderLista() {
       const itens = lista();
       pop.innerHTML = `<div class="lista-head"><strong>Itens no orçamento</strong>
           <button class="lista-x" aria-label="Fechar lista">×</button></div>
         <ul>${itens.map(c => {
           const p = byCod[c], q = qtd(c), e = esc(c);
-          return `<li><span class="mono">${e}</span><span class="n">${esc(p ? p.nome : "")}</span>
+          const sub = mostrarPreco() && p && p.preco ? `<span class="sub">${brl(p.preco * q)}</span>` : "";
+          return `<li><span class="mono">${e}</span><span class="n">${esc(p ? p.nome : "")}</span>${sub}
             <span class="qtd">
               <button data-menos="${e}" aria-label="Diminuir quantidade de ${e}" ${q <= 1 ? "disabled" : ""}>−</button>
               <input type="number" min="1" max="999" inputmode="numeric" value="${q}" data-qtd="${e}"
@@ -154,7 +180,7 @@ window.MD = (function () {
               <button data-mais="${e}" aria-label="Aumentar quantidade de ${e}">+</button>
             </span>
             <button class="rem" data-rem="${e}" aria-label="Remover ${e} do orçamento">Remover</button></li>`;
-        }).join("")}</ul>
+        }).join("")}</ul>${rodapeTotal()}
         <button class="lista-limpar">Limpar lista</button>`;
       pop.querySelector(".lista-x").onclick = fecharLista;
       pop.querySelector(".lista-limpar").onclick = confirmarLimpar;
@@ -236,7 +262,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, qtd, definirQtd,
+  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, remover, limpar,
            texto, linkWhatsApp, linkEmail };

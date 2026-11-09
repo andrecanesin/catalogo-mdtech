@@ -339,4 +339,53 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
   .bandeja .bt-ver{display:none;}   /* no celular, "Limpar lista" fica dentro de "Ver lista" */
   .bandeja .bt-mail,.bandeja .bt-wpp{flex:1 1 calc(50% - 4px);}
 }
+/* ---------- preços (hoje fictícios: o aviso "valores ilustrativos" acompanha) ---------- */
+.card .preco{font-size:15px;font-weight:700;color:var(--navy);margin-top:6px;}
+.card .preco.sem{font-size:12.5px;font-weight:500;color:var(--mut);}
+.preco-g{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin:0 0 16px;padding:12px 14px;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;}
+.preco-g .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600;flex-basis:100%;}
+.preco-g b{font-size:26px;color:var(--navy);line-height:1.1;}
+.preco-g small{flex-basis:100%;font-size:12px;color:var(--mut);}
+.lista-pop li .sub{flex:none;font-size:13px;font-weight:600;color:var(--navy);}
+.lista-total{display:flex;align-items:baseline;justify-content:space-between;border-top:2px solid var(--navy);margin-top:6px;padding-top:10px;
+  font-size:14px;color:var(--navy);}
+.lista-total b{font-size:20px;}
+.aviso-preco{font-size:12px;color:var(--mut);margin:4px 0 0;}
+@media (max-width:560px){.card .preco{font-size:14px;}}
+
+/* ---------- botão e painel de Suporte (menu guiado antes do WhatsApp) ---------- */
+.sup-fab{position:fixed;right:16px;bottom:calc(var(--h-bandeja,0px) + 16px);z-index:45;display:inline-flex;align-items:center;
+  gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:24px;background:var(--navy);color:#fff;font:inherit;
+  font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(15,25,45,.28);}
+.sup-fab svg{stroke:#fff;}.sup-fab:hover{filter:brightness(1.12);}
+.sup-bg{position:fixed;inset:0;z-index:68;background:rgba(15,25,45,.45);}
+.sup-bg[hidden],.sup-panel[hidden]{display:none;}
+.sup-panel{position:fixed;z-index:70;left:0;right:0;bottom:0;max-height:90vh;overflow:auto;background:#fff;
+  border-radius:16px 16px 0 0;padding:16px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(15,25,45,.3);}
+.sup-head{display:flex;align-items:center;justify-content:space-between;color:var(--navy);font-size:17px;}
+.sup-x{border:0;background:none;font-size:28px;line-height:1;color:var(--mut);cursor:pointer;min-width:44px;min-height:44px;}
+.sup-sub{font-size:13px;color:var(--mut);margin:2px 0 12px;}
+.sup-cats{border:0;display:grid;gap:8px;margin-bottom:10px;}
+.sup-cats legend{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600;margin-bottom:6px;}
+.sup-cat{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  min-height:44px;cursor:pointer;background:#fff;}
+.sup-cat:has(input:checked){border-color:var(--navy);background:var(--panel);}
+.sup-cat input{margin-top:3px;accent-color:var(--navy);width:17px;height:17px;flex:none;}
+.sup-cat b{display:block;font-size:14px;color:var(--navy);}.sup-cat small{display:block;font-size:12px;color:var(--mut);}
+.sup-faq-t{font-size:12px;font-weight:600;color:var(--navy);margin:4px 0 6px;}
+.sup-faq details{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:6px;font-size:13px;}
+.sup-faq summary{cursor:pointer;font-weight:600;color:var(--navy);min-height:28px;}.sup-faq details p{margin:6px 0 2px;color:#33404f;}
+.sup-campo{display:block;font-size:12px;color:var(--mut);font-weight:600;margin:10px 0 0;}
+.sup-campo input,.sup-campo textarea{display:block;width:100%;margin-top:4px;border:1px solid var(--line);border-radius:10px;
+  padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);resize:vertical;}
+.sup-ctx{font-size:11.5px;color:var(--mut);margin:10px 0;}
+.sup-go{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:10px;background:#25D366;color:#0b3d1e;
+  font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;}
+.sup-go.off{opacity:.45;cursor:not-allowed;}
+@media (min-width:700px){
+  .sup-bg{background:transparent;}
+  .sup-panel{left:auto;right:20px;bottom:20px;width:390px;max-height:calc(100vh - 40px);border-radius:14px;padding-bottom:18px;
+    box-shadow:0 12px 40px rgba(15,25,45,.3);}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}html{scroll-behavior:auto;}}

@@ -19,6 +19,10 @@ SITE = RAIZ / "site"
 # Base = fonte única da verdade
 BASE_XLSX = DADOS / "Base_MDTech_Consolidada.xlsx"
 BASE_ABA  = "BASE DE PRODUTOS"   # nome da aba de produtos (ajuste se necessário)
+# Preços da coluna "Preço (R$)" da base: hoje FICTÍCIOS (ilustrativos). Enquanto True, o site, as propostas e o orçamento
+# avisam "valores ilustrativos". Com a tabela comercial real: preencher a coluna e mudar para False. Preço REAL não pode ir
+# ao site público (GitHub Pages): o workflow trava a publicação nesse caso; use o servidor com acesso controlado.
+PRECOS_FICTICIOS = True
 KITS_ABA  = "KITS"               # aba com os kits das propostas básicas (mesma planilha)
 
 # Logos oficiais
