@@ -32,12 +32,10 @@ ACOES = {
                   [["catalogo", "--todos", "--perfil", "digital"]], "digital"),
     "site":      ("Atualizar dados do site", "produtos.json, fotos, fichas e catálogos dentro de site/ (gere as fichas antes).",
                   [["site"]], "digital"),
-    "preparar":  ("Preparar site para conferir", "Fichas + dados do site, na ordem certa. Depois abra o site local.",
-                  [["fichas", "--separados"], ["site"]], "digital"),
-    "tudo":      ("Gerar tudo digital", "Fichas + catálogos digitais + dados do site, na ordem certa.",
-                  [["fichas", "--separados"], ["catalogo", "--todos", "--perfil", "digital"], ["site"]], "digital"),
+    "tudo":      ("Gerar tudo e preparar o site", "Fichas + catálogos + propostas + dados do site, na ordem certa. Depois abra o site local.",
+                  [["fichas", "--separados"], ["catalogo", "--todos", "--perfil", "digital"], ["kits"], ["site"]], "digital"),
     # ---- PROPOSTAS: kits por tipo de uso (aba KITS da planilha), PDF para enviar ao médico ----
-    "propostas": ("Gerar propostas (kits)", "1 PDF por kit da aba KITS (ex.: Kit - Proposta Básica - Hérnia de Hiato).",
+    "propostas": ("Gerar propostas (kits)", "1 PDF por kit da aba KITS. Aparecem no site (menu de downloads) depois de \"Atualizar dados do site\".",
                   [["kits"]], "propostas"),
     # ---- IMPRESSO: só nesta máquina (foto original, nunca publica) ----
     "imp_par":   ("Catálogos impressos · separado", "Miolo com páginas PAR, para montar capa + miolo + contracapa no InDesign.",

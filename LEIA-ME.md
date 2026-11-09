@@ -115,6 +115,8 @@ python gerar.py kits                          # todos os kits da aba KITS
 python gerar.py kits --kit "Hérnia de Hiato"  # um kit
 python gerar.py kits --kit "Hérnia de Hiato" --preview   # HTML no navegador, sem gerar PDF
 ```
+Um PDF por kit em `saida/propostas/`; o Actions também os gera e `gerar.py site` os copia para `site/propostas/` e escreve
+`site/propostas.json`, de onde o menu **"Catálogos e propostas"** do site monta a lista (kit novo na aba KITS = aparece sozinho).
 Um PDF por kit em `saida/propostas/` (ex.: `Kit_Proposta_Basica_Hernia_de_Hiato_MDTech.pdf`). Os kits ficam na aba
 **KITS** da planilha-base: `Kit` · `Grupo` · `Ordem` · `Código` · `Qtd` · `Observação` · `Preço unit. (R$)`. A proposta é uma **relação completa**: todos
 os itens fazem parte do kit; `Grupo` só divide a lista em seções do PDF (ex.: Itens principais, Porta-agulhas) e `Qtd` é a
