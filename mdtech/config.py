@@ -38,4 +38,17 @@ ICONES_ANGULO = ASSETS / "icones" / "angulos"
 CONTATO_URL   = ""
 CONTATO_LABEL = "Fale com a MDTech"
 
+# Dois trilhos de saída (nunca misturar):
+#   digital  -> fichas e catálogos leves (foto 1200 px). É o que o site/Actions/servidor usam.
+#   impresso -> catálogo para a gráfica (foto ORIGINAL). Só local, nunca publicado.
+SAIDA_DIGITAL  = SAIDA / "digital"
+SAIDA_IMPRESSO = SAIDA / "impresso"
+
+# Capas (PDF A4 do InDesign). Só o catálogo completo digital tem capa por enquanto; os catálogos
+# por especialidade saem só com o miolo + índice até existirem as capas (assets/capas/<Especialidade>.pdf).
+CAPAS = ASSETS / "capas"
+CAPA_COMPLETO = CAPAS / "Catalogo_Completo.pdf"
+
 SAIDA.mkdir(exist_ok=True)
+SAIDA_DIGITAL.mkdir(exist_ok=True)
+SAIDA_IMPRESSO.mkdir(exist_ok=True)

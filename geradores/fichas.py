@@ -232,14 +232,14 @@ def gerar(codigo=None, todos=False, separados=False):
             slug=_slug(it["codigo"])
             if cont[slug]>1:
                 slug=f"{slug}_{_slug(it.get('especialidade',''))}"
-            saida=str(config.SAIDA/f"Ficha_{slug}_MDTech.pdf")
+            saida=str(config.SAIDA_DIGITAL/f"Ficha_{slug}_MDTech.pdf")
             HTML(string=_doc_html(it), base_url=str(config.IMAGENS)).write_pdf(saida)
             saidas.append(saida)
-        print(f"Fichas separadas: {len(saidas)} PDFs -> {config.SAIDA}")
+        print(f"Fichas separadas: {len(saidas)} PDFs -> {config.SAIDA_DIGITAL}")
         return saidas
     if todos:
         docs=[_doc_html(it) for it in itens]
-        saida=str(config.SAIDA/"Fichas_MDTech.pdf")
+        saida=str(config.SAIDA_DIGITAL/"Fichas_MDTech.pdf")
         # une as páginas: renderiza cada uma e concatena
         from weasyprint import HTML as _H
         docs_render=[_H(string=d, base_url=str(config.IMAGENS)).render() for d in docs]
@@ -251,7 +251,7 @@ def gerar(codigo=None, todos=False, separados=False):
     it=B.por_codigo(itens,codigo)
     if not it:
         print(f"[erro] código não encontrado: {codigo}"); return None
-    saida=str(config.SAIDA/f"Ficha_{_slug(it['codigo'])}_MDTech.pdf")
+    saida=str(config.SAIDA_DIGITAL/f"Ficha_{_slug(it['codigo'])}_MDTech.pdf")
     HTML(string=_doc_html(it), base_url=str(config.IMAGENS)).write_pdf(saida)
     print("Ficha gerada:", saida)
     return saida

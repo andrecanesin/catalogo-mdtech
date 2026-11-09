@@ -5,6 +5,8 @@
     python painel.py              # abre http://127.0.0.1:8800 no navegador
     python painel.py --porta 9000 --sem-navegador
 
+Dois trilhos, sempre separados: DIGITAL (fichas, catálogos leves e dados do site; é o que vai ao ar) e
+IMPRESSO (catálogo para a gráfica, com a foto ORIGINAL; só nesta máquina, nunca publicado).
 Só usa a biblioteca padrão. Escuta apenas em 127.0.0.1 (nunca na rede) e só roda
 as ações da lista ACOES abaixo — nada digitado no navegador vira comando.
 O painel NÃO faz commit nem push: mostra o que mudou (git status) e lembra de publicar.
@@ -19,20 +21,28 @@ SITE = RAIZ / "site"
 SAIDA = RAIZ / "saida"
 GERAR = str(RAIZ / "gerar.py")
 
-# nome -> (rótulo, descrição, [passos]); cada passo = argumentos do gerar.py
+# nome -> (rótulo, descrição, [passos], grupo); cada passo = argumentos do gerar.py
 ACOES = {
+    # ---- DIGITAL: o que vai ao ar (foto reduzida, arquivos leves) ----
     "conferir":  ("Conferir pendências", "Fotos casadas × faltantes e painel de pendências (dashboard).",
-                  [["checklist"], ["dashboard"]]),
-    "fichas":    ("Gerar fichas técnicas", "1 PDF por código (é o que o botão do site usa).",
-                  [["fichas", "--separados"]]),
-    "catalogos": ("Gerar catálogos (PDF)", "Um PDF por especialidade + completo. Pesado (130 MB+), nunca vai pro git.",
-                  [["catalogo", "--todos", "--perfil", "digital"]]),
-    "site":      ("Atualizar dados do site", "produtos.json, fotos e fichas dentro de site/ (rode as fichas antes).",
-                  [["site"]]),
+                  [["checklist"], ["dashboard"]], "digital"),
+    "fichas":    ("Gerar fichas técnicas", "1 PDF por código, foto reduzida (é o que o botão do site usa).",
+                  [["fichas", "--separados"]], "digital"),
+    "catalogos": ("Gerar catálogos digitais", "Um PDF por linha (miolo + índice) + o completo com capa, foto reduzida.",
+                  [["catalogo", "--todos", "--perfil", "digital"]], "digital"),
+    "site":      ("Atualizar dados do site", "produtos.json, fotos, fichas e catálogos dentro de site/ (gere as fichas antes).",
+                  [["site"]], "digital"),
     "preparar":  ("Preparar site para conferir", "Fichas + dados do site, na ordem certa. Depois abra o site local.",
-                  [["fichas", "--separados"], ["site"]]),
-    "tudo":      ("Gerar tudo (local)", "Checklist, dashboard, catálogos e fichas — como `gerar.py tudo`.",
-                  [["tudo"]]),
+                  [["fichas", "--separados"], ["site"]], "digital"),
+    "tudo":      ("Gerar tudo digital", "Fichas + catálogos digitais + dados do site, na ordem certa.",
+                  [["fichas", "--separados"], ["catalogo", "--todos", "--perfil", "digital"], ["site"]], "digital"),
+    # ---- IMPRESSO: só nesta máquina (foto original, nunca publica) ----
+    "imp_par":   ("Catálogos impressos · separado", "Miolo com páginas PAR, para montar capa + miolo + contracapa no InDesign.",
+                  [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "par"]], "impresso"),
+    "imp_impar": ("Catálogos impressos · unificado", "Miolo com páginas ÍMPAR, para o catálogo unificado (capas das linhas).",
+                  [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "impar"]], "impresso"),
+    "imp_mult4": ("Catálogos impressos · caderno", "Miolo com total de páginas múltiplo de 4.",
+                  [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "mult4"]], "impresso"),
 }
 
 _lock = threading.Lock()
@@ -90,7 +100,8 @@ def estado():
         "site": {"produtos": meta.get("total"), "com_foto": meta.get("com_foto"),
                  "fichas": _contar(SITE / "fichas", "*.pdf"),
                  "catalogos": _contar(SITE / "catalogos", "*.pdf")},
-        "saida_pdfs": _contar(SAIDA, "*.pdf"),
+        "digital_pdfs": _contar(SAIDA / "digital", "*.pdf"),
+        "impresso_pdfs": _contar(SAIDA / "impresso", "*.pdf"),
         "git": git,
     }
 
@@ -119,7 +130,7 @@ class H(SimpleHTTPRequestHandler):
         u = urlparse(self.path)
         if u.path == "/":
             b = PAGINA.replace("__ACOES__", json.dumps(
-                {k: {"rotulo": v[0], "desc": v[1]} for k, v in ACOES.items()}, ensure_ascii=False)).encode("utf-8")
+                {k: {"rotulo": v[0], "desc": v[1], "grupo": v[3]} for k, v in ACOES.items()}, ensure_ascii=False)).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(b)))
@@ -161,12 +172,13 @@ header{background:var(--navy);color:#fff;padding:16px 20px;border-bottom:4px sol
 header b{font-size:18px}header small{display:block;opacity:.75;font-size:12px}
 main{max-width:980px;margin:0 auto;padding:20px;display:grid;gap:20px}
 h2{font-size:14px;margin:0 0 10px;color:var(--navy);text-transform:uppercase;letter-spacing:.04em}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}
 .n{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:12px}.n b{font-size:22px;color:var(--navy);display:block}.n span{font-size:12px;color:var(--cinza)}
 .acoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
 button.a{display:flex;flex-direction:column;justify-content:flex-start;text-align:left;background:#fff;border:1px solid var(--linha);border-radius:10px;padding:14px;cursor:pointer;font:inherit;min-height:44px}
 button.a:hover:not(:disabled){border-color:var(--ciano)}button.a:focus-visible{outline:3px solid var(--ciano)}
-button.a:disabled{opacity:.5;cursor:not-allowed}button.a b{display:block;color:var(--navy)}button.a span{font-size:12px;color:var(--cinza)}
+button.a:disabled{opacity:.5;cursor:not-allowed}
+button.a.impresso{border-left:4px solid #F5A623}button.a.digital{border-left:4px solid var(--ciano)}button.a b{display:block;color:var(--navy)}button.a span{font-size:12px;color:var(--cinza)}
 pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;max-height:360px;overflow:auto;font:12px/1.5 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
 .s{font-size:13px;margin:8px 0;color:var(--cinza)}.s.ok{color:var(--ok)}.s.erro{color:var(--erro)}
 .git{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:12px;font:12px/1.6 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
@@ -175,8 +187,10 @@ a.l{color:var(--navy);font-weight:600}
 <header><b>Painel MDTech</b><small>Gera fichas, catálogos e dados do site · só nesta máquina</small></header>
 <main>
 <section><h2>Situação atual</h2><div class="cards" id="cards"></div></section>
-<section><h2>Ações</h2><div class="acoes" id="acoes"></div>
-<p class="s">Para conferir: <a class="l" href="/site/index.html" target="_blank">abrir o site local</a> (usa o que está em <code>site/</code>).</p></section>
+<section><h2>Digital · vai ao ar</h2><div class="acoes" id="acoes-digital"></div>
+<p class="s">Para conferir: <a class="l" href="/site/index.html" target="_blank">abrir o site local</a> (usa o que está em <code>site/</code>). PDFs em <code>saida/digital/</code>.</p></section>
+<section><h2>Impresso · só nesta máquina</h2><div class="acoes" id="acoes-impresso"></div>
+<p class="s">Foto em <b>alta resolução (original)</b>; os PDFs ficam em <code>saida/impresso/</code> e <b>nunca</b> vão para o site, o Actions ou o git.</p></section>
 <section><h2>Execução</h2><div class="s" id="st">Nada em execução.</div><pre id="log" aria-live="polite">Aguardando…</pre></section>
 <section><h2>Pendente de publicar (git status)</h2><div class="git" id="git">…</div>
 <p class="s">O painel não faz commit nem push. Para publicar: <code>git add</code>, <code>git commit</code>, <code>git push origin main</code> e acompanhar a aba Actions.</p></section>
@@ -184,14 +198,15 @@ a.l{color:var(--navy);font-weight:600}
 <script>
 const ACOES=__ACOES__, $=s=>document.querySelector(s);
 const hd={"X-Painel":"1","Content-Type":"application/json"};
-$("#acoes").innerHTML=Object.entries(ACOES).map(([k,v])=>`<button class="a" data-a="${k}"><b>${v.rotulo}</b><span>${v.desc}</span></button>`).join("");
+for(const g of ["digital","impresso"])
+  $("#acoes-"+g).innerHTML=Object.entries(ACOES).filter(([k,v])=>v.grupo===g).map(([k,v])=>`<button class="a ${g}" data-a="${k}"><b>${v.rotulo}</b><span>${v.desc}</span></button>`).join("");
 document.querySelectorAll("button.a").forEach(b=>b.onclick=async()=>{
   const r=await fetch("/api/rodar",{method:"POST",headers:hd,body:JSON.stringify({acao:b.dataset.a})});
   if(!r.ok){const e=await r.json();$("#st").className="s erro";$("#st").textContent=e.erro||"erro";}
   atualizar();});
 async function atualizar(){
   const d=await (await fetch("/api/estado")).json(), j=d.job, s=d.site;
-  $("#cards").innerHTML=[["Produtos no site",s.produtos??"—"],["Com foto",s.com_foto??"—"],["Fichas em site/",s.fichas],["Catálogos em site/",s.catalogos],["PDFs em saida/",d.saida_pdfs]]
+  $("#cards").innerHTML=[["Produtos no site",s.produtos??"—"],["Com foto",s.com_foto??"—"],["Fichas em site/",s.fichas],["Catálogos em site/",s.catalogos],["PDFs digitais",d.digital_pdfs],["PDFs impressos",d.impresso_pdfs]]
     .map(([k,v])=>`<div class="n"><b>${v}</b><span>${k}</span></div>`).join("");
   document.querySelectorAll("button.a").forEach(b=>b.disabled=j.rodando);
   const st=$("#st");

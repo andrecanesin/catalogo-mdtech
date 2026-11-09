@@ -32,7 +32,8 @@ o GitHub Actions os recria a cada publicação.
 | Planilha (dados) | Claude edita só as células pedidas e confere o diff célula a célula | PR → ok → merge → Actions refaz as fichas (~2,5 min) |
 | Layout das fichas ou do catálogo | Claude ajusta e confere o preview HTML (`--preview`) | PR → ok → merge → Actions refaz as fichas |
 | Fotos novas (`assets/imagens/`) | André coloca os arquivos (nome = código) | commit/PR → Actions refaz fotos e fichas |
-| Catálogos PDF | André gera na máquina (painel) e sobe como Release; só quando a base ou o layout mudam | fora do git e do Actions (`site/PRODUCAO.md`) |
+| Catálogos digitais (PDF) | Gerados com foto reduzida em `saida/digital/` (painel, bloco Digital); completo com capa, por linha só miolo + índice | Release (`site/PRODUCAO.md`); nunca no git |
+| Catálogos impressos | André gera na máquina (painel, bloco Impresso): foto ORIGINAL, paridade, `saida/impresso/` | só local: nunca site, Actions nem git |
 | Código Python (`mdtech/`, `geradores/`) | Claude altera e testa localmente | PR → ok → merge |
 O Actions guarda as fichas em cache; a chave muda com planilha, `geradores/fichas.py`, `gerar.py`, `mdtech/*.py`, `assets/` e
 `requirements.txt`. Para forçar a regeneração: Actions → Publicar site → Run workflow → marcar "Ignorar o cache".
@@ -44,7 +45,8 @@ python gerar.py fichas --separados    # antes de 'site', para o botão de downlo
 python gerar.py site                  # produtos.json + fotos + fichas -> site/
 python gerar.py dashboard             # painel de pendências (inclui status das fotos)
 python gerar.py catalogo Laparoscopia --preview   # preview HTML sem gerar PDF
-python painel.py                      # painel local (127.0.0.1:8800) com botões para os comandos acima
+python gerar.py catalogo --todos --perfil impressao --paridade par   # impresso (local, foto original, saida/impresso/)
+python painel.py                      # painel local (127.0.0.1:8800): blocos Digital e Impresso
 ```
 Todas as flags: `LEIA-ME.md`.
 

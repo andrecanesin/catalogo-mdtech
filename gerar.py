@@ -28,7 +28,7 @@ def main():
     p = sub.add_parser("catalogo")
     p.add_argument("especialidade", nargs="?")
     p.add_argument("--todos", action="store_true")
-    p.add_argument("--perfil", choices=["impressao", "digital"], default="impressao",
+    p.add_argument("--perfil", choices=["impressao", "digital"], default="digital",
                    help="impressao=paridade/brancos p/ gráfica · digital=índice navegável, sem brancos")
     p.add_argument("--paridade", choices=["nenhuma", "par", "impar", "mult4"],
                    default="nenhuma",

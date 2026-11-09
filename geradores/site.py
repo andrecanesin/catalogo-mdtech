@@ -118,7 +118,7 @@ def _copiar_fichas(produtos, outdir):
     o mesmo sufixo de slug que geradores/fichas.py --separados gera."""
     fichadir = outdir / "fichas"
     copiadas = 0
-    candidatos = list(config.SAIDA.glob("Ficha_*_MDTech.pdf"))
+    candidatos = list(config.SAIDA_DIGITAL.glob("Ficha_*_MDTech.pdf"))
     if not candidatos:
         return 0
     fichadir.mkdir(parents=True, exist_ok=True)
@@ -139,15 +139,15 @@ def _copiar_fichas(produtos, outdir):
 
 
 def _copiar_catalogos(outdir):
-    """Copia os miolos de catálogo (saida/Miolo_Catalogo_<Especialidade>_MDTech.pdf,
-    gerados por `gerar.py catalogo --todos`) para site/catalogos/ e monta um
-    Catalogo_Completo_MDTech.pdf juntando todos (via pypdf).
+    """Copia os miolos de catálogo DIGITAIS (saida/digital/Miolo_Catalogo_<Especialidade>_MDTech.pdf,
+    gerados por `gerar.py catalogo --todos --perfil digital`) para site/catalogos/ e monta um
+    Catalogo_Completo_MDTech.pdf com a capa (assets/capas/Catalogo_Completo.pdf) + todos os miolos (via pypdf).
 
     Nome de saída no site fica sem o prefixo 'Miolo_' (é o miolo mesmo, sem
     capa/contra do InDesign — mas é o PDF completo e navegável, serve pra
     download direto)."""
     catdir = outdir / "catalogos"
-    candidatos = sorted(config.SAIDA.glob("Miolo_Catalogo_*_MDTech.pdf"))
+    candidatos = sorted(config.SAIDA_DIGITAL.glob("Miolo_Catalogo_*_MDTech.pdf"))   # só o trilho digital
     if not candidatos:
         return 0
     catdir.mkdir(parents=True, exist_ok=True)
@@ -162,6 +162,10 @@ def _copiar_catalogos(outdir):
         try:
             from pypdf import PdfWriter
             w = PdfWriter()
+            if config.CAPA_COMPLETO.exists():          # capa (InDesign) só no catálogo completo
+                w.append(str(config.CAPA_COMPLETO), outline_item="Capa")
+            else:
+                print(f"[aviso] sem capa em {config.CAPA_COMPLETO}: catálogo completo sai só com os miolos")
             for src in copiados:
                 w.append(str(src))
             w.write(str(catdir / "Catalogo_Completo_MDTech.pdf"))

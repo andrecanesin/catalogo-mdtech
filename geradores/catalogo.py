@@ -104,12 +104,20 @@ def selo_angulo_html(angulo, familia):
         return ""
     return f'<span class="selo-ang"><img src="data:image/png;base64,{ic}"></span>'
 
+# Perfil impressão = foto ORIGINAL (alta resolução p/ a gráfica); digital = foto reduzida (1200 px, JPEG).
+FOTO_ALTA = False
+
+def _foto_uri(img):
+    if FOTO_ALTA:
+        ext=os.path.splitext(img)[1].lstrip(".").lower() or "jpeg"
+        return f"data:image/{ext};base64,{b64file(img)}"
+    return f"data:image/jpeg;base64,{F.jpeg_reduzido_b64(img)}"
+
 def card(i,accent):
     img=find_img(i["Código"])
     selo = selo_angulo_html(i.get("Ângulo"), i.get("Família"))
     if img:
-        ext=os.path.splitext(img)[1].lstrip(".").lower() or "jpeg"
-        photo=f'<div class="cphoto"><img src="data:image/{ext};base64,{b64file(img)}">{selo}</div>'
+        photo=f'<div class="cphoto"><img src="{_foto_uri(img)}">{selo}</div>'
     else:
         photo=(f'<div class="cphoto ph phred"><span class="pht">sem foto</span>'
                f'<span class="phc">{esc(i["Código"])}</span>{selo}</div>')
@@ -273,6 +281,8 @@ def preview(espec_nome, perfil="digital"):
     centralizada, com a mesma margem de 18mm que o PDF usa) — sem isso o
     conteúdo ficaria esticado 100% da largura da tela, bem diferente do PDF.
     Esse CSS extra NÃO entra no PDF final (só é usado aqui no preview)."""
+    global FOTO_ALTA
+    FOTO_ALTA = (perfil!="digital")
     incluir_indice = (perfil=="digital")
     doc, skus, total, nfam, accent = _doc_html(espec_nome, incluir_indice)
     css_preview = """<style>
@@ -288,10 +298,13 @@ def preview(espec_nome, perfil="digital"):
     return str(out)
 
 
-def build(espec_nome, perfil="impressao", paridade="nenhuma"):
+def build(espec_nome, perfil="digital", paridade="nenhuma"):
+    global FOTO_ALTA
+    FOTO_ALTA = (perfil!="digital")          # impressão = foto original
     incluir_indice = (perfil=="digital")     # digital = navegável com índice
     doc, skus, total, nfam, accent = _doc_html(espec_nome, incluir_indice)
-    out=str(config.SAIDA / f"Miolo_Catalogo_{_slug(espec_nome)}_MDTech.pdf")
+    pasta = config.SAIDA_DIGITAL if perfil=="digital" else config.SAIDA_IMPRESSO
+    out=str(pasta / f"Miolo_Catalogo_{_slug(espec_nome)}_MDTech.pdf")
     HTML(string=doc,base_url=IMGDIR).write_pdf(out)
     brancos = 0 if perfil=="digital" else _pad_paridade(out, paridade)
     from pypdf import PdfReader
@@ -301,7 +314,7 @@ def build(espec_nome, perfil="impressao", paridade="nenhuma"):
     return out, npag
 
 
-def gerar(especialidade=None, todos=False, paridade="nenhuma", perfil="impressao"):
+def gerar(especialidade=None, todos=False, paridade="nenhuma", perfil="digital"):
     print(f"Miolo (layout oficial WeasyPrint) · perfil='{perfil}'"
           + (f" · paridade='{paridade}'" if perfil!='digital' else " · índice navegável, sem brancos"))
     alvos = list(ESPECS.keys()) if todos else [especialidade]

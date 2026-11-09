@@ -78,7 +78,9 @@ catalogo-mdtech/
 │   ├── card.py                        card de produto avulso (PIL, pra rede social)
 │   ├── dashboard.py                   painel de pendências (fotos faltando, ANVISA, etc.)
 │   └── site.py                        exporta a base -> site/produtos.json + copia fotos/fichas/catálogos
-├── saida/                             TODO PDF/preview gerado localmente cai aqui (git-ignorado)
+├── saida/                             PDFs/previews gerados localmente (git-ignorado)
+│   ├── digital/                       fichas e catálogos leves (foto 1200 px): o que vai ao ar
+│   └── impresso/                      catálogos para a gráfica (foto original): só local, nunca publicado
 ├── gerar.py                           CLI único — ponto de entrada de tudo
 └── site/                              catálogo digital — pasta comum do repositório
     ├── PRODUCAO.md                    como ligar o download dos catálogos PDF (Release)
