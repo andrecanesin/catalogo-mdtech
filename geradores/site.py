@@ -174,6 +174,30 @@ def _copiar_catalogos(outdir):
     return len(copiados)
 
 
+def _copiar_propostas(outdir):
+    """Copia as propostas básicas (saida/propostas/<Kit>_MDTech.pdf, geradas por `gerar.py kits`) para
+    site/propostas/ e escreve site/propostas.json com a lista dos kits (o site monta o menu a partir dele)."""
+    pdir = outdir / "propostas"
+    lista = []
+    try:
+        kits = B.carregar_kits()
+    except ValueError:
+        kits = {}
+    for nome, linhas in kits.items():
+        src = config.SAIDA_PROPOSTAS / f"{T.slug_arquivo(nome)}_MDTech.pdf"
+        if not src.exists():
+            print(f"[aviso] proposta sem PDF (rode 'python gerar.py kits'): {nome}")
+            continue
+        pdir.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, pdir / src.name)
+        partes = [p.strip() for p in nome.split(" - ") if p.strip()]
+        lista.append({"nome": nome, "titulo": partes[-1], "tipo": " · ".join(partes[1:-1]) or "Proposta básica",
+                      "arquivo": f"propostas/{src.name}", "itens": len(linhas),
+                      "unidades": sum((r["qtd"] or 1) for r in linhas)})
+    (outdir / "propostas.json").write_text(json.dumps(lista, ensure_ascii=False, indent=2), encoding="utf-8")
+    return len(lista)
+
+
 def gerar():
     itens = B.carregar()
 
@@ -221,6 +245,7 @@ def gerar():
 
     fichas_copiadas = _copiar_fichas(produtos, outdir)
     catalogos_copiados = _copiar_catalogos(outdir)
+    propostas_copiadas = _copiar_propostas(outdir)
 
     # facetas p/ montar os filtros do front
     def _facet(campo):
@@ -258,6 +283,8 @@ def gerar():
           f"(rode 'python gerar.py fichas --separados' antes, se faltando)")
     print(f"Catálogos PDF copiados: {catalogos_copiados} "
           f"(rode 'python gerar.py catalogo' antes, se faltando)")
+    print(f"Propostas básicas copiadas: {propostas_copiadas} "
+          f"(rode 'python gerar.py kits' antes, se faltando)")
     print(f"Facetas: {len(meta['especialidades'])} especialidades · "
           f"{len(meta['familias'])} famílias · {len(meta['fornecedores'])} fornecedores")
     return outdir

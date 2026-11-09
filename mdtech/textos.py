@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 """Tratamento de textos vindos da base (que estão em CAIXA ALTA com specs no fim)."""
-import re, base64
+import re, base64, unicodedata
 from . import config
+
+def slug_arquivo(texto):
+    """'Kit - Proposta Básica - Hérnia de Hiato' -> 'Kit_Proposta_Basica_Hernia_de_Hiato' (nome de arquivo)."""
+    s = unicodedata.normalize("NFKD", str(texto)).encode("ascii", "ignore").decode()
+    return re.sub(r"[^A-Za-z0-9]+", "_", s).strip("_")
 
 # palavras que ficam minúsculas no title case (exceto se forem a 1ª palavra)
 _STOP = {"de", "da", "do", "das", "dos", "e", "com", "para", "em",

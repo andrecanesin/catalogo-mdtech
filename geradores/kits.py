@@ -20,9 +20,7 @@ from geradores.fichas import font_face, b64file, esc, accent, NAVY, INK, LINE, M
 
 
 
-def _slug(nome):
-    s = unicodedata.normalize("NFKD", nome).encode("ascii", "ignore").decode()
-    return re.sub(r"[^A-Za-z0-9]+", "_", s).strip("_")
+_slug = T.slug_arquivo
 
 
 def _brl(v):

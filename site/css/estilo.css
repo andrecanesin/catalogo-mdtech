@@ -56,6 +56,9 @@ img{display:block;max-width:100%;}
 .menu-catalogos a:hover{background:var(--panel);color:var(--navy);}
 .menu-catalogos a svg{flex:none;width:16px;height:16px;stroke:var(--ciano);}
 .menu-catalogos .sep{height:1px;background:var(--line);margin:6px 4px;}
+.menu-catalogos .grupo-menu{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);
+  font-weight:600;padding:8px 12px 4px;}
+.menu-catalogos a small{margin-left:auto;color:var(--mut);font-size:12px;font-weight:400;}
 .menu-catalogos .completo{color:var(--navy);font-weight:700;}
 
 /* ---------- faixa de ajuda (antes da grade / botões de orçamento) ---------- */
