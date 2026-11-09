@@ -34,8 +34,9 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - Diâmetro sempre via `diametro_fmt` (mm ou Fr). Nunca montar "mm" na mão.
 - Código em 2 especialidades = 1 produto com várias tags.
 - **Botão "Suporte"** (canto da tela, `site/js/suporte.js`, textos em `config.js` → `suporte`): suporte INTERNO (problema técnico, dúvida de uso,
-  dado do produto, sugestão), não venda. Menu guiado → respostas rápidas → WhatsApp com mensagem pronta e contexto (página, produto, aparelho).
-  Sem backend; usa o WhatsApp do contato; sem número, o botão some. Fica acima da bandeja de orçamento (`--h-bandeja`).
+  dado do produto, sugestão), não venda. Menu guiado → respostas rápidas → ENVIO POR E-MAIL dentro da própria caixa (Web3Forms; chave em
+  `suporte.chaveEmail`, destino mkt@triomed.com.br) com contexto (página, produto, aparelho). Sem a chave, cai no WhatsApp com mensagem
+  pronta; com a chave, o WhatsApp vira link secundário. Sem backend próprio; sem chave e sem número, o botão some. Fica acima da bandeja de orçamento (`--h-bandeja`).
 
 ## Contrato HTML ↔ JS (não quebrar)
 - Pode mudar CSS, texto e estrutura visual. **Não renomear/remover `id` ou `class` usados pelo JS** sem ajustar o JS junto (a falha é silenciosa).
