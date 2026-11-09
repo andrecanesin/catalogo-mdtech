@@ -17,6 +17,12 @@ window.MD = (function () {
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
+  // escapa texto antes de entrar em innerHTML (URL e dados nunca viram HTML)
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g,
+      c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
   // ---- dados ----
   async function carregar() {
     const [prod, meta] = await Promise.all([
@@ -97,7 +103,72 @@ window.MD = (function () {
     return `mailto:${mail}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto(produtos))}`;
   }
 
-  return { cfg, corEsp, norm, carregar,
+  // ---- bandeja de orçamento (grade e página de produto usam a mesma) ----
+  // Markup esperado: #bandeja com #qt, #bt-lista, #bt-limpar, #bt-mail, #bt-wpp.
+  function ligarBandeja(produtos) {
+    const bandeja = document.getElementById("bandeja");
+    if (!bandeja) return;
+    const $ = id => document.getElementById(id);
+    const byCod = {}; produtos.forEach(p => byCod[p.codigo] = p);
+
+    // painel "Ver lista": itens com botão de remover (criado por JS, sem depender de markup)
+    const pop = document.createElement("div");
+    pop.className = "lista-pop"; pop.id = "lista-pop"; pop.hidden = true;
+    pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Itens no orçamento");
+    document.body.appendChild(pop);
+    const btLista = $("bt-lista");
+
+    function renderLista() {
+      const itens = lista();
+      pop.innerHTML = `<div class="lista-head"><strong>Itens no orçamento</strong>
+          <button class="lista-x" aria-label="Fechar lista">×</button></div>
+        <ul>${itens.map(c => {
+          const p = byCod[c];
+          return `<li><span class="mono">${esc(c)}</span><span class="n">${esc(p ? p.nome : "")}</span>
+            <button data-rem="${esc(c)}" aria-label="Remover ${esc(c)} do orçamento">Remover</button></li>`;
+        }).join("")}</ul>
+        <button class="lista-limpar">Limpar lista</button>`;
+      pop.querySelector(".lista-x").onclick = fecharLista;
+      pop.querySelector(".lista-limpar").onclick = confirmarLimpar;
+      pop.querySelectorAll("[data-rem]").forEach(b => b.onclick = () => remover(b.dataset.rem));
+    }
+    function abrirLista() {
+      renderLista(); pop.hidden = false;
+      if (btLista) btLista.setAttribute("aria-expanded", "true");
+      pop.querySelector(".lista-x").focus();
+    }
+    function fecharLista() {
+      if (pop.hidden) return;
+      pop.hidden = true;
+      if (btLista) { btLista.setAttribute("aria-expanded", "false"); btLista.focus(); }
+    }
+    if (btLista) {
+      btLista.setAttribute("aria-haspopup", "dialog"); btLista.setAttribute("aria-expanded", "false");
+      btLista.onclick = () => pop.hidden ? abrirLista() : fecharLista();
+    }
+    document.addEventListener("keydown", e => { if (e.key === "Escape") fecharLista(); });
+
+    function atualizar() {
+      const n = lista().length;
+      bandeja.classList.toggle("on", n > 0);
+      document.body.classList.toggle("com-bandeja", n > 0);
+      $("qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento`;
+      const wpp = linkWhatsApp(produtos), mail = linkEmail(produtos);
+      const bw = $("bt-wpp"), bm = $("bt-mail");
+      if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";
+      if (mail) { bm.style.display = ""; bm.onclick = () => location.href = mail; } else bm.style.display = "none";
+      document.documentElement.style.setProperty("--h-bandeja", n > 0 ? bandeja.offsetHeight + "px" : "0px");
+      if (n === 0) { pop.hidden = true; if (btLista) btLista.setAttribute("aria-expanded", "false"); }
+      else if (!pop.hidden) renderLista();
+    }
+    function confirmarLimpar() { if (confirm("Remover todos os itens do orçamento?")) limpar(); }
+    $("bt-limpar").onclick = confirmarLimpar;
+    document.addEventListener("orcamento:mudou", atualizar);
+    window.addEventListener("resize", atualizar);
+    atualizar();
+  }
+
+  return { cfg, corEsp, norm, esc, carregar, ligarBandeja,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, remover, limpar,
            texto, linkWhatsApp, linkEmail };

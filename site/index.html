@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+  <a class="skip" href="#grade">Pular para os produtos</a>
   <header class="top">
     <div class="wrap">
       <a class="brand" href="index.html" aria-label="MDTech — início">
@@ -37,6 +38,7 @@
   </div>
 
   <main class="wrap">
+    <h1 class="sr-only">Catálogo MDTech</h1>
     <div class="layout">
       <aside class="side" id="filtros" aria-label="Filtros"></aside>
       <section>
@@ -48,7 +50,7 @@
           <div class="cont" id="cont"></div>
           <div class="chips" id="chips"></div>
         </div>
-        <div class="grade" id="grade"></div>
+        <div class="grade" id="grade" tabindex="-1"></div>
         <div class="paginacao" id="paginacao"></div>
       </section>
     </div>
@@ -60,11 +62,14 @@
     <div class="wrap">
       <span class="qt" id="qt"></span>
       <span class="cresc">Monte sua lista e peça um orçamento — sem compromisso.</span>
+      <button class="bt-lista" id="bt-lista">Ver lista</button>
       <button class="bt-ver" id="bt-limpar">Limpar lista</button>
       <button class="bt-mail" id="bt-mail">Pedir por e-mail</button>
       <button class="bt-wpp" id="bt-wpp">Pedir no WhatsApp</button>
     </div>
   </div>
+
+  <div class="rodape">MDTech · Tecnologia que abre caminhos</div>
 
   <script src="js/config.js"></script>
   <script src="js/dados.js"></script>

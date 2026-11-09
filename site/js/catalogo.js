@@ -22,12 +22,22 @@
     const { termo, especialidades, familias } = estado;
     if (termo) {
       const alvo = MD.norm(`${p.codigo} ${p.nome} ${p.descricao}`);
-      if (!alvo.includes(termo)) return false;
+      // todas as palavras precisam aparecer, em qualquer ordem ("pinça maryland" = "maryland pinça")
+      if (!termo.split(/\s+/).filter(Boolean).every(t => alvo.includes(t))) return false;
     }
     if (especialidades.size && !(p.especialidades || []).some(e => especialidades.has(e))) return false;
     if (familias.size && !(p.familias || []).some(f => familias.has(f))) return false;
     return true;
   }
+
+  // estado visual do botão "+ Adicionar no orçamento" (sem recriar a grade: o foco do teclado fica onde está)
+  function marcarAdd(btn) {
+    const dentro = MD.tem(btn.dataset.cod);
+    btn.classList.toggle("in", dentro);
+    btn.setAttribute("aria-pressed", dentro ? "true" : "false");
+    btn.textContent = dentro ? "✓ No orçamento" : "+ Adicionar no orçamento";
+  }
+  function sincronizarBotoes() { document.querySelectorAll(".card .add").forEach(marcarAdd); }
 
   // Com filtro de família ativo, códigos listados em cfg.ultimosNaFamilia[familia]
   // vão para o fim da lista (ordem estável). Sem filtro de família, vale a ordem da base.
@@ -47,16 +57,17 @@
     const href = `produto.html?codigo=${encodeURIComponent(p.codigo)}`;
     if (p.foto) {
       foto = el("a", "foto"); foto.href = href;
-      const im = el("img"); im.src = p.foto; im.alt = p.nome; im.loading = "lazy";
+      const im = el("img"); im.src = p.foto_thumb || p.foto; im.alt = `${p.codigo} — ${p.nome}`;
+      im.loading = "lazy"; im.decoding = "async";
       foto.appendChild(im);
     } else {
       foto = el("a", "foto sem"); foto.href = href;
-      foto.innerHTML = `<span class="t">sem foto</span><span class="c mono">${p.codigo}</span>`;
+      foto.innerHTML = `<span class="t">sem foto</span><span class="c mono">${MD.esc(p.codigo)}</span>`;
     }
     const esps = (p.especialidades && p.especialidades.length ? p.especialidades : [p.especialidade]).filter(Boolean);
     const tags = el("span", "tags");
     esps.forEach(e => {
-      const t = el("span", "tag", e);
+      const t = el("span", "tag", MD.esc(e));
       t.style.background = MD.corEsp(e);
       tags.appendChild(t);
     });
@@ -65,27 +76,27 @@
 
     const corpo = el("div", "corpo");
     const link = el("a"); link.href = href;
-    link.innerHTML = `<div class="cod mono">${p.codigo}</div><div class="nome">${p.nome || p.codigo}</div>`;
+    link.innerHTML = `<div class="cod mono">${MD.esc(p.codigo)}</div><div class="nome">${MD.esc(p.nome || p.codigo)}</div>`;
     link.querySelector(".cod").style.color = cor;
     corpo.appendChild(link);
-    corpo.appendChild(el("div", "specs", specsLinha(p) || "&nbsp;"));
+    corpo.appendChild(el("div", "specs", MD.esc(specsLinha(p)) || "&nbsp;"));
 
-    const add = el("button", "add" + (MD.tem(p.codigo) ? " in" : ""));
-    add.innerHTML = MD.tem(p.codigo) ? "✓ No orçamento" : "+ Adicionar no orçamento";
-    add.addEventListener("click", () => {
-      const dentro = MD.alternar(p.codigo);
-      add.classList.toggle("in", dentro);
-      add.innerHTML = dentro ? "✓ No orçamento" : "+ Adicionar no orçamento";
-    });
+    const add = el("button", "add");
+    add.dataset.cod = p.codigo;
+    marcarAdd(add);
+    add.addEventListener("click", () => MD.alternar(p.codigo));   // o evento orcamento:mudou atualiza os botões
     corpo.appendChild(add);
 
     card.appendChild(corpo);
     return card;
   }
 
-  function facetGrupo(nome, valores, chave, contagem, classe) {
-    const box = el("div", "grupo" + (classe ? " " + classe : ""));
-    box.appendChild(el("h3", null, nome));
+  function facetGrupo(nome, valores, chave, contagem, classe, colapsavel) {
+    const box = colapsavel ? el("details", "grupo " + classe) : el("div", "grupo" + (classe ? " " + classe : ""));
+    if (colapsavel) {
+      box.appendChild(el("summary", null, `${MD.esc(nome)} (${valores.length})`));
+      if (window.matchMedia("(min-width:901px)").matches || estado[chave].size) box.open = true;
+    } else box.appendChild(el("h3", null, nome));
     valores.forEach(v => {
       const lab = el("label", "facet");
       const cb = el("input"); cb.type = "checkbox"; cb.value = v;
@@ -96,7 +107,7 @@
         render();
       });
       lab.appendChild(cb);
-      lab.appendChild(el("span", null, v));
+      lab.appendChild(el("span", null, MD.esc(v)));
       if (contagem && contagem[v] != null) lab.appendChild(el("span", "n", contagem[v]));
       box.appendChild(lab);
     });
@@ -127,9 +138,9 @@
     const esp = (META && META.especialidades) || Object.keys(contar("especialidades"));
     const fam = (META && META.familias) || Object.keys(contar("familias"));
 
-    // especialidade = filtro principal (destacado). família = secundário, só desktop.
+    // especialidade = filtro principal (destacado). família = secundário, recolhível (também no celular).
     side.appendChild(facetGrupo("Especialidade", esp, "especialidades", contar("especialidades"), "grupo-esp"));
-    side.appendChild(facetGrupo("Família", fam, "familias", contar("familias"), "so-desktop"));
+    side.appendChild(facetGrupo("Família", fam, "familias", contar("familias"), "grupo-fam", true));
 
     const limpar = el("button", "limpar", "Limpar filtros");
     limpar.addEventListener("click", () => {
@@ -142,6 +153,7 @@
 
     // aplicar / ver resultados (só mobile)
     const aplicar = el("button", "aplicar so-mobile", "Ver resultados");
+    aplicar.id = "bt-aplicar";
     aplicar.addEventListener("click", fecharGaveta);
     side.appendChild(aplicar);
   }
@@ -152,7 +164,7 @@
     estado.especialidades.forEach(v => todos.push(["especialidades", v]));
     estado.familias.forEach(v => todos.push(["familias", v]));
     todos.forEach(([chave, v]) => {
-      const c = el("span", "chip", v);
+      const c = el("span", "chip", MD.esc(v));
       const x = el("button", null, "×");
       x.setAttribute("aria-label", `Remover filtro ${v}`);
       x.addEventListener("click", () => {
@@ -219,11 +231,43 @@
     const n = nAtivos();
     $("#fnum").textContent = n ? ` (${n})` : "";
     montarPaginacao(listaFiltrada.length);
+    const ap = $("#bt-aplicar"), nr = listaFiltrada.length;
+    if (ap) ap.textContent = `Ver ${nr} resultado${nr === 1 ? "" : "s"}`;
+    gravarURL();
+  }
+
+  // ---- estado na URL: voltar do detalhe (ou compartilhar o link) mantém busca, filtros e página ----
+  function lerURL() {
+    const u = new URLSearchParams(location.search);
+    const q = u.get("q");
+    if (q) { $("#busca").value = q; estado.termo = MD.norm(q.trim()); }
+    u.getAll("esp").forEach(v => estado.especialidades.add(v));
+    u.getAll("fam").forEach(v => estado.familias.add(v));
+    estado.pagina = Math.max(1, parseInt(u.get("p"), 10) || 1);
+  }
+  function gravarURL() {
+    const u = new URLSearchParams();
+    const q = $("#busca").value.trim();
+    if (q) u.set("q", q);
+    estado.especialidades.forEach(v => u.append("esp", v));
+    estado.familias.forEach(v => u.append("fam", v));
+    if (estado.pagina > 1) u.set("p", estado.pagina);
+    const s = u.toString();
+    try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "")); } catch (e) { /* file:// */ }
   }
 
   // ---- gaveta mobile (filtros) ----
-  function abrirGaveta() { $("#filtros").classList.add("aberto"); $("#backdrop").classList.add("on"); }
-  function fecharGaveta() { $("#filtros").classList.remove("aberto"); $("#backdrop").classList.remove("on"); }
+  function abrirGaveta() {
+    $("#filtros").classList.add("aberto"); $("#backdrop").classList.add("on");
+    $("#btn-filtrar").setAttribute("aria-expanded", "true");
+    const x = document.querySelector("#filtros .drawer-x"); if (x) x.focus();
+  }
+  function fecharGaveta() {
+    if (!$("#filtros").classList.contains("aberto")) return;
+    $("#filtros").classList.remove("aberto"); $("#backdrop").classList.remove("on");
+    $("#btn-filtrar").setAttribute("aria-expanded", "false");
+    $("#btn-filtrar").focus();
+  }
 
   // ---- menu "Baixar catálogos" ----
   function montarMenuCatalogos() {
@@ -248,17 +292,6 @@
     bd.addEventListener("click", fechar);
   }
 
-  // ---- bandeja de orçamento ----
-  function atualizarBandeja() {
-    const n = MD.lista().length;
-    $("#bandeja").classList.toggle("on", n > 0);
-    $("#qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento`;
-    const wpp = MD.linkWhatsApp(PRODUTOS), mail = MD.linkEmail(PRODUTOS);
-    const bw = $("#bt-wpp"), bm = $("#bt-mail");
-    if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";
-    if (mail) { bm.style.display = ""; bm.onclick = () => location.href = mail; } else bm.style.display = "none";
-  }
-
   async function iniciar() {
     try {
       const d = await MD.carregar();
@@ -269,18 +302,19 @@
       return;
     }
     $("#busca").addEventListener("input", e => { estado.termo = MD.norm(e.target.value.trim()); estado.pagina = 1; render(); });
-    // busca vinda de outra página (ex.: do detalhe de um produto): index.html?q=termo
-    const q = new URLSearchParams(location.search).get("q");
-    if (q) { $("#busca").value = q; estado.termo = MD.norm(q.trim()); }
-    $("#btn-filtrar").addEventListener("click", abrirGaveta);
+    // busca/filtros/página vindos da URL (ex.: do detalhe de um produto: index.html?q=termo)
+    lerURL();
+    const bf = $("#btn-filtrar");
+    bf.setAttribute("aria-controls", "filtros"); bf.setAttribute("aria-expanded", "false");
+    bf.addEventListener("click", abrirGaveta);
     $("#backdrop").addEventListener("click", fecharGaveta);
-    $("#bt-limpar").addEventListener("click", () => MD.limpar());
-    document.addEventListener("orcamento:mudou", () => { atualizarBandeja(); render(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") fecharGaveta(); });
+    document.addEventListener("orcamento:mudou", sincronizarBotoes);
 
     montarFiltros();
     montarMenuCatalogos();
     render();
-    atualizarBandeja();
+    MD.ligarBandeja(PRODUTOS);
   }
 
   document.addEventListener("DOMContentLoaded", iniciar);
