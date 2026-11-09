@@ -144,13 +144,17 @@
       acoes.appendChild(bf);
     }
 
-    const wpp = MD.linkWhatsApp(produtos);
-    if (wpp && (MD.cfg.contato && MD.cfg.contato.whatsapp)) {
+    // "Pedir orçamento": põe o item na lista e abre o pedido por e-mail (mesmo formulário da bandeja);
+    // sem envio por e-mail configurado, abre o WhatsApp com a mensagem pronta.
+    const wppOk = !!(MD.cfg.contato && MD.cfg.contato.whatsapp);
+    if (MD.emailAtivo() || wppOk) {
       const b = document.createElement("button");
-      b.className = "b-wpp"; b.textContent = "Pedir orçamento no WhatsApp";
+      b.className = MD.emailAtivo() ? "b-pedir" : "b-wpp";
+      b.textContent = MD.emailAtivo() ? "Pedir orçamento" : "Pedir orçamento no WhatsApp";
       b.addEventListener("click", () => {
         if (!MD.tem(p.codigo)) MD.alternar(p.codigo);
-        location.href = MD.linkWhatsApp(produtos);
+        const bm = document.getElementById("bt-mail");
+        if (MD.emailAtivo() && bm) bm.click(); else location.href = MD.linkWhatsApp(produtos);
       });
       acoes.appendChild(b);
     }

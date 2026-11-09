@@ -278,7 +278,9 @@
       paginaAtual.forEach(p => frag.appendChild(cardProduto(p)));
       grade.appendChild(frag);
     }
-    $("#cont").innerHTML = `<b>${listaFiltrada.length}</b> de ${PRODUTOS.length} produtos`;
+    const ilustr = MD.mostrarPreco() && PRODUTOS.some(p => p.preco && p.preco_ficticio);
+    $("#cont").innerHTML = `<b>${listaFiltrada.length}</b> de ${PRODUTOS.length} produtos` +
+      (ilustr ? ` <span class="cont-aviso">· preços ilustrativos</span>` : "");
     chipsAtivos(); faixaProposta();
     const n = nAtivos();
     $("#fnum").textContent = n ? ` (${n})` : "";

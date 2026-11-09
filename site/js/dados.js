@@ -256,7 +256,8 @@ window.MD = (function () {
           <button class="lista-x" aria-label="Fechar lista">×</button></div>
         <ul>${itens.map(c => {
           const p = byCod[c], q = qtd(c), e = esc(c);
-          const sub = mostrarPreco() && p && p.preco ? `<span class="sub">${brl(p.preco * q)}</span>` : "";
+          const sub = mostrarPreco() && p && p.preco ? `<span class="sub">${brl(p.preco * q)}` +
+            (q > 1 ? `<small>${q} × ${brl(p.preco)}</small>` : "") + `</span>` : "";
           return `<li><span class="mono">${e}</span><span class="n">${esc(p ? p.nome : "")}</span>${sub}
             <span class="qtd">
               <button data-menos="${e}" aria-label="Diminuir quantidade de ${e}" ${q <= 1 ? "disabled" : ""}>−</button>
@@ -294,7 +295,9 @@ window.MD = (function () {
       const n = lista().length;
       bandeja.classList.toggle("on", n > 0);
       document.body.classList.toggle("com-bandeja", n > 0);
-      $("qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento`;
+      const tq = mostrarPreco() ? totalLista(produtos) : { total: 0 };
+      $("qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento` +
+        (tq.total ? `<em class="qt-tot">Total estimado ${brl(tq.total)}</em>` : "");
       const wpp = linkWhatsApp(produtos), mail = linkEmail(produtos);
       const bw = $("bt-wpp"), bm = $("bt-mail");
       if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";
