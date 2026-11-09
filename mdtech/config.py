@@ -19,6 +19,7 @@ SITE = RAIZ / "site"
 # Base = fonte única da verdade
 BASE_XLSX = DADOS / "Base_MDTech_Consolidada.xlsx"
 BASE_ABA  = "BASE DE PRODUTOS"   # nome da aba de produtos (ajuste se necessário)
+KITS_ABA  = "KITS"               # aba com os kits das propostas básicas (mesma planilha)
 
 # Logos oficiais
 LOGO_BRANCO   = LOGOS / "logo-mdtech-hor-branco.png"   # p/ fundo navy
@@ -43,6 +44,7 @@ CONTATO_LABEL = "Fale com a MDTech"
 #   impresso -> catálogo para a gráfica (foto ORIGINAL). Só local, nunca publicado.
 SAIDA_DIGITAL  = SAIDA / "digital"
 SAIDA_IMPRESSO = SAIDA / "impresso"
+SAIDA_PROPOSTAS = SAIDA / "propostas"   # propostas básicas (kits por tipo de uso), PDF para enviar ao médico
 
 # Capas (PDF A4 do InDesign). Só o catálogo completo digital tem capa por enquanto; os catálogos
 # por especialidade saem só com o miolo + índice até existirem as capas (assets/capas/<Especialidade>.pdf).
@@ -52,3 +54,4 @@ CAPA_COMPLETO = CAPAS / "Catalogo_Completo.pdf"
 SAIDA.mkdir(exist_ok=True)
 SAIDA_DIGITAL.mkdir(exist_ok=True)
 SAIDA_IMPRESSO.mkdir(exist_ok=True)
+SAIDA_PROPOSTAS.mkdir(exist_ok=True)

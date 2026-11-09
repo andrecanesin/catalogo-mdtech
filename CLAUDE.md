@@ -34,6 +34,7 @@ o GitHub Actions os recria a cada publicação.
 | Layout das fichas ou do catálogo | Claude ajusta e confere o preview HTML (`--preview`) | PR → ok → merge → Actions refaz as fichas |
 | Fotos novas (`assets/imagens/`) | André coloca os arquivos (nome = código) | commit/PR → Actions refaz fotos e fichas |
 | Catálogos digitais (PDF) | Gerados com foto reduzida; completo com capa, por linha só miolo + índice | Actions, junto com o site (+25 s); nunca no git |
+| Propostas básicas (kits) | Claude monta a aba KITS a partir da lista do André e confere código a código na base | PDF local em `saida/propostas/` (`gerar.py kits`); não passa pelo site |
 | Catálogos impressos | André gera na máquina (painel, bloco Impresso): foto ORIGINAL, paridade, `saida/impresso/` | só local: nunca site, Actions nem git |
 | Código Python (`mdtech/`, `geradores/`) | Claude altera e testa localmente | PR → ok → merge |
 O Actions guarda as fichas em cache; a chave muda com planilha, `geradores/fichas.py`, `gerar.py`, `mdtech/*.py`, `assets/` e
@@ -47,7 +48,8 @@ python gerar.py site                  # produtos.json + fotos + fichas -> site/
 python gerar.py dashboard             # painel de pendências (inclui status das fotos)
 python gerar.py catalogo Laparoscopia --preview   # preview HTML sem gerar PDF
 python gerar.py catalogo --todos --perfil impressao --paridade par   # impresso (local, foto original, saida/impresso/)
-python painel.py                      # painel local (127.0.0.1:8800): blocos Digital e Impresso
+python gerar.py kits --kit "Hérnia de Hiato"   # proposta básica (kit) em PDF -> saida/propostas/
+python painel.py                      # painel local (127.0.0.1:8800): blocos Digital, Propostas e Impresso
 ```
 Todas as flags: `LEIA-ME.md`.
 

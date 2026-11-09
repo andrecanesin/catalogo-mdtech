@@ -9,6 +9,7 @@
     python gerar.py fichas --separados       # 1 PDF por código (usado pelo botão do site)
     python gerar.py card --codigo A299 --preco 5.990 --hero A299-3__2_.png
     python gerar.py card --exemplo          # roda o CFG de exemplo completo
+    python gerar.py kits --kit "Hérnia de Hiato"   # proposta básica (kit) em PDF -> saida/propostas/
     python gerar.py checklist               # confere fotos casadas/faltantes
     python gerar.py site                     # exporta base -> produtos.json (catálogo digital)
     python gerar.py tudo                     # checklist + dashboard + catálogos + fichas
@@ -55,6 +56,10 @@ def main():
     p.add_argument("--hero"); p.add_argument("--hero-extra", dest="hero_extra")
     p.add_argument("--nota"); p.add_argument("--saida")
     p.add_argument("--exemplo", action="store_true")
+
+    p = sub.add_parser("kits", help="propostas básicas: 1 PDF por kit da aba KITS (saida/propostas/)")
+    p.add_argument("--kit", help="nome (ou parte) do kit; padrão: todos")
+    p.add_argument("--preview", action="store_true", help="HTML no navegador, sem gerar PDF")
 
     sub.add_parser("dashboard")
     sub.add_parser("checklist")
@@ -104,6 +109,10 @@ def main():
                 hero_extra=str(config.IMAGENS / a.hero_extra) if a.hero_extra else None,
             ).items() if v is not None}
         card.gerar(cfg)
+
+    elif a.cmd == "kits":
+        from geradores import kits
+        (kits.preview if a.preview else kits.gerar)(a.kit)
 
     elif a.cmd == "dashboard":
         from geradores import dashboard

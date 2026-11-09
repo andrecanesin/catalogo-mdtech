@@ -109,6 +109,18 @@ parte) nem **site** (rode `site` à parte só para conferir local; quem publica 
 de rodar `tudo` + `site`, é por isso — rode `fichas --separados` manualmente
 antes de `gerar.py site`. (No GitHub Actions isso já é feito na ordem certa.)
 
+### Propostas básicas (kits por tipo de uso)
+```
+python gerar.py kits                          # todos os kits da aba KITS
+python gerar.py kits --kit "Hérnia de Hiato"  # um kit
+python gerar.py kits --kit "Hérnia de Hiato" --preview   # HTML no navegador, sem gerar PDF
+```
+Um PDF por kit em `saida/propostas/` (ex.: `Kit_Proposta_Basica_Hernia_de_Hiato_MDTech.pdf`). Os kits ficam na aba
+**KITS** da planilha-base: `Kit` · `Grupo` · `Ordem` · `Código` · `Qtd` · `Observação` · `Preço unit. (R$)`. O grupo
+**"Itens do kit"** são os itens fixos (com Qtd); qualquer outro grupo (Porta-agulhas, Afastadores, Opcionais…) sai como
+**opções**. Nome, Ø, comprimento, ANVISA e foto vêm da BASE DE PRODUTOS pelo código (match exato: `A215` ≠ `A215.C`).
+O preço é opcional: preenchendo `Preço unit. (R$)`, o PDF ganha as colunas de preço e o total do kit.
+
 ### Painel local (botões, sem terminal)
 ```
 python painel.py
