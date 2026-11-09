@@ -54,7 +54,13 @@ exigir outro modelo, dizendo qual e por quê.
 
 ## Como trabalhamos (combinado com o André)
 - Na branch designada da sessão: validar, commitar e fazer push normal **sem pedir aprovação a cada vez**; abrir o PR e mostrar
-  o `git diff --stat` no relatório. O **merge é do André**. **Nunca force-push** (só se o André autorizar a branch específica).
+  o `git diff --stat` no relatório. **Nunca force-push** (só se o André autorizar a branch específica).
+- **Merge e publicação:** o Claude só faz o merge de um PR depois do **"ok" explícito do André para aquele PR** (o ok vale
+  para um PR, não é permanente). Antes: conferir que está aberto, sem conflito e no mesmo commit informado (`expectedHeadSha`);
+  usar merge commit (`merge`), como nos PRs anteriores. Depois: **não disparar o workflow à mão** (o push na `main` já dispara o
+  **Publicar site**, e um disparo manual cancela o automático por causa do `concurrency`); acompanhar a execução até terminar e
+  informar verde/vermelho. Se ficar vermelho, ler o log do passo com erro e propor a correção em PR novo. O site publicado
+  não é acessível a partir da sessão: a conferência visual do site no ar é do André.
 - Perguntar só o que for decisão do André (dados, marca, escopo, preços). Não repetir pergunta sem resposta, nem cobrá-la.
 - O aviso "há alterações não commitadas" do hook de parada é automático: não é cobrança do André nem aprovação. Mesmo assim,
   nunca deixar trabalho validado sem commit ao fim de uma entrega.
