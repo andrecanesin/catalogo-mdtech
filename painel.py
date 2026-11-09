@@ -6,9 +6,9 @@
     python painel.py --porta 9000 --sem-navegador
 
 Faz só duas coisas:
-  1) mostrar o que falta de informação (ANVISA, foto, Ø, comprimento, NCM) e abrir o painel completo de pendências;
-  2) gerar o material IMPRESSO (foto original, alta resolução) em saida/impresso/ — liberado só quando a
-     ANVISA estiver completa, para não imprimir "em registro".
+  1) mostrar o que falta de informação (ANVISA, NCM, foto) e abrir o painel completo de pendências;
+  2) gerar o material IMPRESSO (foto original, alta resolução) em saida/impresso/. Sempre liberado (dá para gerar
+     testes); enquanto faltar ANVISA/NCM, o painel só avisa que esses itens saem como "em registro".
 Fichas, catálogos digitais, propostas digitais e o site NÃO ficam aqui: o GitHub gera e publica tudo isso sozinho,
 e o site é a fonte única (evita duas versões diferentes).
 
@@ -39,7 +39,8 @@ _job = {"acao": None, "rodando": False, "linhas": [], "codigo": None}
 
 # ---------------------------------------------------------------- pendências (lidas da planilha)
 def pendencias():
-    """SKUs únicos com informação faltando, por campo. Lê a base pelo núcleo do projeto."""
+    """SKUs únicos com informação faltando, por campo. Lê a base pelo núcleo do projeto.
+    Só campos que todo item deve ter (Ø e comprimento ficam de fora: há itens que não têm essas medidas)."""
     from mdtech import base as B, fotos as F
     itens = B.carregar()
     por = {}
@@ -49,19 +50,10 @@ def pendencias():
     campos = {
         "anvisa":      lambda its: any(vazio(i, "anvisa") for i in its),
         "foto":        lambda its: F.buscar(its[0]["codigo"]) is None,
-        "diametro":    lambda its: any(vazio(i, "diametro") and vazio(i, "diametro_fr") for i in its),
-        "comprimento": lambda its: any(vazio(i, "comprimento") for i in its),
         "ncm":         lambda its: any(vazio(i, "ncm") for i in its),
     }
     return {"total": len(por),
             "faltando": {c: sorted(cod for cod, its in por.items() if f(its)) for c, f in campos.items()}}
-
-
-def impresso_liberado(p=None):
-    """Impresso só com a ANVISA completa. Retorna (liberado, quantos faltam)."""
-    p = p or pendencias()
-    n = len(p["faltando"]["anvisa"])
-    return n == 0, n
 
 
 # ---------------------------------------------------------------- execução de comandos
@@ -145,8 +137,7 @@ class H(BaseHTTPRequestHandler):
         if u == "/api/pendencias":
             try:
                 p = pendencias()
-                lib, n = impresso_liberado(p)
-                return self._json({**p, "impresso_liberado": lib, "anvisa_faltando": n})
+                return self._json(p)
             except Exception as e:  # noqa: BLE001
                 return self._json({"erro": f"não consegui ler a planilha: {e}"}, 500)
         if u == "/pendencias":          # painel completo (HTML do dashboard), regerado a cada abertura
@@ -173,9 +164,6 @@ class H(BaseHTTPRequestHandler):
             modo = dados.get("modo")
             if modo not in MONTAGENS:
                 return self._json({"erro": "montagem desconhecida"}, 400)
-            lib, falta = impresso_liberado()
-            if not lib:       # trava no servidor, não só no botão
-                return self._json({"erro": f"Impresso bloqueado: faltam {falta} SKUs sem registro ANVISA."}, 403)
             ok = iniciar(f"Catálogos impressos · {MONTAGENS[modo][0]}",
                          [["catalogo", "--todos", "--perfil", "impressao", "--paridade", modo]])
             return self._json({"ok": True}) if ok else self._json({"erro": "já existe uma execução em andamento"}, 409)
@@ -203,7 +191,7 @@ details{background:#fff;border:1px solid var(--linha);border-radius:10px;padding
 summary{cursor:pointer;font-weight:600;color:var(--navy)}details p{margin:8px 0 2px;font:12px/1.7 "IBM Plex Mono",ui-monospace,monospace;color:var(--cinza)}
 .s{font-size:13px;margin:10px 0 0;color:var(--cinza)}.s a{color:var(--navy);font-weight:600}
 .gate{border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:12px}
-.gate.bloq{background:#fff4e0;border:1px solid var(--amb);color:#7a4b00}.gate.lib{background:#e6f6f4;border:1px solid var(--ok);color:#16615c}
+.gate.aviso{background:#fff4e0;border:1px solid var(--amb);color:#7a4b00}.gate.ok{background:#e6f6f4;border:1px solid var(--ok);color:#16615c}
 .imp{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:14px;display:grid;gap:12px}
 .imp label{font-size:12px;color:var(--cinza);display:block;margin-bottom:4px}
 select{font:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--linha);border-radius:8px;width:100%;background:#fff}
@@ -220,10 +208,10 @@ pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;ma
   <div class="cards" id="cards">Lendo a planilha…</div><div id="listas"></div>
   <p class="s"><a href="/pendencias" target="_blank">Abrir o painel completo de pendências</a> (lista por produto e fornecedor, com exportação CSV).</p></section>
 <section><h2>Impresso · foto original, só nesta máquina</h2>
-  <div class="gate bloq" id="gate">Verificando…</div>
+  <div class="gate aviso" id="gate">Verificando…</div>
   <div class="imp">
     <div><label for="modo">Catálogos impressos (miolo para o InDesign)</label><select id="modo"></select></div>
-    <div class="btns"><button class="p" id="gerar" disabled>Gerar catálogos impressos</button>
+    <div class="btns"><button class="p" id="gerar">Gerar catálogos impressos</button>
       <button class="p sec" disabled title="Em desenvolvimento">Propostas impressas (em desenvolvimento)</button>
       <button class="p sec" id="pasta">Abrir pasta dos impressos</button></div>
     <p class="s" id="pdfs" style="margin:0"></p>
@@ -232,9 +220,8 @@ pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;ma
 </main>
 <script>
 const M=__MONTAGENS__, $=s=>document.querySelector(s), hd={"X-Painel":"1","Content-Type":"application/json"};
-const ROT={anvisa:"Registro ANVISA",foto:"Foto",diametro:"Diâmetro",comprimento:"Comprimento",ncm:"NCM"};
+const ROT={anvisa:"Registro ANVISA",ncm:"NCM",foto:"Foto"};
 $("#modo").innerHTML=Object.entries(M).map(([k,v])=>`<option value="${k}">${v.nome} — ${v.desc}</option>`).join("");
-let liberado=false;
 async function pend(){
   $("#cards").textContent="Lendo a planilha…";
   const r=await fetch("/api/pendencias"),d=await r.json();
@@ -243,15 +230,13 @@ async function pend(){
     return `<div class="n ${n?"falta":""}"><b>${n?n:"✓"}</b><span>${t}${n?" · SKUs":" · completo"}</span></div>`}).join("");
   $("#listas").innerHTML=Object.entries(ROT).filter(([k])=>d.faltando[k].length).map(([k,t])=>
     `<details><summary>${t}: ${d.faltando[k].length} de ${d.total} SKUs</summary><p>${d.faltando[k].join(" · ")}</p></details>`).join("");
-  liberado=d.impresso_liberado;
-  const g=$("#gate");
-  g.className="gate "+(liberado?"lib":"bloq");
-  g.innerHTML=liberado?"<b>Liberado:</b> todos os registros ANVISA estão preenchidos."
-    :`<b>Bloqueado por enquanto:</b> o impresso só é liberado com a ANVISA completa. Faltam <b>${d.anvisa_faltando}</b> SKUs sem registro.`;
-  trava();
+  const a=d.faltando.anvisa.length,n=d.faltando.ncm.length,g=$("#gate");
+  g.className="gate "+((a||n)?"aviso":"ok");
+  g.innerHTML=(a||n)?`<b>Pode gerar testes.</b> Faltam ${a?`<b>${a}</b> SKUs sem ANVISA`:""}${a&&n?" e ":""}${n?`<b>${n}</b> sem NCM`:""}: esses itens saem como "em registro" no impresso.`
+    :"<b>Pronto para imprimir:</b> ANVISA e NCM estão completos.";
 }
 let rodando=false;
-function trava(){$("#gerar").disabled=!liberado||rodando;}
+function trava(){$("#gerar").disabled=rodando;}
 $("#atualizar").onclick=pend;
 $("#gerar").onclick=async()=>{const r=await fetch("/api/catalogo-impresso",{method:"POST",headers:hd,body:JSON.stringify({modo:$("#modo").value})});
   if(!r.ok){const e=await r.json();$("#st").className="st erro";$("#st").textContent=e.erro||"erro";} estado();};

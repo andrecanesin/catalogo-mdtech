@@ -127,10 +127,11 @@ O preço é opcional: preenchendo `Preço unit. (R$)`, o PDF ganha as colunas de
 ```
 python painel.py
 ```
-Abre `http://127.0.0.1:8800` e faz **duas coisas**: (1) mostra **o que falta de informação** (ANVISA, foto, Ø, comprimento,
-NCM, em SKUs) e abre o painel completo de pendências; (2) gera o material **impresso** (foto original) em `saida/impresso/`,
-**liberado só quando a ANVISA estiver completa** (a trava vale também no servidor do painel). Escolha a montagem do catálogo:
-separado (par), unificado (ímpar) ou caderno (múltiplo de 4). Propostas impressas: em desenvolvimento.
+Abre `http://127.0.0.1:8800` e faz **duas coisas**: (1) mostra **o que falta de informação** (ANVISA, NCM, foto, em SKUs)
+e abre o painel completo de pendências (Ø e comprimento ficam de fora: há itens sem essas medidas); (2) gera o material
+**impresso** (foto original) em `saida/impresso/`, **sempre liberado** (dá para gerar testes; enquanto faltar ANVISA/NCM o
+painel só avisa que esses itens saem como "em registro"). Escolha a montagem do catálogo: separado (par), unificado (ímpar)
+ou caderno (múltiplo de 4). Propostas impressas: em desenvolvimento.
 Fichas, catálogos digitais, propostas digitais e o site **não** estão no painel: o GitHub os gera e publica sozinho, e o site
 é a fonte única. Só biblioteca padrão; escuta só em 127.0.0.1; não faz commit nem push.
 
