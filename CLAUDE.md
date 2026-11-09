@@ -23,7 +23,8 @@ o GitHub Actions os recria a cada publicação.
 1. Editar a planilha e/ou o HTML/CSS/JS do `site/`.
 2. (Opcional) conferir local: `python gerar.py fichas --separados && python gerar.py site`, depois `python -m http.server` dentro de `site/`.
 3. `git add`, `git commit`, `git push origin main`. O workflow **Publicar site** roda sozinho (aba Actions); em ~minutos o Pages atualiza.
-- Catálogos em PDF (130 MB+) **não** são gerados no Actions nem entram no git: gerar local (`gerar.py catalogo --todos`) e subir como Release (ver `site/PRODUCAO.md`).
+- Catálogos **digitais** (foto reduzida, ~6 MB no total) são gerados pelo Actions e vão junto com o site. Catálogos **impressos** (foto original)
+  são só locais (`saida/impresso/`) e nunca passam pelo Actions nem pelo git (ver `site/PRODUCAO.md`).
 
 ## Fluxo por tipo de alteração
 | Alteração | Quem faz / valida | Publicação |
@@ -32,7 +33,7 @@ o GitHub Actions os recria a cada publicação.
 | Planilha (dados) | Claude edita só as células pedidas e confere o diff célula a célula | PR → ok → merge → Actions refaz as fichas (~2,5 min) |
 | Layout das fichas ou do catálogo | Claude ajusta e confere o preview HTML (`--preview`) | PR → ok → merge → Actions refaz as fichas |
 | Fotos novas (`assets/imagens/`) | André coloca os arquivos (nome = código) | commit/PR → Actions refaz fotos e fichas |
-| Catálogos digitais (PDF) | Gerados com foto reduzida em `saida/digital/` (painel, bloco Digital); completo com capa, por linha só miolo + índice | Release (`site/PRODUCAO.md`); nunca no git |
+| Catálogos digitais (PDF) | Gerados com foto reduzida; completo com capa, por linha só miolo + índice | Actions, junto com o site (+25 s); nunca no git |
 | Catálogos impressos | André gera na máquina (painel, bloco Impresso): foto ORIGINAL, paridade, `saida/impresso/` | só local: nunca site, Actions nem git |
 | Código Python (`mdtech/`, `geradores/`) | Claude altera e testa localmente | PR → ok → merge |
 O Actions guarda as fichas em cache; a chave muda com planilha, `geradores/fichas.py`, `gerar.py`, `mdtech/*.py`, `assets/` e
@@ -85,7 +86,7 @@ O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o
 - **Preços:** em desenvolvimento podem ficar no git, mas o repositório é **público**. Antes de ir ao ar, tirar os preços do
   repositório (planilha, `produtos.json`) e servi-los só por onde houver controle de acesso; revisar a regra "sem preço" da skill.
 - **Publicação:** `.github/workflows/publicar.yml` hoje publica no Pages; trocar pelo envio ao servidor.
-- **Catálogos PDF:** continuam fora do git (Release ou envio direto ao servidor).
+- **Catálogos digitais:** hoje vão no artefato do site; no servidor, gerados e enviados junto. Os impressos continuam só locais.
 
 ## Estado dos dados (base de 08/11/2026, 174 linhas / 152 SKUs únicos)
 - ANVISA: aguardando novos registros do regulatório. Vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /

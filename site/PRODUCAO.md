@@ -1,8 +1,8 @@
-# Produção — fichas, catálogos PDF e contato
+# Produção — fichas, catálogos digitais e contato
 
 O site é publicado pelo GitHub Actions a cada push na `main` (workflow **Publicar site**,
 `.github/workflows/publicar.yml`). Este arquivo diz o que o Actions já faz sozinho e o
-que ainda é manual.
+que ainda é manual (só o WhatsApp e os catálogos impressos).
 
 ## 1) Fichas técnicas (uma por produto) — automático
 O workflow roda `python gerar.py fichas --separados` e depois `python gerar.py site`, e
@@ -15,37 +15,20 @@ publica `site/fichas/` junto com o site. Nada a fazer:
 - Se o botão sumir depois de uma publicação, abrir a aba **Actions** e ler o log do passo
   "Fichas técnicas" ou "Conferir resultado".
 
-## 2) Catálogos (arquivos grandes) — Release do GitHub, manual
-Os catálogos em PDF passam de 100 MB. **Não entram no git nem são gerados no Actions**:
-o GitHub barra arquivo acima de 100 MB e o histórico do repositório incharia pra sempre.
-O botão "Baixar catálogos" fica escondido (`catalogosAtivo: false` em `js/config.js`) até
-você ligar assim:
+## 2) Catálogos digitais — automático
+O workflow também roda `python gerar.py catalogo --todos --perfil digital` (foto reduzida: o catálogo
+completo tem ~3 MB e os quatro por linha somam ~3 MB, em cerca de 25 s) e `gerar.py site` os copia para
+`site/catalogos/`. O botão "Baixar catálogos" está ligado (`catalogosAtivo: true` em `js/config.js`):
 
-1. Gerar os PDFs na sua máquina, a partir da raiz do projeto:
-   ```bash
-   python gerar.py catalogo --todos --perfil digital
-   python gerar.py site
-   ```
-   O primeiro comando gera os miolos **digitais** (foto reduzida, com índice) em `saida/digital/`; o
-   segundo copia pra `site/catalogos/` com os nomes que o `js/config.js` espera
-   (`Catalogo_Completo_MDTech.pdf`, `Catalogo_Laparoscopia_MDTech.pdf` etc.) e monta o catálogo completo
-   **com a capa** `assets/capas/Catalogo_Completo.pdf`. Esses são os arquivos a subir na release. Os
-   catálogos por linha saem só com miolo e índice, até haver capa própria. Os **impressos** (foto original)
-   ficam em `saida/impresso/` e não entram aqui.
-2. No GitHub, repositório `catalogo-mdtech` → **Releases** → **Create a new release**
-   (tag, por exemplo, `catalogos-v1`).
-3. Anexar os PDFs de `site/catalogos/` como assets da release (aceita até 2 GB por arquivo).
-4. Copiar a URL base dos assets, algo como
-   `https://github.com/andrecanesin/catalogo-mdtech/releases/download/catalogos-v1/`.
-5. Em `site/js/config.js`, mudar só estas duas linhas:
-   ```js
-   catalogosAtivo: true,
-   catalogosBase: "https://github.com/andrecanesin/catalogo-mdtech/releases/download/catalogos-v1/",
-   ```
-6. Commit e push na `main` (ver seção 4). O botão aparece depois do deploy.
+- **Catálogo completo:** a capa (`assets/capas/Catalogo_Completo.pdf`) + os miolos de todas as linhas.
+- **Catálogo por linha** (Laparoscopia, Urologia, Histeroscopia, Óticas HD-4K): miolo + índice navegável. Quando
+  existir a capa de uma linha, salvar em `assets/capas/<Especialidade>.pdf` (a inclusão por linha ainda precisa
+  ser ligada no gerador).
+- `site/catalogos/` está no `.gitignore` (gerado). Se faltar um catálogo, a etapa "Conferir resultado" do
+  workflow falha e a publicação não vai ao ar.
 
-Quando gerar catálogos novos: criar uma nova release (ou substituir os assets da atual) e,
-se a tag mudou, atualizar `catalogosBase`.
+Os catálogos **impressos** (foto ORIGINAL, alta resolução, paridade para a gráfica) **nunca passam por aqui**: são
+gerados só na sua máquina (`python painel.py`, bloco "Impresso") em `saida/impresso/`, e vão para o InDesign.
 
 ## 3) WhatsApp
 `site/js/config.js` → `contato.whatsapp` está vazio. Preencher com DDI+DDD+número, só

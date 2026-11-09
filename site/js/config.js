@@ -28,18 +28,13 @@ window.MDTECH = {
   },
   // Catálogos em PDF disponíveis para download (botão "Baixar catálogos" no topo).
   //
-  // ATIVAR EM PRODUÇÃO — 2 passos, é só isso:
-  //   1) troque CATALOGOS_ATIVO para true
-  //   2) troque CATALOGOS_BASE pela URL onde os PDFs estão hospedados. Os catálogos NÃO vão
-  //      no git nem são gerados no Actions (site/catalogos/ está no .gitignore; passam de
-  //      100MB por arquivo). Hospede como assets de uma Release do GitHub e use a URL
-  //      completa terminando em "/",
-  //      ex.: "https://github.com/andrecanesin/catalogo-mdtech/releases/download/catalogos-v1/"
-  //      Passo a passo: site/PRODUCAO.md.
-  //   Os nomes de arquivo abaixo (Catalogo_Completo_MDTech.pdf etc.) são exatamente
-  //   o que sai de `gerar.py catalogo --todos` + `gerar.py site` — não precisa mudar,
-  //   só o BASE de onde eles são servidos.
-  catalogosAtivo: false,
+  // Os catálogos DIGITAIS (PDF leve, foto reduzida) são gerados pelo Actions a cada publicação e
+  // ficam em site/catalogos/ (não vão pro git). Por isso catalogosAtivo está ligado e a base é local.
+  // Os catálogos IMPRESSOS (foto original) NUNCA entram aqui: são só locais (saida/impresso/).
+  // Se um dia os PDFs forem hospedados fora do site (servidor, Release do GitHub), troque catalogosBase
+  // pela URL completa terminando em "/". Os nomes de arquivo abaixo (Catalogo_Completo_MDTech.pdf etc.)
+  // são exatamente o que sai de `gerar.py catalogo --todos --perfil digital` + `gerar.py site`.
+  catalogosAtivo: true,
   catalogosBase: "catalogos/",
   catalogos: [
     { nome: "Catálogo completo",   arquivo: "Catalogo_Completo_MDTech.pdf",        completo: true },

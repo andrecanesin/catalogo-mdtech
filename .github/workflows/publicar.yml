@@ -3,7 +3,8 @@
 # As fichas (a etapa mais lenta) ficam em cache e só são refeitas quando algo que as afeta muda:
 # planilha, gerador de fichas, núcleo mdtech/, assets/ (fotos, logos, fontes, ícones) ou requirements.
 # Mudou só HTML/CSS/JS do site? As fichas vêm do cache e a publicação leva cerca de 1 minuto.
-# Catálogos em PDF (grandes) NÃO são gerados aqui — ver site/PRODUCAO.md.
+# Os catálogos DIGITAIS em PDF (foto reduzida: ~6 MB no total, ~25 s) são gerados aqui e vão junto com o site.
+# Os catálogos IMPRESSOS (foto original, alta resolução) são só locais e nunca passam por este workflow.
 name: Publicar site
 
 on:
@@ -54,7 +55,10 @@ jobs:
         if: steps.cache-fichas.outputs.cache-hit != 'true'
         run: python gerar.py fichas --separados
 
-      - name: Dados do site (produtos.json, fotos, fichas)
+      - name: Catálogos digitais (PDF, foto reduzida)
+        run: python gerar.py catalogo --todos --perfil digital
+
+      - name: Dados do site (produtos.json, fotos, fichas, catálogos)
         run: python gerar.py site
 
       - name: Conferir resultado
@@ -62,6 +66,8 @@ jobs:
           test -s site/produtos.json
           test -n "$(ls site/fotos)"
           test -n "$(ls site/fichas)"
+          test -s site/catalogos/Catalogo_Completo_MDTech.pdf
+          test "$(ls site/catalogos | wc -l)" -ge 5
           python -c "import json; d=json.load(open('site/meta.json',encoding='utf-8')); print(d); assert d['total']>0 and d['com_foto']>0"
 
       - uses: actions/configure-pages@v5

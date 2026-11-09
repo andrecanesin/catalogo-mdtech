@@ -140,8 +140,7 @@ python gerar.py catalogo --todos              # 1 PDF por especialidade
 python gerar.py fichas --separados            # 1 PDF por produto
 python gerar.py site                          # produtos.json + copia fotos/fichas/catálogos pro site/
 ```
-Catálogos em PDF são gerados **só local** (130 MB+) e publicados como Release
-(ver seção 7).
+Os catálogos digitais também são gerados pelo Actions (leves). Os impressos, só local (seção 7).
 
 ### Preview rápido sem gerar PDF
 Pra ajustar CSS sem esperar o WeasyPrint:
@@ -193,8 +192,8 @@ Um catálogo ou ficha específicos: `python gerar.py catalogo Laparoscopia`,
   (`Ficha_<slug>_<especialidade>_MDTech.pdf`).
 - **PDFs pesados nunca entram no git.** GitHub recusa arquivo > 100 MB, e
   mesmo abaixo disso, PDF versionado incha o histórico pra sempre. Fichas e
-  catálogos de `site/` estão no `.gitignore` da raiz; as fichas são recriadas
-  pelo Actions, os catálogos vão como Release (seção 7).
+  catálogos de `site/` estão no `.gitignore` da raiz; fichas e catálogos digitais são recriados
+  pelo Actions, e os impressos ficam só locais (seção 7).
 - **Site é estático, sem preço.** Ação do visitante é "montar lista e pedir
   orçamento" (WhatsApp/e-mail com os códigos escolhidos), não comprar
   direto.
@@ -223,15 +222,17 @@ Um catálogo ou ficha específicos: `python gerar.py catalogo Laparoscopia`,
 
 ---
 
-## 7. Catálogos em PDF — Release do GitHub
+## 7. Catálogos em PDF — digital (automático) e impresso (local)
 
 As **fichas** já são geradas e publicadas pelo Actions; nada a decidir ali.
 
-Os **catálogos** são grandes demais pro git e pro Actions. Hoje
-(`catalogosAtivo: false` em `config.js`) o botão "Baixar catálogos" fica **escondido**.
-Pra ligar: gerar local (`python gerar.py catalogo --todos --perfil digital`), subir os
-PDFs como asset de uma Release e apontar `catalogosBase` pra ela. Passo a passo
-completo em **`site/PRODUCAO.md`** — não duplicar aqui, esse arquivo é a referência.
+Os **catálogos digitais** (foto reduzida a 1200 px) pesam poucos MB (completo ~3 MB; Laparoscopia ~1,8 MB) e levam ~25 s,
+então o Actions os gera junto com o site e o botão "Baixar catálogos" está ligado (`catalogosAtivo: true`). O completo leva
+a capa de `assets/capas/Catalogo_Completo.pdf`; os por linha saem com miolo + índice.
+
+Os **catálogos impressos** usam a foto ORIGINAL (alta resolução), ficam em `saida/impresso/` e **nunca** passam pelo Actions,
+pelo site ou pelo git: são gerados só na máquina do André (`python painel.py`, bloco Impresso) e seguem para o InDesign.
+Detalhes em **`site/PRODUCAO.md`**.
 
 ---
 
