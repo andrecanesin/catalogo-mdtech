@@ -86,6 +86,22 @@ exigir outro modelo, dizendo qual e por quê.
   nunca deixar trabalho validado sem commit ao fim de uma entrega.
 - Nada sensível (contatos de fornecedores, preços internos) em repositório público.
 
+## Impresso: plano para retomar (decidido em 09/11; o foco agora é o digital)
+Hoje o painel gera o **nível A**: miolo de catálogos e propostas com foto ORIGINAL e páginas casadas (par/ímpar/caderno), em RGB e sem
+sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o André retomar o impresso:
+- **Nível B (recomendado primeiro):** miolo pronto para a gráfica: sangria de 3 mm, marcas de corte, CMYK em PDF/X (Ghostscript + perfil
+  ICC), páginas casadas e **relatório de resolução** das fotos (lista as abaixo de 300 dpi). Capa e contracapa seguem no InDesign.
+- **Nível C:** arquivo único fechado: capa + miolo + contracapa em PDF/X, com lombada calculada, a partir das capas de impressão
+  (com sangria) que o André fornecer em `assets/capas/`.
+- **Página extra:** em vez de página em branco para casar a paridade, usar o PDF de conteúdo que o André colocar (ex.: `assets/impresso/pagina_extra.pdf`);
+  sem o arquivo, segue em branco.
+- **Falta definir (perguntar ao André):** ficha técnica de arquivo da gráfica (sangria, perfil ICC como FOGRA39, versão do PDF/X);
+  encadernação (grampo, cola ou espiral: define lombada e paridade); se as capas já existem na versão de impressão.
+- **Limitações:** a conversão para CMYK desloca um pouco as cores (o azul MDTech); pedir prova à gráfica antes da tiragem. As fotos da
+  Tian Song (Urologia/Histeroscopia) são recortes de catálogo em PDF e têm baixa resolução; a fábrica não tem as originais (decidido: seguir
+  assim por enquanto).
+- Ao implementar, registrar as regras numa skill do projeto (`.claude/skills/mdtech-impresso/`) para os próximos trabalhos seguirem igual.
+
 ## Antes do deploy em servidor (lembrete)
 O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o deploy:
 - **Preços:** em desenvolvimento podem ficar no git, mas o repositório é **público**. Antes de ir ao ar, tirar os preços do
