@@ -17,6 +17,15 @@ window.MDTECH = {
     "Ginecologia":   "#C64B8C",
     "Óticas HD-4K":  "#F5A623"
   },
+  // variante ESCURA, só para TEXTO e para fundo de texto branco (códigos, tags, botão "No orçamento"):
+  // passa no contraste AA (≥4,5:1). A cor original segue em faixas, bordas e PDFs. Só existe no site.
+  accentTexto: {
+    "Laparoscopia":  "#1874A1",
+    "Urologia":      "#227974",
+    "Histeroscopia": "#A83A74",
+    "Ginecologia":   "#A83A74",
+    "Óticas HD-4K":  "#996207"
+  },
   // Catálogos em PDF disponíveis para download (botão "Baixar catálogos" no topo).
   //
   // ATIVAR EM PRODUÇÃO — 2 passos, é só isso:

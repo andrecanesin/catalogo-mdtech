@@ -39,7 +39,7 @@ Todas as flags: `LEIA-ME.md`.
 ## Regras de ouro
 1. A base é a única fonte da verdade (ANVISA/NCM/specs só nela).
 2. Nomes de coluna só em `mdtech/base.py` (`COLUNAS`); todo gerador lê via `mdtech.base.carregar()`.
-3. Cor por especialidade em `mdtech/marca.py::ACCENT`; `site/js/config.js` é espelho manual.
+3. Cor por especialidade em `mdtech/marca.py::ACCENT`; `site/js/config.js` é espelho manual (`accentTexto` = variante escura só para texto no site).
 4. Diâmetro sempre via `mdtech.textos.diametro_fmt(item)` (mm vs Fr).
 5. Foto = arquivo nomeado pelo código em `assets/imagens/<FORNECEDOR>/` (matcher tolerante, `mdtech/fotos.py`).
 6. Não editar arquivos gerados à mão. Não commitar PDF grande (GitHub bloqueia > 100 MB).

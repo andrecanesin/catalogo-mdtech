@@ -50,7 +50,7 @@
   }
 
   function cardProduto(p) {
-    const cor = MD.corEsp(p.especialidade);
+    const cor = MD.corTexto(p.especialidade);
     const card = el("article", "card");
 
     let foto;
@@ -68,7 +68,7 @@
     const tags = el("span", "tags");
     esps.forEach(e => {
       const t = el("span", "tag", MD.esc(e));
-      t.style.background = MD.corEsp(e);
+      t.style.background = MD.corTexto(e);
       tags.appendChild(t);
     });
     foto.appendChild(tags);

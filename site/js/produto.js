@@ -6,6 +6,7 @@
 
   const toque = window.matchMedia("(pointer:coarse)").matches;   // celular/tablet: "Toque", não "Clique"
   const miss = '<span class="miss">—</span>';
+  const naoAplica = '<span class="na">não se aplica</span>';   // campo que não existe para o produto (≠ pendente)
   const esc = s => MD.esc(s);
   const v = x => (x != null && String(x).trim() !== "") ? esc(x) : miss;
 
@@ -66,7 +67,7 @@
       return;
     }
     document.title = `${p.codigo} — ${p.nome} · MDTech`;
-    const cor = MD.corEsp(p.especialidade);
+    const cor = MD.corTexto(p.especialidade);
 
     // foto (com zoom + selo de ângulo)
     const foto = p.foto
@@ -81,7 +82,7 @@
     // especialidades (cross-listing) como tags
     const esps = (p.especialidades && p.especialidades.length ? p.especialidades : [p.especialidade])
       .filter(Boolean)
-      .map(e => `<span class="esp-tag" style="background:${MD.corEsp(e)}">${esc(e)}</span>`).join(" ");
+      .map(e => `<span class="esp-tag" style="background:${MD.corTexto(e)}">${esc(e)}</span>`).join(" ");
 
     const anvisaMiss = !(p.anvisa && p.anvisa.trim());
     const ncmMiss = !(p.ncm && p.ncm.trim());
@@ -99,7 +100,7 @@
             <tr><td class="k">Família</td><td class="v">${v(p.familia)}</td></tr>
             <tr><td class="k">Diâmetro (Ø)</td><td class="v">${diametroTxt ? esc(diametroTxt) : miss}</td></tr>
             <tr><td class="k">Comprimento útil</td><td class="v">${p.comprimento ? esc(p.comprimento) + " mm" : miss}</td></tr>
-            <tr><td class="k">Ângulo</td><td class="v">${v(p.angulo)}</td></tr>
+            <tr><td class="k">Ângulo</td><td class="v">${p.angulo ? esc(p.angulo) : (MD.ehOtica(p) ? miss : naoAplica)}</td></tr>
             <tr><td class="k">Autoclavável</td><td class="v">${v(p.autoclavavel)}</td></tr>
           </table>
           <div class="regbox">
