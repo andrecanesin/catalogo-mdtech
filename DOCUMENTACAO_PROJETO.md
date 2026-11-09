@@ -231,7 +231,7 @@ então o Actions os gera junto com o site e o botão "Baixar catálogos" está l
 a capa de `assets/capas/Catalogo_Completo.pdf`; os por linha saem com miolo + índice.
 
 Os **catálogos impressos** usam a foto ORIGINAL (alta resolução), ficam em `saida/impresso/` e **nunca** passam pelo Actions,
-pelo site ou pelo git: são gerados só na máquina do André (`python painel.py`, bloco Impresso) e seguem para o InDesign.
+pelo site ou pelo git: são gerados só na máquina do André (`python painel.py`) e seguem para o InDesign.
 Detalhes em **`site/PRODUCAO.md`**.
 
 ---

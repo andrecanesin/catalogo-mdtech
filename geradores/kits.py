@@ -9,7 +9,10 @@ A proposta é uma RELAÇÃO COMPLETA: todos os itens fazem parte do kit (o vende
 os grupos só dividem a lista em seções. Os kits ficam na aba KITS da planilha-base (mdtech.base.carregar_kits); os dados de cada produto
 (nome, Ø, comprimento, ANVISA, foto) vêm da BASE DE PRODUTOS pelo código. A foto é a reduzida (como no digital).
 Preço é opcional: se alguma linha do kit tiver 'Preço unit. (R$)', o PDF ganha as colunas de preço e o total.
-Saída: saida/propostas/Kit_<...>_MDTech.pdf (local; é um material comercial para enviar ao médico).
+Perfis (como no catálogo):
+  --perfil digital   (padrão) foto reduzida; sai em saida/propostas/ e vai ao site.
+  --perfil impressao foto ORIGINAL (alta resolução) e páginas casadas (--paridade par|impar|mult4) para a gráfica;
+                     sai em saida/impresso/, só local, nunca publicado.
 """
 import re, unicodedata
 from datetime import date
@@ -21,6 +24,17 @@ from geradores.fichas import font_face, b64file, esc, accent, NAVY, INK, LINE, M
 
 
 _slug = T.slug_arquivo
+
+# Perfil impressão = foto ORIGINAL (alta resolução p/ a gráfica); digital = foto reduzida.
+FOTO_ALTA = False
+
+
+def _foto_uri(p):
+    if FOTO_ALTA:
+        import os
+        ext = os.path.splitext(str(p))[1].lstrip(".").lower() or "jpeg"
+        return f"data:image/{ext};base64,{b64file(str(p))}"
+    return f"data:image/jpeg;base64,{F.jpeg_reduzido_b64(str(p), lado=360)}"
 
 
 def _brl(v):
@@ -49,7 +63,7 @@ def _linha(r, it, com_preco):
         nome_html = (f'<div class="c mono">{esc(r["codigo"])}</div><div class="nm">{esc(nome_curto)}</div>'
                      + (f'<div class="obs">{esc(r["obs"])}</div>' if r["obs"] else ""))
         p = F.buscar(r["codigo"])
-        foto = (f'<img src="data:image/jpeg;base64,{F.jpeg_reduzido_b64(str(p), lado=360)}">' if p
+        foto = (f'<img src="{_foto_uri(p)}">' if p
                 else '<div class="ph"><span>sem foto</span></div>')
         d = T.diametro_fmt(it)
         diam = esc(d) if d else '<span class="falta">—</span>'
@@ -193,15 +207,24 @@ def preview(kit=None):
     return saidas
 
 
-def gerar(kit=None):
+def gerar(kit=None, perfil="digital", paridade="nenhuma"):
+    global FOTO_ALTA
+    FOTO_ALTA = (perfil != "digital")                    # impressão = foto original
+    pasta = config.SAIDA_PROPOSTAS if perfil == "digital" else config.SAIDA_IMPRESSO
     produtos = B.carregar()
     saidas = []
     for nome, linhas in _kits_escolhidos(kit).items():
         _avisos(nome, linhas, produtos)
-        out = config.SAIDA_PROPOSTAS / f"{_slug(nome)}_MDTech.pdf"
+        out = pasta / f"{_slug(nome)}_MDTech.pdf"
         HTML(string=_doc_html(nome, linhas, produtos), base_url=str(config.IMAGENS)).write_pdf(str(out))
+        extra = ""
+        if perfil != "digital" and paridade not in (None, "nenhuma"):
+            from geradores.catalogo import _pad_paridade       # páginas casadas p/ frente e verso
+            add = _pad_paridade(str(out), paridade)
+            extra = f" (+{add} página em branco, paridade '{paridade}')" if add else f" (paridade '{paridade}' já ok)"
+        from pypdf import PdfReader
         un = sum((r["qtd"] or 1) for r in linhas)
-        print(f"  {nome}: {len(linhas)} itens, {un} unidades -> {out}")
+        print(f"  {nome}: {len(linhas)} itens, {un} unidades, {len(PdfReader(str(out)).pages)} págs{extra} -> {out}")
         saidas.append(str(out))
     return saidas
 

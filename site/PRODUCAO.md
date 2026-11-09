@@ -28,7 +28,7 @@ completo tem ~3 MB e os quatro por linha somam ~3 MB, em cerca de 25 s) e `gerar
   workflow falha e a publicação não vai ao ar.
 
 Os catálogos **impressos** (foto ORIGINAL, alta resolução, paridade para a gráfica) **nunca passam por aqui**: são
-gerados só na sua máquina (`python painel.py`, bloco "Impresso") em `saida/impresso/`, e vão para o InDesign.
+gerados só na sua máquina (`python painel.py`) em `saida/impresso/`, e vão para o InDesign.
 
 ## 3) WhatsApp
 `site/js/config.js` → `contato.whatsapp` está vazio. Preencher com DDI+DDD+número, só

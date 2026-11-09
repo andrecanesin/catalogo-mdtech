@@ -35,7 +35,7 @@ o GitHub Actions os recria a cada publicação.
 | Fotos novas (`assets/imagens/`) | André coloca os arquivos (nome = código) | commit/PR → Actions refaz fotos e fichas |
 | Catálogos digitais (PDF) | Gerados com foto reduzida; completo com capa, por linha só miolo + índice | Actions, junto com o site (+25 s); nunca no git |
 | Propostas básicas (kits) | Claude monta a aba KITS a partir da lista do André e confere código a código na base | Actions gera o PDF e o site lista no menu "Catálogos e propostas" (cada kit novo aparece sozinho) |
-| Catálogos impressos | André gera na máquina (painel, bloco Impresso): foto ORIGINAL, paridade, `saida/impresso/` | só local: nunca site, Actions nem git |
+| Catálogos e propostas impressos | André gera na máquina (painel): foto ORIGINAL, paridade, `saida/impresso/`; sempre liberado (testes), com aviso do que falta de ANVISA/NCM | só local: nunca site, Actions nem git |
 | Código Python (`mdtech/`, `geradores/`) | Claude altera e testa localmente | PR → ok → merge |
 O Actions guarda as fichas em cache; a chave muda com planilha, `geradores/fichas.py`, `gerar.py`, `mdtech/*.py`, `assets/` e
 `requirements.txt`. Para forçar a regeneração: Actions → Publicar site → Run workflow → marcar "Ignorar o cache".
@@ -49,7 +49,8 @@ python gerar.py dashboard             # painel de pendências (inclui status das
 python gerar.py catalogo Laparoscopia --preview   # preview HTML sem gerar PDF
 python gerar.py catalogo --todos --perfil impressao --paridade par   # impresso (local, foto original, saida/impresso/)
 python gerar.py kits --kit "Hérnia de Hiato"   # proposta básica (kit) em PDF -> saida/propostas/
-python painel.py                      # painel local (127.0.0.1:8800): blocos Digital, Propostas e Impresso
+python gerar.py kits --perfil impressao --paridade par   # propostas impressas (local, foto original, páginas casadas)
+python painel.py                      # painel local do marketing (127.0.0.1:8800): o que falta de informação (ANVISA, NCM, foto) + impresso
 ```
 Todas as flags: `LEIA-ME.md`.
 

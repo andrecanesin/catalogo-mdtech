@@ -60,6 +60,10 @@ def main():
     p = sub.add_parser("kits", help="propostas básicas: 1 PDF por kit da aba KITS (saida/propostas/)")
     p.add_argument("--kit", help="nome (ou parte) do kit; padrão: todos")
     p.add_argument("--preview", action="store_true", help="HTML no navegador, sem gerar PDF")
+    p.add_argument("--perfil", choices=["impressao", "digital"], default="digital",
+                   help="digital=foto reduzida (vai ao site) · impressao=foto ORIGINAL p/ gráfica, só local (saida/impresso/)")
+    p.add_argument("--paridade", choices=["nenhuma", "par", "impar", "mult4"], default="nenhuma",
+                   help="(só impressão) páginas casadas: par · impar · mult4")
 
     sub.add_parser("dashboard")
     sub.add_parser("checklist")
@@ -112,7 +116,10 @@ def main():
 
     elif a.cmd == "kits":
         from geradores import kits
-        (kits.preview if a.preview else kits.gerar)(a.kit)
+        if a.preview:
+            kits.preview(a.kit)
+        else:
+            kits.gerar(a.kit, perfil=a.perfil, paridade=a.paridade)
 
     elif a.cmd == "dashboard":
         from geradores import dashboard
