@@ -5,7 +5,8 @@
   python gerar.py kits --kit "Hérnia de Hiato" # um kit (busca pelo nome)
   python gerar.py kits --kit "Hérnia de Hiato" --preview   # HTML no navegador, sem gerar PDF
 
-Os kits ficam na aba KITS da planilha-base (mdtech.base.carregar_kits); os dados de cada produto
+A proposta é uma RELAÇÃO COMPLETA: todos os itens fazem parte do kit (o vendedor oferece tudo ao médico);
+os grupos só dividem a lista em seções. Os kits ficam na aba KITS da planilha-base (mdtech.base.carregar_kits); os dados de cada produto
 (nome, Ø, comprimento, ANVISA, foto) vêm da BASE DE PRODUTOS pelo código. A foto é a reduzida (como no digital).
 Preço é opcional: se alguma linha do kit tiver 'Preço unit. (R$)', o PDF ganha as colunas de preço e o total.
 Saída: saida/propostas/Kit_<...>_MDTech.pdf (local; é um material comercial para enviar ao médico).
@@ -17,7 +18,6 @@ from weasyprint import HTML
 from mdtech import config, base as B, fotos as F, textos as T
 from geradores.fichas import font_face, b64file, esc, accent, NAVY, INK, LINE, MUT, LAB, ZEBRA
 
-GRUPO_FIXO = "Itens do kit"
 
 
 def _slug(nome):
@@ -39,7 +39,7 @@ def _titulo(nome):
     return "Kit", "Proposta básica", nome
 
 
-def _linha(r, it, com_qtd, com_preco):
+def _linha(r, it, com_preco):
     """Uma linha da tabela. `it` = produto da base (ou None se o código não existir)."""
     if it is None:
         nome_html = (f'<div class="c mono">{esc(r["codigo"])}</div>'
@@ -59,26 +59,20 @@ def _linha(r, it, com_qtd, com_preco):
         anv = esc(it["anvisa"]) if it.get("anvisa") else '<span class="falta it">em registro</span>'
     cel = [f'<td class="f">{foto}</td>', f'<td class="n">{nome_html}</td>',
            f'<td class="s">{diam}</td>', f'<td class="s">{comp}</td>', f'<td class="a mono">{anv}</td>']
-    if com_qtd:
-        cel.append(f'<td class="q">{r["qtd"] if r["qtd"] else 1}</td>')
+    cel.append(f'<td class="q">{r["qtd"] if r["qtd"] else 1}</td>')
     if com_preco:
         pu = r["preco"]
         cel.append(f'<td class="p">{_brl(pu) if pu is not None else "—"}</td>')
-        if com_qtd:
-            cel.append(f'<td class="p">{_brl(pu * (r["qtd"] or 1)) if pu is not None else "—"}</td>')
+        cel.append(f'<td class="p">{_brl(pu * (r["qtd"] or 1)) if pu is not None else "—"}</td>')
     return "<tr>" + "".join(cel) + "</tr>"
 
 
-def _tabela(linhas, produtos, fixo, com_preco):
+def _tabela(linhas, produtos, com_preco):
     cab = ['<th class="f"></th>', '<th class="n">Item</th>', '<th class="s">Ø</th>', '<th class="s">Comp.</th>',
-           '<th class="a">Registro ANVISA</th>']
-    if fixo:
-        cab.append('<th class="q">Qtd</th>')
+           '<th class="a">Registro ANVISA</th>', '<th class="q">Qtd</th>']
     if com_preco:
-        cab.append('<th class="p">Unit. (R$)</th>')
-        if fixo:
-            cab.append('<th class="p">Total (R$)</th>')
-    corpo = "".join(_linha(r, B.por_codigo_exato(produtos, r["codigo"]), fixo, com_preco) for r in linhas)
+        cab += ['<th class="p">Unit. (R$)</th>', '<th class="p">Total (R$)</th>']
+    corpo = "".join(_linha(r, B.por_codigo_exato(produtos, r["codigo"]), com_preco) for r in linhas)
     return f'<table class="it"><thead><tr>{"".join(cab)}</tr></thead><tbody>{corpo}</tbody></table>'
 
 
@@ -95,26 +89,22 @@ def _doc_html(nome, linhas, produtos):
     grupos = {}
     for r in linhas:
         grupos.setdefault(r["grupo"], []).append(r)
-    fixos = grupos.get(GRUPO_FIXO, [])
     com_preco = any(r["preco"] is not None for r in linhas)
-    n_itens = len(fixos)
-    n_un = sum((r["qtd"] or 1) for r in fixos)
-    opcoes = [g for g in grupos if g != GRUPO_FIXO]
-    n_op = sum(len(grupos[g]) for g in opcoes)
+    n_itens = len(linhas)
+    n_un = sum((r["qtd"] or 1) for r in linhas)
 
     secoes = ""
-    if fixos:
-        secoes += f'<div class="h2">{GRUPO_FIXO}</div>' + _tabela(fixos, produtos, True, com_preco)
-        if com_preco:
-            tot = sum((r["preco"] or 0) * (r["qtd"] or 1) for r in fixos)
-            secoes += f'<div class="total">Total do kit: <b>R$ {_brl(tot)}</b></div>'
-    for g in opcoes:
-        secoes += (f'<div class="grp"><div class="h2">{esc(g)} <span class="op">· opções</span></div>'
-                   + _tabela(grupos[g], produtos, False, False) + '</div>')   # grupo de opções não quebra entre páginas
+    for g, rs in grupos.items():
+        # seção curta não quebra entre páginas; a longa (itens principais) pode quebrar
+        secoes += (f'<div class="{"grp" if len(rs) <= 8 else ""}"><div class="h2">{esc(g)}</div>'
+                   + _tabela(rs, produtos, com_preco) + '</div>')
+    if com_preco:
+        tot = sum((r["preco"] or 0) * (r["qtd"] or 1) for r in linhas)
+        secoes += f'<div class="total">Total do kit: <b>R$ {_brl(tot)}</b></div>'
 
     resumo = f'<b>{n_itens}</b> itens · <b>{n_un}</b> unidades'
-    if n_op:
-        resumo += f' &nbsp;|&nbsp; <b>{n_op}</b> opções em {len(opcoes)} grupo{"s" if len(opcoes) != 1 else ""}'
+    if len(grupos) > 1:
+        resumo += " &nbsp;|&nbsp; " + " · ".join(f"{esc(g)} <b>{len(rs)}</b>" for g, rs in grupos.items())
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><title>{esc(nome)}</title><style>
     {faces}
@@ -139,7 +129,6 @@ def _doc_html(nome, linhas, produtos):
     .resumo b{{color:{NAVY};}}
     .h2{{font-size:11.5pt;font-weight:700;color:{NAVY};padding-bottom:1.6mm;border-bottom:1.6pt solid {ac};
          margin:5mm 0 2mm 0;page-break-after:avoid;}}
-    .h2 .op{{font-weight:500;color:{LAB};font-size:9pt;}}
     table.it{{width:100%;border-collapse:collapse;}}
     table.it thead{{display:table-header-group;}}
     table.it th{{font-size:6.5pt;font-weight:500;color:{LAB};letter-spacing:.09em;text-transform:uppercase;
@@ -213,8 +202,8 @@ def gerar(kit=None):
         _avisos(nome, linhas, produtos)
         out = config.SAIDA_PROPOSTAS / f"{_slug(nome)}_MDTech.pdf"
         HTML(string=_doc_html(nome, linhas, produtos), base_url=str(config.IMAGENS)).write_pdf(str(out))
-        n = len([r for r in linhas if r["grupo"] == GRUPO_FIXO])
-        print(f"  {nome}: {len(linhas)} linhas ({n} fixos) -> {out}")
+        un = sum((r["qtd"] or 1) for r in linhas)
+        print(f"  {nome}: {len(linhas)} itens, {un} unidades -> {out}")
         saidas.append(str(out))
     return saidas
 
