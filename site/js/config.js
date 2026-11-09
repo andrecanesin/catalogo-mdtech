@@ -39,6 +39,9 @@ window.MDTECH = {
     { nome: "Histeroscopia",       arquivo: "Catalogo_Histeroscopia_MDTech.pdf" },
     { nome: "Óticas HD-4K",        arquivo: "Catalogo_Oticas_HD-4K_MDTech.pdf" }
   ],
+  // Ordem na grade quando o filtro de família está ativo: estes códigos ficam por último.
+  // (A ordem da base e dos PDFs não muda; vale só para o site.)
+  ultimosNaFamilia: { "Trocateres": ["A219"] },
   // Quantidade de produtos por página na grade (mobile-friendly).
   produtosPorPagina: 20
 };

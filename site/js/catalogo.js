@@ -29,6 +29,16 @@
     return true;
   }
 
+  // Com filtro de família ativo, códigos listados em cfg.ultimosNaFamilia[familia]
+  // vão para o fim da lista (ordem estável). Sem filtro de família, vale a ordem da base.
+  function ordenar(lista) {
+    const regras = MD.cfg.ultimosNaFamilia || {};
+    const ultimos = new Set();
+    estado.familias.forEach(f => (regras[f] || []).forEach(c => ultimos.add(c)));
+    if (!ultimos.size) return lista;
+    return lista.filter(p => !ultimos.has(p.codigo)).concat(lista.filter(p => ultimos.has(p.codigo)));
+  }
+
   function cardProduto(p) {
     const cor = MD.corEsp(p.especialidade);
     const card = el("article", "card");
@@ -192,7 +202,7 @@
 
   function render() {
     const grade = $("#grade");
-    const listaFiltrada = PRODUTOS.filter(passaFiltro);
+    const listaFiltrada = ordenar(PRODUTOS.filter(passaFiltro));
     const inicio = (estado.pagina - 1) * PORPAGINA;
     const paginaAtual = listaFiltrada.slice(inicio, inicio + PORPAGINA);
 
@@ -259,6 +269,9 @@
       return;
     }
     $("#busca").addEventListener("input", e => { estado.termo = MD.norm(e.target.value.trim()); estado.pagina = 1; render(); });
+    // busca vinda de outra página (ex.: do detalhe de um produto): index.html?q=termo
+    const q = new URLSearchParams(location.search).get("q");
+    if (q) { $("#busca").value = q; estado.termo = MD.norm(q.trim()); }
     $("#btn-filtrar").addEventListener("click", abrirGaveta);
     $("#backdrop").addEventListener("click", fecharGaveta);
     $("#bt-limpar").addEventListener("click", () => MD.limpar());
