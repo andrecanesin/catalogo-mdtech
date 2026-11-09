@@ -51,7 +51,7 @@ _job = {"acao": None, "rodando": False, "linhas": [], "codigo": None}
 
 
 def _rodar(acao):
-    rotulo, _, passos = ACOES[acao]
+    passos = ACOES[acao][2]          # (rótulo, descrição, passos, grupo)
     try:
         for args in passos:
             _job["linhas"].append(f"$ python gerar.py {' '.join(args)}")
