@@ -1,71 +1,85 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Painel local da MDTech: botões para rodar os geradores sem abrir terminal.
+"""Painel local da MDTech (uso do marketing, só nesta máquina).
 
     python painel.py              # abre http://127.0.0.1:8800 no navegador
     python painel.py --porta 9000 --sem-navegador
 
-Dois trilhos, sempre separados: DIGITAL (fichas, catálogos leves e dados do site; é o que vai ao ar) e
-IMPRESSO (catálogo para a gráfica, com a foto ORIGINAL; só nesta máquina, nunca publicado).
-Só usa a biblioteca padrão. Escuta apenas em 127.0.0.1 (nunca na rede) e só roda
-as ações da lista ACOES abaixo — nada digitado no navegador vira comando.
-O painel NÃO faz commit nem push: mostra o que mudou (git status) e lembra de publicar.
+Faz só duas coisas:
+  1) mostrar o que falta de informação (ANVISA, foto, Ø, comprimento, NCM) e abrir o painel completo de pendências;
+  2) gerar o material IMPRESSO (foto original, alta resolução) em saida/impresso/ — liberado só quando a
+     ANVISA estiver completa, para não imprimir "em registro".
+Fichas, catálogos digitais, propostas digitais e o site NÃO ficam aqui: o GitHub gera e publica tudo isso sozinho,
+e o site é a fonte única (evita duas versões diferentes).
+
+Só usa a biblioteca padrão (lê a planilha pelo núcleo do projeto). Escuta apenas em 127.0.0.1 e só roda as ações
+da lista abaixo — nada digitado no navegador vira comando. Não faz commit nem push.
 """
-import argparse, json, subprocess, sys, threading, webbrowser
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+import argparse, json, os, subprocess, sys, threading, webbrowser
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
 RAIZ = Path(__file__).resolve().parent
-SITE = RAIZ / "site"
+sys.path.insert(0, str(RAIZ))
 SAIDA = RAIZ / "saida"
+IMPRESSO = SAIDA / "impresso"
 GERAR = str(RAIZ / "gerar.py")
 
-# nome -> (rótulo, descrição, [passos], grupo); cada passo = argumentos do gerar.py
-ACOES = {
-    # ---- DIGITAL: o que vai ao ar (foto reduzida, arquivos leves) ----
-    "conferir":  ("Conferir pendências", "Fotos casadas × faltantes e painel de pendências (dashboard).",
-                  [["checklist"], ["dashboard"]], "digital"),
-    "fichas":    ("Gerar fichas técnicas", "1 PDF por código, foto reduzida (é o que o botão do site usa).",
-                  [["fichas", "--separados"]], "digital"),
-    "catalogos": ("Gerar catálogos digitais", "Um PDF por linha (miolo + índice) + o completo com capa, foto reduzida.",
-                  [["catalogo", "--todos", "--perfil", "digital"]], "digital"),
-    "site":      ("Atualizar dados do site", "produtos.json, fotos, fichas e catálogos dentro de site/ (gere as fichas antes).",
-                  [["site"]], "digital"),
-    "tudo":      ("Gerar tudo e preparar o site", "Fichas + catálogos + propostas + dados do site, na ordem certa. Depois abra o site local.",
-                  [["fichas", "--separados"], ["catalogo", "--todos", "--perfil", "digital"], ["kits"], ["site"]], "digital"),
-    # ---- PROPOSTAS: kits por tipo de uso (aba KITS da planilha), PDF para enviar ao médico ----
-    "propostas": ("Gerar propostas (kits)", "1 PDF por kit da aba KITS. Aparecem no site (menu de downloads) depois de \"Atualizar dados do site\".",
-                  [["kits"]], "propostas"),
-    # ---- IMPRESSO: só nesta máquina (foto original, nunca publica) ----
-    "imp_par":   ("Catálogos impressos · separado", "Miolo com páginas PAR, para montar capa + miolo + contracapa no InDesign.",
-                  [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "par"]], "impresso"),
-    "imp_impar": ("Catálogos impressos · unificado", "Miolo com páginas ÍMPAR, para o catálogo unificado (capas das linhas).",
-                  [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "impar"]], "impresso"),
-    "imp_mult4": ("Catálogos impressos · caderno", "Miolo com total de páginas múltiplo de 4.",
-                  [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "mult4"]], "impresso"),
+# montagem do catálogo impresso -> flag de paridade do gerar.py
+MONTAGENS = {
+    "par":   ("Separado", "capa + miolo + contracapa (miolo com páginas PAR)"),
+    "impar": ("Unificado", "capas das linhas no meio (miolo com páginas ÍMPAR)"),
+    "mult4": ("Caderno", "total de páginas múltiplo de 4"),
 }
 
 _lock = threading.Lock()
 _job = {"acao": None, "rodando": False, "linhas": [], "codigo": None}
 
 
-def _rodar(acao):
-    passos = ACOES[acao][2]          # (rótulo, descrição, passos, grupo)
+# ---------------------------------------------------------------- pendências (lidas da planilha)
+def pendencias():
+    """SKUs únicos com informação faltando, por campo. Lê a base pelo núcleo do projeto."""
+    from mdtech import base as B, fotos as F
+    itens = B.carregar()
+    por = {}
+    for it in itens:
+        por.setdefault(it["codigo"], []).append(it)
+    vazio = lambda it, k: not str(it.get(k) or "").strip()
+    campos = {
+        "anvisa":      lambda its: any(vazio(i, "anvisa") for i in its),
+        "foto":        lambda its: F.buscar(its[0]["codigo"]) is None,
+        "diametro":    lambda its: any(vazio(i, "diametro") and vazio(i, "diametro_fr") for i in its),
+        "comprimento": lambda its: any(vazio(i, "comprimento") for i in its),
+        "ncm":         lambda its: any(vazio(i, "ncm") for i in its),
+    }
+    return {"total": len(por),
+            "faltando": {c: sorted(cod for cod, its in por.items() if f(its)) for c, f in campos.items()}}
+
+
+def impresso_liberado(p=None):
+    """Impresso só com a ANVISA completa. Retorna (liberado, quantos faltam)."""
+    p = p or pendencias()
+    n = len(p["faltando"]["anvisa"])
+    return n == 0, n
+
+
+# ---------------------------------------------------------------- execução de comandos
+def _rodar(passos):
     try:
         for args in passos:
             _job["linhas"].append(f"$ python gerar.py {' '.join(args)}")
             p = subprocess.Popen([sys.executable, "-u", GERAR, *args], cwd=str(RAIZ),
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                  text=True, encoding="utf-8", errors="replace",
-                                 env={**__import__("os").environ, "PYTHONIOENCODING": "utf-8"})
+                                 env={**os.environ, "PYTHONIOENCODING": "utf-8"})
             for ln in p.stdout:
                 _job["linhas"].append(ln.rstrip("\n"))
             _job["codigo"] = p.wait()
             if _job["codigo"] != 0:
-                _job["linhas"].append(f"✘ falhou (código {_job['codigo']}) — passos seguintes cancelados.")
+                _job["linhas"].append(f"✘ falhou (código {_job['codigo']}).")
                 return
-        _job["linhas"].append("✔ concluído.")
+        _job["linhas"].append("✔ concluído. Os PDFs estão em saida/impresso/ (botão \"Abrir pasta\").")
     except Exception as e:  # noqa: BLE001 — qualquer erro deve aparecer no log do painel
         _job["codigo"] = -1
         _job["linhas"].append(f"✘ erro ao rodar: {e}")
@@ -73,94 +87,100 @@ def _rodar(acao):
         _job["rodando"] = False
 
 
-def iniciar(acao):
+def iniciar(nome, passos):
     with _lock:
         if _job["rodando"]:
             return False
-        _job.update(acao=acao, rodando=True, linhas=[], codigo=None)
-    threading.Thread(target=_rodar, args=(acao,), daemon=True).start()
+        _job.update(acao=nome, rodando=True, linhas=[], codigo=None)
+    threading.Thread(target=_rodar, args=(passos,), daemon=True).start()
     return True
 
 
-def _contar(pasta, padrao):
-    return len(list(pasta.glob(padrao))) if pasta.exists() else 0
+def abrir_pasta():
+    IMPRESSO.mkdir(parents=True, exist_ok=True)
+    if sys.platform.startswith("win"):
+        os.startfile(str(IMPRESSO))                      # noqa: S606 — pasta fixa do projeto
+    elif sys.platform == "darwin":
+        subprocess.Popen(["open", str(IMPRESSO)])
+    else:
+        subprocess.Popen(["xdg-open", str(IMPRESSO)])
 
 
 def estado():
-    meta = {}
-    try:
-        meta = json.loads((SITE / "meta.json").read_text(encoding="utf-8"))
-    except Exception:  # noqa: BLE001
-        pass
-    try:
-        git = subprocess.run(["git", "status", "--short"], cwd=str(RAIZ), capture_output=True,
-                             text=True, encoding="utf-8", timeout=10).stdout.splitlines()
-    except Exception:  # noqa: BLE001
-        git = None
-    return {
-        "site": {"produtos": meta.get("total"), "com_foto": meta.get("com_foto"),
-                 "fichas": _contar(SITE / "fichas", "*.pdf"),
-                 "catalogos": _contar(SITE / "catalogos", "*.pdf")},
-        "digital_pdfs": _contar(SAIDA / "digital", "*.pdf"),
-        "impresso_pdfs": _contar(SAIDA / "impresso", "*.pdf"),
-        "propostas_pdfs": _contar(SAIDA / "propostas", "*.pdf"),
-        "git": git,
-    }
+    pdfs = sorted(IMPRESSO.glob("*.pdf")) if IMPRESSO.exists() else []
+    return {"impresso_pdfs": [p.name for p in pdfs],
+            "job": {"acao": _job["acao"], "rodando": _job["rodando"],
+                    "codigo": _job["codigo"], "linhas": _job["linhas"][:]}}
 
 
-class H(SimpleHTTPRequestHandler):
-    def __init__(self, *a, **k):
-        super().__init__(*a, directory=str(SITE), **k)
-
+# ---------------------------------------------------------------- servidor
+class H(BaseHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
     def _host_ok(self):
         return (self.headers.get("Host") or "").split(":")[0] in ("127.0.0.1", "localhost")
 
-    def _json(self, obj, status=200):
-        b = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+    def _send(self, body, tipo, status=200):
+        b = body if isinstance(body, bytes) else body.encode("utf-8")
         self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Type", tipo)
         self.send_header("Content-Length", str(len(b)))
         self.end_headers()
         self.wfile.write(b)
 
+    def _json(self, obj, status=200):
+        self._send(json.dumps(obj, ensure_ascii=False), "application/json; charset=utf-8", status)
+
     def do_GET(self):
         if not self._host_ok():
             return self.send_error(403)
-        u = urlparse(self.path)
-        if u.path == "/":
-            b = PAGINA.replace("__ACOES__", json.dumps(
-                {k: {"rotulo": v[0], "desc": v[1], "grupo": v[3]} for k, v in ACOES.items()}, ensure_ascii=False)).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(b)))
-            self.end_headers()
-            return self.wfile.write(b)
-        if u.path == "/api/estado":
-            return self._json({**estado(), "job": {"acao": _job["acao"], "rodando": _job["rodando"],
-                                                    "codigo": _job["codigo"], "linhas": _job["linhas"][:]}})
-        if u.path.startswith("/site/") or u.path == "/site":
-            self.path = self.path[len("/site"):] or "/"   # serve a pasta site/ para conferir
-            return super().do_GET()
+        u = urlparse(self.path).path
+        if u == "/":
+            return self._send(PAGINA.replace("__MONTAGENS__", json.dumps(
+                {k: {"nome": v[0], "desc": v[1]} for k, v in MONTAGENS.items()}, ensure_ascii=False)),
+                "text/html; charset=utf-8")
+        if u == "/api/estado":
+            return self._json(estado())
+        if u == "/api/pendencias":
+            try:
+                p = pendencias()
+                lib, n = impresso_liberado(p)
+                return self._json({**p, "impresso_liberado": lib, "anvisa_faltando": n})
+            except Exception as e:  # noqa: BLE001
+                return self._json({"erro": f"não consegui ler a planilha: {e}"}, 500)
+        if u == "/pendencias":          # painel completo (HTML do dashboard), regerado a cada abertura
+            r = subprocess.run([sys.executable, GERAR, "dashboard"], cwd=str(RAIZ), capture_output=True,
+                               text=True, encoding="utf-8", errors="replace")
+            arq = SAIDA / "Dashboard_Pendencias_MDTech.html"
+            if r.returncode != 0 or not arq.exists():
+                return self._send("Não consegui gerar o painel de pendências.\n" + (r.stdout + r.stderr)[-800:],
+                                  "text/plain; charset=utf-8", 500)
+            return self._send(arq.read_bytes(), "text/html; charset=utf-8")
         self.send_error(404)
 
     def do_POST(self):
         # cabeçalho próprio: um formulário de outro site não consegue enviá-lo
         if not self._host_ok() or self.headers.get("X-Painel") != "1":
             return self.send_error(403)
-        u = urlparse(self.path)
-        if u.path == "/api/rodar":
-            n = int(self.headers.get("Content-Length") or 0)
-            try:
-                acao = json.loads(self.rfile.read(n) or b"{}").get("acao")
-            except ValueError:
-                acao = None
-            if acao not in ACOES:
-                return self._json({"erro": "ação desconhecida"}, 400)
-            if not iniciar(acao):
-                return self._json({"erro": "já existe uma execução em andamento"}, 409)
+        u = urlparse(self.path).path
+        n = int(self.headers.get("Content-Length") or 0)
+        try:
+            dados = json.loads(self.rfile.read(n) or b"{}")
+        except ValueError:
+            dados = {}
+        if u == "/api/catalogo-impresso":
+            modo = dados.get("modo")
+            if modo not in MONTAGENS:
+                return self._json({"erro": "montagem desconhecida"}, 400)
+            lib, falta = impresso_liberado()
+            if not lib:       # trava no servidor, não só no botão
+                return self._json({"erro": f"Impresso bloqueado: faltam {falta} SKUs sem registro ANVISA."}, 403)
+            ok = iniciar(f"Catálogos impressos · {MONTAGENS[modo][0]}",
+                         [["catalogo", "--todos", "--perfil", "impressao", "--paridade", modo]])
+            return self._json({"ok": True}) if ok else self._json({"erro": "já existe uma execução em andamento"}, 409)
+        if u == "/api/abrir-pasta":
+            abrir_pasta()
             return self._json({"ok": True})
         self.send_error(404)
 
@@ -168,59 +188,84 @@ class H(SimpleHTTPRequestHandler):
 PAGINA = """<!doctype html><html lang="pt-br"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel MDTech</title>
 <style>
-:root{--navy:#193C6C;--ciano:#36A9E1;--ink:#232D3C;--cinza:#606C7E;--painel:#F4F7FB;--linha:#DFE6EF;--ok:#2FA9A2;--erro:#E06666}
+:root{--navy:#193C6C;--ciano:#36A9E1;--ink:#232D3C;--cinza:#606C7E;--painel:#F4F7FB;--linha:#DFE6EF;--ok:#2FA9A2;--erro:#C62828;--amb:#F5A623}
 *{box-sizing:border-box}body{margin:0;font-family:Poppins,system-ui,sans-serif;color:var(--ink);background:var(--painel)}
 header{background:var(--navy);color:#fff;padding:16px 20px;border-bottom:4px solid var(--ciano)}
 header b{font-size:18px}header small{display:block;opacity:.75;font-size:12px}
-main{max-width:980px;margin:0 auto;padding:20px;display:grid;gap:20px}
-h2{font-size:14px;margin:0 0 10px;color:var(--navy);text-transform:uppercase;letter-spacing:.04em}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}
-.n{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:12px}.n b{font-size:22px;color:var(--navy);display:block}.n span{font-size:12px;color:var(--cinza)}
-.acoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
-button.a{display:flex;flex-direction:column;justify-content:flex-start;text-align:left;background:#fff;border:1px solid var(--linha);border-radius:10px;padding:14px;cursor:pointer;font:inherit;min-height:44px}
-button.a:hover:not(:disabled){border-color:var(--ciano)}button.a:focus-visible{outline:3px solid var(--ciano)}
-button.a:disabled{opacity:.5;cursor:not-allowed}
-button.a.impresso{border-left:4px solid #F5A623}button.a.propostas{border-left:4px solid var(--ok)}button.a.digital{border-left:4px solid var(--ciano)}button.a b{display:block;color:var(--navy)}button.a span{font-size:12px;color:var(--cinza)}
-pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;max-height:360px;overflow:auto;font:12px/1.5 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
-.s{font-size:13px;margin:8px 0;color:var(--cinza)}.s.ok{color:var(--ok)}.s.erro{color:var(--erro)}
-.git{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:12px;font:12px/1.6 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
-a.l{color:var(--navy);font-weight:600}
+main{max-width:900px;margin:0 auto;padding:20px;display:grid;gap:22px}
+h2{font-size:14px;margin:0 0 10px;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:12px}
+h2 button{margin-left:auto;font:inherit;font-size:12px;border:1px solid var(--linha);background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--navy)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.n{background:#fff;border:1px solid var(--linha);border-left:5px solid var(--ok);border-radius:10px;padding:12px}
+.n.falta{border-left-color:var(--erro)}.n b{font-size:26px;color:var(--ok);display:block;line-height:1.1}.n.falta b{color:var(--erro)}
+.n span{font-size:12px;color:var(--cinza)}
+details{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:8px 14px;margin-top:8px;font-size:13px}
+summary{cursor:pointer;font-weight:600;color:var(--navy)}details p{margin:8px 0 2px;font:12px/1.7 "IBM Plex Mono",ui-monospace,monospace;color:var(--cinza)}
+.s{font-size:13px;margin:10px 0 0;color:var(--cinza)}.s a{color:var(--navy);font-weight:600}
+.gate{border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:12px}
+.gate.bloq{background:#fff4e0;border:1px solid var(--amb);color:#7a4b00}.gate.lib{background:#e6f6f4;border:1px solid var(--ok);color:#16615c}
+.imp{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:14px;display:grid;gap:12px}
+.imp label{font-size:12px;color:var(--cinza);display:block;margin-bottom:4px}
+select{font:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--linha);border-radius:8px;width:100%;background:#fff}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button.p{font:inherit;font-size:14px;font-weight:600;border:0;border-radius:9px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;min-height:44px}
+button.p.sec{background:#fff;color:var(--navy);border:1px solid var(--linha)}
+button.p:disabled{opacity:.45;cursor:not-allowed}button.p:focus-visible,select:focus-visible{outline:3px solid var(--ciano)}
+pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;max-height:300px;overflow:auto;font:12px/1.5 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
+.st{font-size:13px;margin:0 0 8px;color:var(--cinza)}.st.ok{color:var(--ok)}.st.erro{color:var(--erro)}
 </style></head><body>
-<header><b>Painel MDTech</b><small>Gera fichas, catálogos e dados do site · só nesta máquina</small></header>
+<header><b>Painel MDTech</b><small>Marketing · uso interno, só nesta máquina</small></header>
 <main>
-<section><h2>Situação atual</h2><div class="cards" id="cards"></div></section>
-<section><h2>Digital · vai ao ar</h2><div class="acoes" id="acoes-digital"></div>
-<p class="s">Para conferir: <a class="l" href="/site/index.html" target="_blank">abrir o site local</a> (usa o que está em <code>site/</code>). PDFs em <code>saida/digital/</code>.</p></section>
-<section><h2>Propostas · kits por tipo de uso</h2><div class="acoes" id="acoes-propostas"></div>
-<p class="s">Os kits ficam na aba <b>KITS</b> da planilha. PDFs em <code>saida/propostas/</code> (material comercial, só local).</p></section>
-<section><h2>Impresso · só nesta máquina</h2><div class="acoes" id="acoes-impresso"></div>
-<p class="s">Foto em <b>alta resolução (original)</b>; os PDFs ficam em <code>saida/impresso/</code> e <b>nunca</b> vão para o site, o Actions ou o git.</p></section>
-<section><h2>Execução</h2><div class="s" id="st">Nada em execução.</div><pre id="log" aria-live="polite">Aguardando…</pre></section>
-<section><h2>Pendente de publicar (git status)</h2><div class="git" id="git">…</div>
-<p class="s">O painel não faz commit nem push. Para publicar: <code>git add</code>, <code>git commit</code>, <code>git push origin main</code> e acompanhar a aba Actions.</p></section>
+<section><h2>O que falta de informação <button id="atualizar">Atualizar</button></h2>
+  <div class="cards" id="cards">Lendo a planilha…</div><div id="listas"></div>
+  <p class="s"><a href="/pendencias" target="_blank">Abrir o painel completo de pendências</a> (lista por produto e fornecedor, com exportação CSV).</p></section>
+<section><h2>Impresso · foto original, só nesta máquina</h2>
+  <div class="gate bloq" id="gate">Verificando…</div>
+  <div class="imp">
+    <div><label for="modo">Catálogos impressos (miolo para o InDesign)</label><select id="modo"></select></div>
+    <div class="btns"><button class="p" id="gerar" disabled>Gerar catálogos impressos</button>
+      <button class="p sec" disabled title="Em desenvolvimento">Propostas impressas (em desenvolvimento)</button>
+      <button class="p sec" id="pasta">Abrir pasta dos impressos</button></div>
+    <p class="s" id="pdfs" style="margin:0"></p>
+  </div></section>
+<section><h2>Execução</h2><p class="st" id="st">Nada em execução.</p><pre id="log">Aguardando…</pre></section>
 </main>
 <script>
-const ACOES=__ACOES__, $=s=>document.querySelector(s);
-const hd={"X-Painel":"1","Content-Type":"application/json"};
-for(const g of ["digital","propostas","impresso"])
-  $("#acoes-"+g).innerHTML=Object.entries(ACOES).filter(([k,v])=>v.grupo===g).map(([k,v])=>`<button class="a ${g}" data-a="${k}"><b>${v.rotulo}</b><span>${v.desc}</span></button>`).join("");
-document.querySelectorAll("button.a").forEach(b=>b.onclick=async()=>{
-  const r=await fetch("/api/rodar",{method:"POST",headers:hd,body:JSON.stringify({acao:b.dataset.a})});
-  if(!r.ok){const e=await r.json();$("#st").className="s erro";$("#st").textContent=e.erro||"erro";}
-  atualizar();});
-async function atualizar(){
-  const d=await (await fetch("/api/estado")).json(), j=d.job, s=d.site;
-  $("#cards").innerHTML=[["Produtos no site",s.produtos??"—"],["Com foto",s.com_foto??"—"],["Fichas em site/",s.fichas],["Catálogos em site/",s.catalogos],["PDFs digitais",d.digital_pdfs],["Propostas",d.propostas_pdfs],["PDFs impressos",d.impresso_pdfs]]
-    .map(([k,v])=>`<div class="n"><b>${v}</b><span>${k}</span></div>`).join("");
-  document.querySelectorAll("button.a").forEach(b=>b.disabled=j.rodando);
-  const st=$("#st");
-  if(j.rodando){st.className="s";st.textContent="Executando: "+ACOES[j.acao].rotulo+"…";}
-  else if(j.acao){const ok=j.codigo===0;st.className="s "+(ok?"ok":"erro");st.textContent=(ok?"Concluído: ":"Falhou: ")+ACOES[j.acao].rotulo;}
-  const log=$("#log"), fim=log.scrollTop+log.clientHeight>=log.scrollHeight-8;
-  if(j.acao){log.textContent=j.linhas.join("\\n");if(fim)log.scrollTop=log.scrollHeight;}
-  $("#git").textContent=d.git===null?"git indisponível nesta máquina.":(d.git.length?d.git.join("\\n"):"Nada pendente: tudo já está commitado.");
+const M=__MONTAGENS__, $=s=>document.querySelector(s), hd={"X-Painel":"1","Content-Type":"application/json"};
+const ROT={anvisa:"Registro ANVISA",foto:"Foto",diametro:"Diâmetro",comprimento:"Comprimento",ncm:"NCM"};
+$("#modo").innerHTML=Object.entries(M).map(([k,v])=>`<option value="${k}">${v.nome} — ${v.desc}</option>`).join("");
+let liberado=false;
+async function pend(){
+  $("#cards").textContent="Lendo a planilha…";
+  const r=await fetch("/api/pendencias"),d=await r.json();
+  if(d.erro){$("#cards").textContent=d.erro;return;}
+  $("#cards").innerHTML=Object.entries(ROT).map(([k,t])=>{const n=d.faltando[k].length;
+    return `<div class="n ${n?"falta":""}"><b>${n?n:"✓"}</b><span>${t}${n?" · SKUs":" · completo"}</span></div>`}).join("");
+  $("#listas").innerHTML=Object.entries(ROT).filter(([k])=>d.faltando[k].length).map(([k,t])=>
+    `<details><summary>${t}: ${d.faltando[k].length} de ${d.total} SKUs</summary><p>${d.faltando[k].join(" · ")}</p></details>`).join("");
+  liberado=d.impresso_liberado;
+  const g=$("#gate");
+  g.className="gate "+(liberado?"lib":"bloq");
+  g.innerHTML=liberado?"<b>Liberado:</b> todos os registros ANVISA estão preenchidos."
+    :`<b>Bloqueado por enquanto:</b> o impresso só é liberado com a ANVISA completa. Faltam <b>${d.anvisa_faltando}</b> SKUs sem registro.`;
+  trava();
 }
-atualizar();setInterval(atualizar,1500);
+let rodando=false;
+function trava(){$("#gerar").disabled=!liberado||rodando;}
+$("#atualizar").onclick=pend;
+$("#gerar").onclick=async()=>{const r=await fetch("/api/catalogo-impresso",{method:"POST",headers:hd,body:JSON.stringify({modo:$("#modo").value})});
+  if(!r.ok){const e=await r.json();$("#st").className="st erro";$("#st").textContent=e.erro||"erro";} estado();};
+$("#pasta").onclick=()=>fetch("/api/abrir-pasta",{method:"POST",headers:hd,body:"{}"});
+async function estado(){
+  const d=await (await fetch("/api/estado")).json(),j=d.job;rodando=j.rodando;trava();
+  const st=$("#st");
+  if(j.rodando){st.className="st";st.textContent="Executando: "+j.acao+"…";}
+  else if(j.acao){const ok=j.codigo===0;st.className="st "+(ok?"ok":"erro");st.textContent=(ok?"Concluído: ":"Falhou: ")+j.acao;}
+  const log=$("#log"),fim=log.scrollTop+log.clientHeight>=log.scrollHeight-8;
+  if(j.acao){log.textContent=j.linhas.join("\\n");if(fim)log.scrollTop=log.scrollHeight;}
+  $("#pdfs").textContent=d.impresso_pdfs.length?"Já gerados em saida/impresso/: "+d.impresso_pdfs.join(", "):"Nenhum PDF impresso gerado ainda.";
+}
+pend();estado();setInterval(estado,1500);
 </script></body></html>"""
 
 

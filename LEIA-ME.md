@@ -123,13 +123,16 @@ os itens fazem parte do kit; `Grupo` só divide a lista em seções do PDF (ex.:
 quantidade de cada item (vazio = 1). Nome, Ø, comprimento, ANVISA e foto vêm da BASE DE PRODUTOS pelo código (match exato: `A215` ≠ `A215.C`).
 O preço é opcional: preenchendo `Preço unit. (R$)`, o PDF ganha as colunas de preço e o total do kit.
 
-### Painel local (botões, sem terminal)
+### Painel local (só o marketing, só nesta máquina)
 ```
 python painel.py
 ```
-Abre `http://127.0.0.1:8800` com botões para conferir pendências, gerar fichas, catálogos e dados do
-site, ver o log e o `git status`, e abrir o site local. Só biblioteca padrão; escuta apenas em
-127.0.0.1 e só roda as ações da lista `ACOES` em `painel.py`. Não faz commit nem push.
+Abre `http://127.0.0.1:8800` e faz **duas coisas**: (1) mostra **o que falta de informação** (ANVISA, foto, Ø, comprimento,
+NCM, em SKUs) e abre o painel completo de pendências; (2) gera o material **impresso** (foto original) em `saida/impresso/`,
+**liberado só quando a ANVISA estiver completa** (a trava vale também no servidor do painel). Escolha a montagem do catálogo:
+separado (par), unificado (ímpar) ou caderno (múltiplo de 4). Propostas impressas: em desenvolvimento.
+Fichas, catálogos digitais, propostas digitais e o site **não** estão no painel: o GitHub os gera e publica sozinho, e o site
+é a fonte única. Só biblioteca padrão; escuta só em 127.0.0.1; não faz commit nem push.
 
 ### Preview rápido sem gerar PDF
 ```
