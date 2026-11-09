@@ -46,6 +46,8 @@ window.MDTECH = {
   // Ordem na grade quando o filtro de família está ativo: estes códigos ficam por último.
   // (A ordem da base e dos PDFs não muda; vale só para o site.)
   ultimosNaFamilia: { "Trocateres": ["A219"] },
+  // Foto de cada linha na página inicial (código do produto). Vazio = escolha automática (1º instrumento só daquela linha).
+  fotoLinha: { },
   // Quantidade de produtos por página na grade (mobile-friendly).
   produtosPorPagina: 20,
 

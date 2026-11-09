@@ -437,3 +437,37 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .trilha [aria-current]{color:var(--navy);font-weight:600;}
 @media (min-width:901px){ .trilha{display:block;} .voltar{display:none;} }
 #alvo > .trilha{margin:22px 0 16px;}
+
+/* ---------- versão para vendedores (09/11): topo compacto, entradas por linha, compartilhar ---------- */
+.btn-catalogos .l-curto{display:none;}
+@media (max-width:900px){ .btn-catalogos span.l-curto{display:inline;} }
+.b-share{background:#fff;}
+/* página inicial: linhas e propostas */
+.ent-t{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);font-weight:600;margin:4px 0 10px;}
+.ent-linhas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px;}
+.ent-linha{display:flex;flex-direction:column;text-align:left;background:#fff;border:1px solid var(--line);border-top:4px solid var(--c);
+  border-radius:12px;overflow:hidden;cursor:pointer;font:inherit;box-shadow:var(--sombra);padding:0;transition:transform .15s,box-shadow .15s;}
+.ent-linha:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(25,60,108,.12);}
+.ent-foto{display:flex;align-items:center;justify-content:center;height:96px;padding:10px;border-bottom:1px solid var(--line);}
+.ent-foto img{max-height:100%;object-fit:contain;}
+.ent-txt{padding:10px 12px 12px;}
+.ent-txt b{display:block;color:var(--navy);font-size:15px;}
+.ent-txt small{color:var(--mut);font-size:12.5px;}
+.ent-props{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+.ent-prop{display:flex;flex-direction:column;align-items:flex-start;min-height:44px;background:#fff;border:1px solid var(--line);
+  border-left:4px solid var(--navy);border-radius:10px;padding:10px 16px;cursor:pointer;font:inherit;box-shadow:var(--sombra);}
+.ent-prop:hover{background:var(--panel);}
+.ent-prop b{color:var(--navy);font-size:14px;}.ent-prop small{color:var(--mut);font-size:12px;}
+@media (max-width:900px){ .ent-linhas{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;} }
+@media (max-width:560px){
+  .top .wrap{padding:10px 16px 12px;gap:10px 12px;}
+  .brand .logo{height:28px;}
+  .btn-catalogos{margin-left:auto;padding:8px 12px;font-size:13px;}
+  .faixa-ajuda{margin:12px 16px 0;padding:9px 14px;font-size:12.5px;}
+  .ent-foto{display:none;}
+  .ent-linha{border-top:0;border-left:4px solid var(--c);}
+  .ent-txt{padding:8px 10px 10px;}.ent-txt b{font-size:14px;}.ent-txt small{font-size:12px;}
+  .ent-props{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;}
+  .ent-prop{flex:0 0 auto;}
+}
+@media (max-width:900px){ .ph{gap:0;} .ph .info{padding:20px 20px 24px;} }

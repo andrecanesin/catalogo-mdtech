@@ -163,6 +163,12 @@
       acoes.appendChild(b);
     }
 
+    const bs = document.createElement("button");
+    bs.className = "b-ficha b-share"; bs.type = "button";
+    bs.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg> Compartilhar`;
+    bs.addEventListener("click", () => MD.compartilhar(`${p.codigo} — ${p.nome} · MDTech`, location.href, bs));
+    acoes.appendChild(bs);
+
     if (p.foto) ligarZoom(p.foto, p.codigo + " — " + p.nome);
 
     MD.ligarBandeja(produtos);
