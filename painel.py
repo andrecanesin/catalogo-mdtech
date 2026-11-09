@@ -36,6 +36,9 @@ ACOES = {
                   [["fichas", "--separados"], ["site"]], "digital"),
     "tudo":      ("Gerar tudo digital", "Fichas + catálogos digitais + dados do site, na ordem certa.",
                   [["fichas", "--separados"], ["catalogo", "--todos", "--perfil", "digital"], ["site"]], "digital"),
+    # ---- PROPOSTAS: kits por tipo de uso (aba KITS da planilha), PDF para enviar ao médico ----
+    "propostas": ("Gerar propostas (kits)", "1 PDF por kit da aba KITS (ex.: Kit - Proposta Básica - Hérnia de Hiato).",
+                  [["kits"]], "propostas"),
     # ---- IMPRESSO: só nesta máquina (foto original, nunca publica) ----
     "imp_par":   ("Catálogos impressos · separado", "Miolo com páginas PAR, para montar capa + miolo + contracapa no InDesign.",
                   [["catalogo", "--todos", "--perfil", "impressao", "--paridade", "par"]], "impresso"),
@@ -102,6 +105,7 @@ def estado():
                  "catalogos": _contar(SITE / "catalogos", "*.pdf")},
         "digital_pdfs": _contar(SAIDA / "digital", "*.pdf"),
         "impresso_pdfs": _contar(SAIDA / "impresso", "*.pdf"),
+        "propostas_pdfs": _contar(SAIDA / "propostas", "*.pdf"),
         "git": git,
     }
 
@@ -178,7 +182,7 @@ h2{font-size:14px;margin:0 0 10px;color:var(--navy);text-transform:uppercase;let
 button.a{display:flex;flex-direction:column;justify-content:flex-start;text-align:left;background:#fff;border:1px solid var(--linha);border-radius:10px;padding:14px;cursor:pointer;font:inherit;min-height:44px}
 button.a:hover:not(:disabled){border-color:var(--ciano)}button.a:focus-visible{outline:3px solid var(--ciano)}
 button.a:disabled{opacity:.5;cursor:not-allowed}
-button.a.impresso{border-left:4px solid #F5A623}button.a.digital{border-left:4px solid var(--ciano)}button.a b{display:block;color:var(--navy)}button.a span{font-size:12px;color:var(--cinza)}
+button.a.impresso{border-left:4px solid #F5A623}button.a.propostas{border-left:4px solid var(--ok)}button.a.digital{border-left:4px solid var(--ciano)}button.a b{display:block;color:var(--navy)}button.a span{font-size:12px;color:var(--cinza)}
 pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;max-height:360px;overflow:auto;font:12px/1.5 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
 .s{font-size:13px;margin:8px 0;color:var(--cinza)}.s.ok{color:var(--ok)}.s.erro{color:var(--erro)}
 .git{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:12px;font:12px/1.6 "IBM Plex Mono",ui-monospace,monospace;white-space:pre-wrap}
@@ -189,6 +193,8 @@ a.l{color:var(--navy);font-weight:600}
 <section><h2>Situação atual</h2><div class="cards" id="cards"></div></section>
 <section><h2>Digital · vai ao ar</h2><div class="acoes" id="acoes-digital"></div>
 <p class="s">Para conferir: <a class="l" href="/site/index.html" target="_blank">abrir o site local</a> (usa o que está em <code>site/</code>). PDFs em <code>saida/digital/</code>.</p></section>
+<section><h2>Propostas · kits por tipo de uso</h2><div class="acoes" id="acoes-propostas"></div>
+<p class="s">Os kits ficam na aba <b>KITS</b> da planilha. PDFs em <code>saida/propostas/</code> (material comercial, só local).</p></section>
 <section><h2>Impresso · só nesta máquina</h2><div class="acoes" id="acoes-impresso"></div>
 <p class="s">Foto em <b>alta resolução (original)</b>; os PDFs ficam em <code>saida/impresso/</code> e <b>nunca</b> vão para o site, o Actions ou o git.</p></section>
 <section><h2>Execução</h2><div class="s" id="st">Nada em execução.</div><pre id="log" aria-live="polite">Aguardando…</pre></section>
@@ -198,7 +204,7 @@ a.l{color:var(--navy);font-weight:600}
 <script>
 const ACOES=__ACOES__, $=s=>document.querySelector(s);
 const hd={"X-Painel":"1","Content-Type":"application/json"};
-for(const g of ["digital","impresso"])
+for(const g of ["digital","propostas","impresso"])
   $("#acoes-"+g).innerHTML=Object.entries(ACOES).filter(([k,v])=>v.grupo===g).map(([k,v])=>`<button class="a ${g}" data-a="${k}"><b>${v.rotulo}</b><span>${v.desc}</span></button>`).join("");
 document.querySelectorAll("button.a").forEach(b=>b.onclick=async()=>{
   const r=await fetch("/api/rodar",{method:"POST",headers:hd,body:JSON.stringify({acao:b.dataset.a})});
@@ -206,7 +212,7 @@ document.querySelectorAll("button.a").forEach(b=>b.onclick=async()=>{
   atualizar();});
 async function atualizar(){
   const d=await (await fetch("/api/estado")).json(), j=d.job, s=d.site;
-  $("#cards").innerHTML=[["Produtos no site",s.produtos??"—"],["Com foto",s.com_foto??"—"],["Fichas em site/",s.fichas],["Catálogos em site/",s.catalogos],["PDFs digitais",d.digital_pdfs],["PDFs impressos",d.impresso_pdfs]]
+  $("#cards").innerHTML=[["Produtos no site",s.produtos??"—"],["Com foto",s.com_foto??"—"],["Fichas em site/",s.fichas],["Catálogos em site/",s.catalogos],["PDFs digitais",d.digital_pdfs],["Propostas",d.propostas_pdfs],["PDFs impressos",d.impresso_pdfs]]
     .map(([k,v])=>`<div class="n"><b>${v}</b><span>${k}</span></div>`).join("");
   document.querySelectorAll("button.a").forEach(b=>b.disabled=j.rodando);
   const st=$("#st");
