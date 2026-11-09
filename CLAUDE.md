@@ -51,13 +51,15 @@ exigir outro modelo, dizendo qual e por quê.
 - **Descer para Haiku 5.5:** tarefas repetitivas e simples (renomear, formatar, conferir listas).
 - **Todo o resto:** seguir no Sonnet 5.5, sem avisar.
 
-## Estado dos dados (base de 27/10/2026, 174 linhas / 152 SKUs únicos)
-- ANVISA vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /
+## Estado dos dados (base de 08/11/2026, 174 linhas / 152 SKUs únicos)
+- ANVISA: aguardando novos registros do regulatório. Vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /
   14 códigos sem registro e sem processo: A0320, A0322, A0323, A0210.1, A0211.1, A0222, A1101.1–A1104.1, A1105.1,
   A1106.1, A1106.2, F1104.
 - A219 = 82568290004 (arquivo ANVISA de 27/10 prevalece). A2101 = 82568290002, mas o arquivo lista 2 números: confirmar com o regulatório.
 - A215-2.C e A310.C sem registro (o nº 82568290004 só existia na aba antiga, removida).
-- Comprimento vazio em 72 SKUs, diâmetro vazio em 35 SKUs (aguardam fornecedor).
+- Comprimento vazio em 48 SKUs, diâmetro vazio em 35 SKUs: sobra só o que o fornecedor não informou nos catálogos
+  TONGLU, TIAN SONG e ASAP.
+- A108: divergência de diâmetro (descrição D=5MM x catálogo TONGLU Φ4×3000mm); confirmar com o fornecedor.
 - `dashboard` mostra o mapa atualizado.
 
 ## Histórico resumido
@@ -65,3 +67,7 @@ exigir outro modelo, dizendo qual e por quê.
   cor de accent triplicada; removida a aba REGISTROS ANVISA (nenhum script a lia).
 - 27/10: aplicados registros ANVISA do arquivo de 27/10 (35 linhas) e publicado o site.
 - 05/11: decisão de unificar em repositório único, com publicação por GitHub Actions (este arquivo).
+- 08/11: base com 24 comprimentos novos (17 extraídos das descrições e 7 dos catálogos da TONGLU: A206 e A145 = 330 mm;
+  clamps A272, A273, A275, A276 e A277 = 65, 45, 25, 25 e 55 mm). Catálogos da TONGLU, TIAN SONG (urologia 2025 e
+  cirurgia 2023.5) e ASAP conferidos: não trazem comprimento de camisas, peças guia, eletrodos, trocartes,
+  adaptadores, evacuadores nem clips.
