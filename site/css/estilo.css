@@ -387,6 +387,9 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .sup-go.sec{background:none;border:1px solid var(--line);color:var(--navy);min-height:44px;font-weight:600;}
 .sup-st{font-size:13px;margin:8px 0;min-height:1em;}.sup-st.ok{color:#1d6b3a;font-weight:600;}.sup-st.erro{color:#a32121;font-weight:600;}
 .sup-panel [hidden]{display:none!important;}
+.sup-feito{text-align:center;padding:18px 4px 6px;}.sup-feito p{margin:0 0 14px;color:#33404f;font-size:14px;}
+.sup-feito .sup-ok-t{font-size:19px;font-weight:700;color:#1d6b3a;margin-bottom:8px;}.sup-feito .sup-go{margin-bottom:8px;}
+#orc-panel,#orc-bg{z-index:80;}#orc-bg{z-index:79;}
 @media (min-width:700px){
   .sup-bg{background:transparent;}
   .sup-panel{left:auto;right:20px;bottom:20px;width:390px;max-height:calc(100vh - 40px);border-radius:14px;padding-bottom:18px;
