@@ -60,7 +60,7 @@ window.MDTECH = {
     ativo: true,
     // Chave do Web3Forms (web3forms.com): o e-mail dos chamados é o cadastrado lá (mkt@triomed.com.br). Não é segredo
     // (só permite ENVIAR para esse e-mail). Vazia = o Suporte usa o WhatsApp no lugar do e-mail.
-    chaveEmail: "",
+    chaveEmail: "dcc8c2e8-178c-4c11-aa1d-ae9052dd2daf",
     horario: "",     // ex.: "Seg a sex, 8h às 18h" (vazio = não mostra)
     categorias: [
       { id: "tecnico",  nome: "Problema técnico",       dica: "Algo não abre, não baixa ou não funciona" },
