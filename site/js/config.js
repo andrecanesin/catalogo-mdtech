@@ -47,5 +47,33 @@ window.MDTECH = {
   // (A ordem da base e dos PDFs não muda; vale só para o site.)
   ultimosNaFamilia: { "Trocateres": ["A219"] },
   // Quantidade de produtos por página na grade (mobile-friendly).
-  produtosPorPagina: 20
+  produtosPorPagina: 20,
+
+  // Botão "Suporte" (canto da tela): menu guiado ANTES do WhatsApp. É suporte interno do catálogo
+  // (problema técnico, dúvida de uso, dado do produto, sugestão), não venda. Usa o mesmo WhatsApp do
+  // contato; sem WhatsApp configurado, o botão some. Mude textos, categorias e respostas só aqui.
+  suporte: {
+    ativo: true,
+    horario: "",     // ex.: "Seg a sex, 8h às 18h" (vazio = não mostra)
+    categorias: [
+      { id: "tecnico",  nome: "Problema técnico",       dica: "Algo não abre, não baixa ou não funciona" },
+      { id: "uso",      nome: "Dúvida de uso",          dica: "Como usar o site, os catálogos ou as propostas" },
+      { id: "dados",    nome: "Informação do produto",  dica: "Dado errado ou faltando: foto, medida, ANVISA" },
+      { id: "melhoria", nome: "Sugestão de melhoria",   dica: "Uma ideia para melhorar o site ou os materiais" },
+      { id: "outro",    nome: "Outro assunto",          dica: "" }
+    ],
+    // respostas rápidas mostradas antes de chamar no WhatsApp; cat = categorias em que aparecem ("*" = todas)
+    faq: [
+      { cat: ["uso", "tecnico"], p: "Como baixo a ficha técnica de um produto?",
+        r: "Abra o produto e clique em “Baixar ficha técnica (PDF)”." },
+      { cat: ["uso", "tecnico"], p: "Onde estão os catálogos e as propostas?",
+        r: "No botão “Catálogos e propostas”, no topo de qualquer página." },
+      { cat: ["uso"], p: "Como peço um orçamento?",
+        r: "Clique em “+ Adicionar no orçamento” nos itens, depois em “Ver lista” e “Pedir no WhatsApp”." },
+      { cat: ["uso", "tecnico"], p: "Como volto ao índice dentro do PDF do catálogo?",
+        r: "Use o botão “☰ Índice” no rodapé de cada página. No catálogo completo, o botão “Todas as linhas”, no topo, leva ao índice geral." },
+      { cat: ["dados"], p: "O que significa “em registro” na ANVISA?",
+        r: "O registro daquele produto ainda não foi informado ou está em andamento. Aparece assim que for concluído." }
+    ]
+  }
 };

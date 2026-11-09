@@ -31,6 +31,9 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - Selo de ângulo só em óticas/endoscópios (família **sem** "Pinça"), só na página de detalhe do site; ícone = `img/angulos/<graus>.png`.
 - Diâmetro sempre via `diametro_fmt` (mm ou Fr). Nunca montar "mm" na mão.
 - Código em 2 especialidades = 1 produto com várias tags.
+- **Botão "Suporte"** (canto da tela, `site/js/suporte.js`, textos em `config.js` → `suporte`): suporte INTERNO (problema técnico, dúvida de uso,
+  dado do produto, sugestão), não venda. Menu guiado → respostas rápidas → WhatsApp com mensagem pronta e contexto (página, produto, aparelho).
+  Sem backend; usa o WhatsApp do contato; sem número, o botão some. Fica acima da bandeja de orçamento (`--h-bandeja`).
 
 ## Contrato HTML ↔ JS (não quebrar)
 - Pode mudar CSS, texto e estrutura visual. **Não renomear/remover `id` ou `class` usados pelo JS** sem ajustar o JS junto (a falha é silenciosa).
