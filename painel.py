@@ -7,7 +7,7 @@
 
 Faz só duas coisas:
   1) mostrar o que falta de informação (ANVISA, NCM, foto) e abrir o painel completo de pendências;
-  2) gerar o material IMPRESSO (foto original, alta resolução) em saida/impresso/. Sempre liberado (dá para gerar
+  2) gerar o material IMPRESSO (catálogos e propostas; foto original, páginas casadas) em saida/impresso/. Sempre liberado (dá para gerar
      testes); enquanto faltar ANVISA/NCM, o painel só avisa que esses itens saem como "em registro".
 Fichas, catálogos digitais, propostas digitais e o site NÃO ficam aqui: o GitHub gera e publica tudo isso sozinho,
 e o site é a fonte única (evita duas versões diferentes).
@@ -167,6 +167,13 @@ class H(BaseHTTPRequestHandler):
             ok = iniciar(f"Catálogos impressos · {MONTAGENS[modo][0]}",
                          [["catalogo", "--todos", "--perfil", "impressao", "--paridade", modo]])
             return self._json({"ok": True}) if ok else self._json({"erro": "já existe uma execução em andamento"}, 409)
+        if u == "/api/propostas-impressas":
+            modo = dados.get("modo")
+            if modo not in MONTAGENS:
+                return self._json({"erro": "montagem desconhecida"}, 400)
+            ok = iniciar(f"Propostas impressas · {MONTAGENS[modo][0]}",
+                         [["kits", "--perfil", "impressao", "--paridade", modo]])
+            return self._json({"ok": True}) if ok else self._json({"erro": "já existe uma execução em andamento"}, 409)
         if u == "/api/abrir-pasta":
             abrir_pasta()
             return self._json({"ok": True})
@@ -210,9 +217,9 @@ pre{background:#101a2b;color:#d9e4f2;border-radius:10px;padding:14px;margin:0;ma
 <section><h2>Impresso · foto original, só nesta máquina</h2>
   <div class="gate aviso" id="gate">Verificando…</div>
   <div class="imp">
-    <div><label for="modo">Catálogos impressos (miolo para o InDesign)</label><select id="modo"></select></div>
+    <div><label for="modo">Montagem (páginas casadas para a gráfica) — vale para catálogos e propostas</label><select id="modo"></select></div>
     <div class="btns"><button class="p" id="gerar">Gerar catálogos impressos</button>
-      <button class="p sec" disabled title="Em desenvolvimento">Propostas impressas (em desenvolvimento)</button>
+      <button class="p" id="gerar-prop">Gerar propostas impressas</button>
       <button class="p sec" id="pasta">Abrir pasta dos impressos</button></div>
     <p class="s" id="pdfs" style="margin:0"></p>
   </div></section>
@@ -236,9 +243,11 @@ async function pend(){
     :"<b>Pronto para imprimir:</b> ANVISA e NCM estão completos.";
 }
 let rodando=false;
-function trava(){$("#gerar").disabled=rodando;}
+function trava(){$("#gerar").disabled=rodando;$("#gerar-prop").disabled=rodando;}
 $("#atualizar").onclick=pend;
 $("#gerar").onclick=async()=>{const r=await fetch("/api/catalogo-impresso",{method:"POST",headers:hd,body:JSON.stringify({modo:$("#modo").value})});
+  if(!r.ok){const e=await r.json();$("#st").className="st erro";$("#st").textContent=e.erro||"erro";} estado();};
+$("#gerar-prop").onclick=async()=>{const r=await fetch("/api/propostas-impressas",{method:"POST",headers:hd,body:JSON.stringify({modo:$("#modo").value})});
   if(!r.ok){const e=await r.json();$("#st").className="st erro";$("#st").textContent=e.erro||"erro";} estado();};
 $("#pasta").onclick=()=>fetch("/api/abrir-pasta",{method:"POST",headers:hd,body:"{}"});
 async function estado(){

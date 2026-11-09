@@ -114,6 +114,7 @@ antes de `gerar.py site`. (No GitHub Actions isso já é feito na ordem certa.)
 python gerar.py kits                          # todos os kits da aba KITS
 python gerar.py kits --kit "Hérnia de Hiato"  # um kit
 python gerar.py kits --kit "Hérnia de Hiato" --preview   # HTML no navegador, sem gerar PDF
+python gerar.py kits --perfil impressao --paridade par   # IMPRESSO: foto original + páginas casadas -> saida/impresso/
 ```
 Um PDF por kit em `saida/propostas/`; o Actions também os gera e `gerar.py site` os copia para `site/propostas/` e escreve
 `site/propostas.json`, de onde o menu **"Catálogos e propostas"** do site monta a lista (kit novo na aba KITS = aparece sozinho).
@@ -129,9 +130,9 @@ python painel.py
 ```
 Abre `http://127.0.0.1:8800` e faz **duas coisas**: (1) mostra **o que falta de informação** (ANVISA, NCM, foto, em SKUs)
 e abre o painel completo de pendências (Ø e comprimento ficam de fora: há itens sem essas medidas); (2) gera o material
-**impresso** (foto original) em `saida/impresso/`, **sempre liberado** (dá para gerar testes; enquanto faltar ANVISA/NCM o
+**impresso** (catálogos e propostas, foto original) em `saida/impresso/`, **sempre liberado** (dá para gerar testes; enquanto faltar ANVISA/NCM o
 painel só avisa que esses itens saem como "em registro"). Escolha a montagem do catálogo: separado (par), unificado (ímpar)
-ou caderno (múltiplo de 4). Propostas impressas: em desenvolvimento.
+ou caderno (múltiplo de 4); vale para os catálogos e para as propostas impressas (foto original e páginas casadas para a gráfica).
 Fichas, catálogos digitais, propostas digitais e o site **não** estão no painel: o GitHub os gera e publica sozinho, e o site
 é a fonte única. Só biblioteca padrão; escuta só em 127.0.0.1; não faz commit nem push.
 
