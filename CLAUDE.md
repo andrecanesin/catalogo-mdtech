@@ -78,6 +78,8 @@ exigir outro modelo, dizendo qual e por quê.
   **Publicar site**, e um disparo manual cancela o automático por causa do `concurrency`); acompanhar a execução até terminar e
   informar verde/vermelho. Se ficar vermelho, ler o log do passo com erro e propor a correção em PR novo. O site publicado
   não é acessível a partir da sessão: a conferência visual do site no ar é do André.
+- **Relatórios curtos e focados no resultado do projeto** (o que ficou pronto, o que o André precisa fazer, decisões pendentes).
+  Detalhes de PR, merge e Actions só quando algo falhar ou exigir ação do André. Verde sem novidade = uma linha ou nada.
 - Perguntar só o que for decisão do André (dados, marca, escopo, preços). Não repetir pergunta sem resposta, nem cobrá-la.
 - O aviso "há alterações não commitadas" do hook de parada é automático: não é cobrança do André nem aprovação. Mesmo assim,
   nunca deixar trabalho validado sem commit ao fim de uma entrega.
