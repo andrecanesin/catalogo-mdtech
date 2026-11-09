@@ -1,5 +1,8 @@
 # Publica o catálogo digital no GitHub Pages a cada push na main.
 # Gera as fichas e os dados do site a partir da planilha; nada gerado precisa ser commitado.
+# As fichas (a etapa mais lenta) ficam em cache e só são refeitas quando algo que as afeta muda:
+# planilha, gerador de fichas, núcleo mdtech/, assets/ (fotos, logos, fontes, ícones) ou requirements.
+# Mudou só HTML/CSS/JS do site? As fichas vêm do cache e a publicação leva cerca de 1 minuto.
 # Catálogos em PDF (grandes) NÃO são gerados aqui — ver site/PRODUCAO.md.
 name: Publicar site
 
@@ -7,6 +10,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      refazer_fichas:
+        description: "Ignorar o cache e gerar as fichas de novo"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -34,7 +42,16 @@ jobs:
       - name: Dependências Python
         run: pip install -r requirements.txt
 
+      - name: Cache das fichas
+        id: cache-fichas
+        uses: actions/cache@v4
+        with:
+          path: saida
+          # run_id na chave = nunca reaproveita (usado quando refazer_fichas está marcado)
+          key: fichas-${{ inputs.refazer_fichas && github.run_id || 'v1' }}-${{ hashFiles('dados/Base_MDTech_Consolidada.xlsx', 'geradores/fichas.py', 'gerar.py', 'mdtech/*.py', 'assets/**', 'requirements.txt') }}
+
       - name: Fichas técnicas (1 PDF por código)
+        if: steps.cache-fichas.outputs.cache-hit != 'true'
         run: python gerar.py fichas --separados
 
       - name: Dados do site (produtos.json, fotos, fichas)

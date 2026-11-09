@@ -112,7 +112,13 @@ O workflow (`.github/workflows/publicar.yml`) faz, nesta ordem: instala as bibli
 do WeasyPrint e o `requirements.txt` → `python gerar.py fichas --separados` →
 `python gerar.py site` → confere que `produtos.json`, `fotos/` e `fichas/` não estão
 vazios e que `meta.json` tem produtos e fotos → publica a pasta `site/` no Pages.
-Também pode ser disparado à mão pela aba Actions (`workflow_dispatch`).
+Também pode ser disparado à mão pela aba Actions (`workflow_dispatch`); a opção "Ignorar o cache" força refazer as fichas.
+
+**Cache das fichas:** a geração das fichas (152 PDFs, ~1 min 46 s) é a etapa mais lenta. O workflow guarda a pasta `saida/`
+com `actions/cache`, e a chave é o hash de `dados/Base_MDTech_Consolidada.xlsx`, `geradores/fichas.py`, `gerar.py`,
+`mdtech/*.py`, `assets/**` e `requirements.txt`. Mudou só o HTML/CSS/JS do site: as fichas vêm do cache e a publicação cai
+para cerca de 1 minuto. Se alguma coisa nova passar a influenciar as fichas, incluir o caminho na chave (`publicar.yml`).
+O `requirements.txt` não fixa a versão do WeasyPrint: uma atualização dele só aparece nas fichas na próxima regeneração.
 
 Configuração única do Pages: **Settings → Pages → Build and deployment → Source:
 GitHub Actions**. Sem isso o workflow roda mas o site não atualiza.
@@ -245,6 +251,10 @@ completo em **`site/PRODUCAO.md`** — não duplicar aqui, esse arquivo é a ref
   `mdtech/base.py::COLUNAS`) ou "Conferir resultado" falhando porque `fotos/` ou
   `fichas/` saiu vazio. Reproduzir local com `fichas --separados` + `site` antes de
   tentar de novo.
+- **Publicar site: `build` verde, mas o `deploy` falha com "Timeout reached, aborting!"** → o Pages ficou em `syncing_files`
+  por 10 min. Causa provável: artefato grande demais (as fichas embutiam a foto original e o site chegou a 158 MB). Hoje as
+  fichas usam foto de 1200 px (site de ~18 MB). Re-executar o job no mesmo commit **não funciona** (o Pages guarda a
+  publicação pelo SHA e ela já foi cancelada: "Deployment cancelled"); é preciso um **commit novo** na `main`.
 - **Pushed e o site não mudou** → conferir se o Pages está com Source = GitHub Actions
   e se o último workflow da `main` terminou verde.
 - **`python gerar.py catalogo todos`** (sem `--`) → dá erro

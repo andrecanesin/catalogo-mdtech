@@ -59,8 +59,8 @@ def _foto_html(item, ac):
     p = F.buscar(codigo)
     selo = _selo_angulo_html(item.get("angulo"), item.get("familia"))
     if p:
-        ext=os.path.splitext(str(p))[1].lstrip(".").lower() or "png"
-        return f'<div class="photo"><img src="data:image/{ext};base64,{b64file(str(p))}">{selo}</div>'
+        # foto reduzida (1200 px, JPEG): a original embutida deixava cada ficha com até 5 MB
+        return f'<div class="photo"><img src="data:image/jpeg;base64,{F.jpeg_reduzido_b64(str(p))}">{selo}</div>'
     return (f'<div class="photo ph" style="border-color:#E06666">'
             f'<span class="pht" style="color:#E06666">sem foto</span>'
             f'<span class="phc">{esc(codigo)}</span>{selo}</div>')

@@ -25,6 +25,18 @@ o GitHub Actions os recria a cada publicação.
 3. `git add`, `git commit`, `git push origin main`. O workflow **Publicar site** roda sozinho (aba Actions); em ~minutos o Pages atualiza.
 - Catálogos em PDF (130 MB+) **não** são gerados no Actions nem entram no git: gerar local (`gerar.py catalogo --todos`) e subir como Release (ver `site/PRODUCAO.md`).
 
+## Fluxo por tipo de alteração
+| Alteração | Quem faz / valida | Publicação |
+|---|---|---|
+| Site (HTML/CSS/JS, `config.js`) | Claude edita e testa no navegador (Playwright) | PR → ok do André → merge → Actions (~1 min, fichas em cache) |
+| Planilha (dados) | Claude edita só as células pedidas e confere o diff célula a célula | PR → ok → merge → Actions refaz as fichas (~2,5 min) |
+| Layout das fichas ou do catálogo | Claude ajusta e confere o preview HTML (`--preview`) | PR → ok → merge → Actions refaz as fichas |
+| Fotos novas (`assets/imagens/`) | André coloca os arquivos (nome = código) | commit/PR → Actions refaz fotos e fichas |
+| Catálogos PDF | André gera na máquina (painel) e sobe como Release; só quando a base ou o layout mudam | fora do git e do Actions (`site/PRODUCAO.md`) |
+| Código Python (`mdtech/`, `geradores/`) | Claude altera e testa localmente | PR → ok → merge |
+O Actions guarda as fichas em cache; a chave muda com planilha, `geradores/fichas.py`, `gerar.py`, `mdtech/*.py`, `assets/` e
+`requirements.txt`. Para forçar a regeneração: Actions → Publicar site → Run workflow → marcar "Ignorar o cache".
+
 ## Comandos
 ```bash
 python gerar.py tudo                  # checklist + dashboard + catálogos + fichas (local)

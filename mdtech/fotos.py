@@ -46,6 +46,25 @@ def subpasta(codigo: str, pasta: Path = None):
     rel = p.relative_to(base)
     return rel.parts[0] if len(rel.parts) > 1 else "(raiz)"
 
+def jpeg_reduzido_b64(caminho, lado=1200, qualidade=85):
+    """Foto reduzida p/ embutir em PDF: JPEG (fundo branco), lado maior = `lado` px, em base64.
+    As fotos originais chegam a 7000 px / 5 MB; embutidas cruas, cada ficha PDF passava de 4 MB."""
+    import base64, io
+    from PIL import Image, ImageOps
+    with Image.open(caminho) as im:
+        im = ImageOps.exif_transpose(im)
+        if im.mode in ("RGBA", "LA") or (im.mode == "P" and "transparency" in im.info):
+            im = im.convert("RGBA")
+            fundo = Image.new("RGB", im.size, (255, 255, 255))
+            fundo.paste(im, mask=im.split()[3])
+            im = fundo
+        else:
+            im = im.convert("RGB")
+        im.thumbnail((lado, lado), Image.LANCZOS)      # não amplia
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=qualidade, optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
+
 def checklist(itens, pasta: Path = None):
     """Retorna (casadas, faltantes) a partir de uma lista de dicts com 'codigo'."""
     casadas, faltantes = [], []
