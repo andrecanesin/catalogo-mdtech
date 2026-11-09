@@ -115,7 +115,7 @@
               <div class="rval ${ncmMiss ? "miss" : ""}">${ncmMiss ? "—" : esc(p.ncm)}</div></div>
           </div>
           ${MD.mostrarPreco() ? `<div class="preco-g"><span class="k">Preço de tabela</span>
-            <b>${p.preco ? esc(MD.brl(p.preco)) : "Sob consulta"}</b>
+            <b${p.preco ? ` aria-label="${esc(MD.brl(p.preco))}"` : ""}>${p.preco ? MD.precoHTML(p.preco) : "Sob consulta"}</b>
             ${p.preco && p.preco_ficticio ? `<small>${esc((MD.cfg.precos || {}).aviso || "Valores ilustrativos.")}</small>` : ""}</div>` : ""}
           <div class="acoes" id="acoes"></div>
           <div class="desc-g"><div class="k">Descrição (padrão de cadastro)</div>

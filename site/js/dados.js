@@ -109,6 +109,9 @@ window.MD = (function () {
   // ---- preços (coluna "Preço (R$)" da base; hoje fictícios) ----
   const _pc = cfg.precos || {};
   const mostrarPreco = () => _pc.mostrar !== false;
+  // preço com destaque tipográfico: "R$" pequeno, reais em negrito, centavos menores (card e página do produto)
+  const precoHTML = v => { const [r, c] = Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).split(",");
+    return `<span class="pz-m">R$</span><span class="pz-v">${r}</span><span class="pz-c">,${c}</span>`; };
   const brl = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   // total do orçamento: soma preço × quantidade dos itens que têm preço
   function totalLista(produtos) {
@@ -373,7 +376,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { brl, precoHTML, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };
