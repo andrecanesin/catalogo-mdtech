@@ -96,6 +96,13 @@ window.MD = (function () {
     if (i >= 0) itens.splice(i, 1); else itens.push({ codigo: cod, qtd: 1 });
     _gravar(itens); return i < 0;
   }
+  // adiciona vários de uma vez (ex.: proposta básica): [{codigo, qtd}]; quem já está na lista ganha a quantidade da proposta
+  function adicionarVarios(novos) {
+    const itens = _ler();
+    novos.forEach(n => { const i = itens.find(x => x.codigo === n.codigo);
+      if (i) i.qtd = Math.min(999, Math.max(i.qtd, n.qtd || 1)); else itens.push({ codigo: n.codigo, qtd: Math.min(999, n.qtd || 1) }); });
+    _gravar(itens);
+  }
   function remover(cod) { _gravar(_ler().filter(x => x.codigo !== cod)); }
   function limpar() { _gravar([]); }
 
@@ -141,6 +148,20 @@ window.MD = (function () {
     return `mailto:${mail}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto(produtos))}`;
   }
 
+  // ---- envio por e-mail sem sair do site (Web3Forms; chave em config.js -> suporte.chaveEmail) ----
+  // Usado pelo Suporte e pelo pedido de orçamento. Sem a chave, os dois caem no modo antigo (WhatsApp / mailto).
+  const _chaveEmail = ((cfg.suporte && cfg.suporte.chaveEmail) || "").trim();
+  const emailAtivo = () => !!_chaveEmail;
+  const emailValido = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v || "");
+  async function enviarEmail({ assunto, nome, contato, corpo }) {
+    const dados = { access_key: _chaveEmail, subject: assunto, from_name: "Catálogo MDTech", name: nome || "(sem nome)", message: corpo };
+    if (emailValido(contato)) dados.email = contato;            // vira o "responder para" do e-mail
+    const r = await fetch("https://api.web3forms.com/submit", { method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(dados) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || j.success === false) throw new Error(j.message || r.status);
+  }
+
   // ---- bandeja de orçamento (grade e página de produto usam a mesma) ----
   // Markup esperado: #bandeja com #qt, #bt-lista, #bt-limpar, #bt-mail, #bt-wpp.
   function ligarBandeja(produtos) {
@@ -155,6 +176,70 @@ window.MD = (function () {
     pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Itens no orçamento");
     document.body.appendChild(pop);
     const btLista = $("bt-lista");
+
+    // Pedido de orçamento por e-mail (dentro do site). Nada é gravado no aparelho; ao enviar, a lista é esvaziada.
+    let orc = null;
+    function montarOrc() {
+      const raiz = document.createElement("div");
+      raiz.innerHTML = `
+        <div class="sup-bg" id="orc-bg" hidden></div>
+        <div class="sup-panel" id="orc-panel" role="dialog" aria-modal="true" aria-labelledby="orc-t" hidden>
+          <div class="sup-head"><strong id="orc-t">Pedir orçamento</strong>
+            <button class="sup-x" id="orc-x" type="button" aria-label="Fechar">×</button></div>
+          <div id="orc-form">
+            <p class="sup-sub" id="orc-res"></p>
+            <label class="sup-campo">Seu nome <input id="orc-nome" type="text" autocomplete="name" placeholder="Como posso te chamar?"></label>
+            <label class="sup-campo">Hospital, clínica ou empresa <input id="orc-emp" type="text" autocomplete="organization" placeholder="Opcional"></label>
+            <label class="sup-campo">Como te respondo? <input id="orc-ret" type="text" autocomplete="email" placeholder="E-mail ou telefone"></label>
+            <label class="sup-campo">Observação <textarea id="orc-obs" rows="3" placeholder="Opcional: prazo, cidade, dúvidas"></textarea></label>
+            <p class="sup-st" id="orc-st" role="status" aria-live="polite"></p>
+            <button class="sup-go sup-mail" id="orc-send" type="button" aria-disabled="true">Enviar pedido</button>
+          </div>
+          <div id="orc-feito" class="sup-feito" hidden>
+            <p class="sup-ok-t">✓ Pedido enviado</p>
+            <p>Recebemos a sua lista e vamos responder pelo contato informado.</p>
+            <button class="sup-go sup-mail" id="orc-fechar" type="button">Fechar</button>
+          </div>
+        </div>`;
+      document.body.appendChild(raiz);
+      const q = id => raiz.querySelector("#" + id);
+      const o = { bg: q("orc-bg"), painel: q("orc-panel"), x: q("orc-x"), form: q("orc-form"), feito: q("orc-feito"), res: q("orc-res"),
+        nome: q("orc-nome"), emp: q("orc-emp"), ret: q("orc-ret"), obs: q("orc-obs"), st: q("orc-st"), send: q("orc-send"), fechar: q("orc-fechar") };
+      let enviando = false;
+      const pronto = () => o.nome.value.trim() && o.ret.value.trim() && lista().length > 0 && !enviando;
+      const checar = () => { const ok = !!pronto(); o.send.setAttribute("aria-disabled", ok ? "false" : "true"); o.send.classList.toggle("off", !ok); };
+      o.fecharTudo = () => { o.painel.hidden = true; o.bg.hidden = true; o.form.hidden = false; o.feito.hidden = true; if ($("bt-mail")) $("bt-mail").focus(); };
+      o.x.onclick = o.bg.onclick = o.fechar.onclick = o.fecharTudo;
+      document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !o.painel.hidden) o.fecharTudo(); });
+      [o.nome, o.ret].forEach(i => i.addEventListener("input", checar));
+      o.send.addEventListener("click", async () => {
+        if (!pronto()) { (o.nome.value.trim() ? o.ret : o.nome).focus(); return; }
+        const nome = o.nome.value.trim(), emp = o.emp.value.trim(), ret = o.ret.value.trim(), obs = o.obs.value.trim();
+        const corpo = ["Pedido de orçamento — Catálogo MDTech", "Nome: " + nome, emp ? "Empresa: " + emp : null, "Contato: " + ret,
+          obs ? "Observação: " + obs : null, "", texto(produtos)].filter(l => l !== null).join("\n");
+        enviando = true; o.st.className = "sup-st"; o.st.textContent = "Enviando…"; checar();
+        try {
+          await enviarEmail({ assunto: "Orçamento catálogo MDTech · " + lista().length + " ite" + (lista().length === 1 ? "m" : "ns") + " · " + nome,
+            nome, contato: ret, corpo });
+          [o.nome, o.emp, o.ret, o.obs].forEach(i => i.value = ""); o.st.textContent = "";
+          o.form.hidden = true; o.feito.hidden = false; o.fechar.focus();
+          limpar();                                  // pedido enviado: esvazia a lista
+        } catch (err) {
+          o.st.className = "sup-st erro"; o.st.textContent = "Não foi possível enviar agora. Tente de novo ou use o WhatsApp.";
+        }
+        enviando = false; checar();
+      });
+      o.checar = checar;
+      return o;
+    }
+    function abrirOrc() {
+      if (!orc) orc = montarOrc();
+      const n = lista().length, un = lista().reduce((s, c) => s + qtd(c), 0), t = totalLista(produtos);
+      orc.res.textContent = n + " ite" + (n === 1 ? "m" : "ns") + ", " + un + " unidade" + (un === 1 ? "" : "s") +
+        (mostrarPreco() && t.total ? " · total estimado " + brl(t.total) + (t.ficticio ? " (valores ilustrativos)" : "") : "") + ".";
+      orc.st.textContent = ""; orc.form.hidden = false; orc.feito.hidden = true;
+      orc.painel.hidden = false; orc.bg.hidden = false; orc.checar(); orc.nome.focus();
+    }
 
     function rodapeTotal() {
       if (!mostrarPreco()) return "";
@@ -213,7 +298,8 @@ window.MD = (function () {
       const wpp = linkWhatsApp(produtos), mail = linkEmail(produtos);
       const bw = $("bt-wpp"), bm = $("bt-mail");
       if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";
-      if (mail) { bm.style.display = ""; bm.onclick = () => location.href = mail; } else bm.style.display = "none";
+      if (emailAtivo()) { bm.style.display = ""; bm.onclick = abrirOrc; }
+      else if (mail) { bm.style.display = ""; bm.onclick = () => location.href = mail; } else bm.style.display = "none";
       document.documentElement.style.setProperty("--h-bandeja", n > 0 ? bandeja.offsetHeight + "px" : "0px");
       if (n === 0) { pop.hidden = true; if (btLista) btLista.setAttribute("aria-expanded", "false"); }
       else if (!pop.hidden) {
@@ -262,8 +348,8 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, qtd, definirQtd,
+  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
-           lista, tem, alternar, remover, limpar,
+           lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };
 })();

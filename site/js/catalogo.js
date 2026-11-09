@@ -2,8 +2,9 @@
    Especialidade é o filtro principal. Família só aparece no desktop.
    No mobile os filtros abrem numa gaveta (botão "Filtrar"). */
 (function () {
-  let PRODUTOS = [], META = null;
-  const estado = { termo: "", especialidades: new Set(), familias: new Set(), pagina: 1 };
+  let PRODUTOS = [], META = null, PROPOSTAS = [];
+  const estado = { termo: "", especialidades: new Set(), familias: new Set(), proposta: "", pagina: 1 };
+  const propostaAtiva = () => PROPOSTAS.find(k => k.id === estado.proposta) || null;
   const PORPAGINA = (MD.cfg.produtosPorPagina) || 20;
 
   const $ = s => document.querySelector(s);
@@ -20,6 +21,8 @@
 
   function passaFiltro(p) {
     const { termo, especialidades, familias } = estado;
+    const kit = propostaAtiva();
+    if (kit && !kit.itens_lista.some(i => i.codigo === p.codigo)) return false;
     if (termo) {
       const alvo = MD.norm(`${p.codigo} ${p.nome} ${p.descricao}`);
       // todas as palavras precisam aparecer, em qualquer ordem ("pinça maryland" = "maryland pinça")
@@ -42,6 +45,11 @@
   // Com filtro de família ativo, códigos listados em cfg.ultimosNaFamilia[familia]
   // vão para o fim da lista (ordem estável). Sem filtro de família, vale a ordem da base.
   function ordenar(lista) {
+    const kit = propostaAtiva();
+    if (kit) {   // dentro de uma proposta, vale a ordem dela (itens principais primeiro)
+      const pos = {}; kit.itens_lista.forEach((i, n) => pos[i.codigo] = n);
+      return lista.slice().sort((a, b) => pos[a.codigo] - pos[b.codigo]);
+    }
     const regras = MD.cfg.ultimosNaFamilia || {};
     const ultimos = new Set();
     estado.familias.forEach(f => (regras[f] || []).forEach(c => ultimos.add(c)));
@@ -88,6 +96,8 @@
     add.addEventListener("click", () => MD.alternar(p.codigo));   // o evento orcamento:mudou atualiza os botões
     corpo.appendChild(add);
 
+    const kit = propostaAtiva(), it = kit && kit.itens_lista.find(i => i.codigo === p.codigo);
+    if (it) corpo.insertBefore(el("div", "kit-qtd", `Na proposta: ${it.qtd} un.`), add);
     card.appendChild(corpo);
     return card;
   }
@@ -141,11 +151,27 @@
 
     // especialidade = filtro principal (destacado). família = secundário, recolhível (também no celular).
     side.appendChild(facetGrupo("Especialidade", esp, "especialidades", contar("especialidades"), "grupo-esp"));
+
+    // proposta básica (kit): escolha única; mostra só os itens dela e permite pedir o orçamento da proposta toda
+    if (PROPOSTAS.length) {
+      const box = el("div", "grupo grupo-prop"); box.appendChild(el("h3", null, "Proposta básica"));
+      PROPOSTAS.forEach(k => {
+        const lab = el("label", "facet"), cb = el("input"); cb.type = "checkbox"; cb.value = k.id; cb.checked = estado.proposta === k.id;
+        cb.addEventListener("change", () => {
+          estado.proposta = cb.checked ? k.id : ""; estado.pagina = 1;
+          box.querySelectorAll("input").forEach(i => { i.checked = i.value === estado.proposta; });
+          render();
+        });
+        lab.appendChild(cb); lab.appendChild(el("span", null, MD.esc(k.titulo))); lab.appendChild(el("span", "n", k.itens_lista.length));
+        box.appendChild(lab);
+      });
+      side.appendChild(box);
+    }
     side.appendChild(facetGrupo("Família", fam, "familias", contar("familias"), "grupo-fam", true));
 
     const limpar = el("button", "limpar", "Limpar filtros");
     limpar.addEventListener("click", () => {
-      estado.especialidades.clear(); estado.familias.clear();
+      estado.especialidades.clear(); estado.familias.clear(); estado.proposta = "";
       estado.termo = ""; estado.pagina = 1; $("#busca").value = "";
       side.querySelectorAll("input").forEach(i => i.checked = false);
       render();
@@ -164,6 +190,17 @@
     const todos = [];
     estado.especialidades.forEach(v => todos.push(["especialidades", v]));
     estado.familias.forEach(v => todos.push(["familias", v]));
+    const kitAtivo = propostaAtiva();
+    if (kitAtivo) {
+      const c = el("span", "chip", "Proposta: " + MD.esc(kitAtivo.titulo)), x = el("button", null, "×");
+      x.setAttribute("aria-label", "Remover filtro proposta " + kitAtivo.titulo);
+      x.addEventListener("click", () => {
+        estado.proposta = ""; estado.pagina = 1;
+        document.querySelectorAll("#filtros .grupo-prop input").forEach(i => { i.checked = false; });
+        render();
+      });
+      c.appendChild(x); cont.appendChild(c);
+    }
     todos.forEach(([chave, v]) => {
       const c = el("span", "chip", MD.esc(v));
       const x = el("button", null, "×");
@@ -179,7 +216,21 @@
     });
   }
 
-  function nAtivos() { return estado.especialidades.size + estado.familias.size; }
+  function nAtivos() { return estado.especialidades.size + estado.familias.size + (estado.proposta ? 1 : 0); }
+
+  // faixa da proposta escolhida: resumo, PDF e "adicionar tudo ao orçamento" (depois, "Pedir por e-mail" na bandeja)
+  function faixaProposta() {
+    let f = $("#faixa-prop");
+    const kit = propostaAtiva();
+    if (!kit) { if (f) f.remove(); return; }
+    if (!f) { f = el("div", "faixa-prop"); f.id = "faixa-prop"; $("#grade").parentNode.insertBefore(f, $("#grade")); }
+    const un = kit.itens_lista.reduce((s, i) => s + i.qtd, 0);
+    const tudo = kit.itens_lista.every(i => MD.qtd(i.codigo) >= i.qtd);
+    f.innerHTML = `<div><b>Proposta básica: ${MD.esc(kit.titulo)}</b><span>${kit.itens_lista.length} itens · ${un} unidades</span></div>
+      <div class="acoes"><button class="pr-add${tudo ? " in" : ""}" type="button">${tudo ? "✓ Proposta no orçamento" : "Adicionar a proposta ao orçamento"}</button>
+      <a class="pr-pdf" href="${MD.esc(kit.arquivo)}" download>Baixar PDF</a></div>`;
+    f.querySelector(".pr-add").onclick = () => { if (!tudo) MD.adicionarVarios(kit.itens_lista); };
+  }
 
   // ---- paginação ----
   function montarPaginacao(totalItens) {
@@ -228,7 +279,7 @@
       grade.appendChild(frag);
     }
     $("#cont").innerHTML = `<b>${listaFiltrada.length}</b> de ${PRODUTOS.length} produtos`;
-    chipsAtivos();
+    chipsAtivos(); faixaProposta();
     const n = nAtivos();
     $("#fnum").textContent = n ? ` (${n})` : "";
     montarPaginacao(listaFiltrada.length);
@@ -244,6 +295,7 @@
     if (q) { $("#busca").value = q; estado.termo = MD.norm(q.trim()); }
     u.getAll("esp").forEach(v => estado.especialidades.add(v));
     u.getAll("fam").forEach(v => estado.familias.add(v));
+    estado.proposta = u.get("prop") || "";
     estado.pagina = Math.max(1, parseInt(u.get("p"), 10) || 1);
   }
   function gravarURL() {
@@ -252,6 +304,7 @@
     if (q) u.set("q", q);
     estado.especialidades.forEach(v => u.append("esp", v));
     estado.familias.forEach(v => u.append("fam", v));
+    if (estado.proposta) u.set("prop", estado.proposta);
     if (estado.pagina > 1) u.set("p", estado.pagina);
     const s = u.toString();
     try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "")); } catch (e) { /* file:// */ }
@@ -289,7 +342,8 @@
     bf.addEventListener("click", abrirGaveta);
     $("#backdrop").addEventListener("click", fecharGaveta);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fecharGaveta(); });
-    document.addEventListener("orcamento:mudou", sincronizarBotoes);
+    document.addEventListener("orcamento:mudou", () => { sincronizarBotoes(); faixaProposta(); });
+    try { const r = await fetch("propostas.json"); PROPOSTAS = (r.ok ? await r.json() : []).filter(k => k.id && (k.itens_lista || []).length); } catch (e) { PROPOSTAS = []; }
 
     montarFiltros();
     MD.montarMenuDownloads();

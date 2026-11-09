@@ -36,7 +36,9 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - **Botão "Suporte"** (canto da tela, `site/js/suporte.js`, textos em `config.js` → `suporte`): suporte INTERNO (problema técnico, dúvida de uso,
   dado do produto, sugestão), não venda. Menu guiado → respostas rápidas → ENVIO POR E-MAIL dentro da própria caixa (Web3Forms; chave em
   `suporte.chaveEmail`, destino mkt@triomed.com.br) com contexto (página, produto, aparelho). Sem a chave, cai no WhatsApp com mensagem
-  pronta; com a chave, o WhatsApp vira link secundário. Sem backend próprio; sem chave e sem número, o botão some. Fica acima da bandeja de orçamento (`--h-bandeja`).
+  pronta; com a chave, o WhatsApp vira link secundário. Sem backend próprio; sem chave e sem número, o botão some.
+  Ao enviar, o formulário é limpo e aparece uma tela de confirmação; nada é gravado no aparelho. O **pedido de orçamento** ("Pedir por e-mail"
+  na bandeja) usa o mesmo envio (`MD.enviarEmail` em `dados.js`): nome, empresa, contato, observação + a lista; ao enviar, a lista é esvaziada. Fica acima da bandeja de orçamento (`--h-bandeja`).
 
 ## Contrato HTML ↔ JS (não quebrar)
 - Pode mudar CSS, texto e estrutura visual. **Não renomear/remover `id` ou `class` usados pelo JS** sem ajustar o JS junto (a falha é silenciosa).
