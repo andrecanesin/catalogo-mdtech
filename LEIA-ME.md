@@ -49,6 +49,8 @@ catalogo-mdtech/
 │   └── layout.py  helpers de desenho + quebra de linha
 ├── geradores/  card.py · fichas.py · catalogo.py · dashboard.py · site.py  (só o LAYOUT)
 ├── saida/    PDFs e previews gerados localmente (git-ignorado, é lixeira de build)
+│   ├── digital/    fichas e catálogos LEVES (foto 1200 px): é o que o site, o Actions e o servidor usam
+│   └── impresso/   catálogos p/ a gráfica (foto ORIGINAL): só local, nunca publicado
 ├── gerar.py  CLI único
 ├── requirements.txt
 └── site/     catálogo digital — pasta comum do repositório, front escrito à mão
@@ -89,7 +91,8 @@ Requisitos: weasyprint, reportlab, pypdf, pillow, openpyxl.
 | `python gerar.py site` | Gera `produtos.json`/`meta.json` **direto em `site/`** + copia fotos/fichas/catálogos pra lá. NÃO toca em HTML/CSS/JS. |
 | `python gerar.py tudo` | **Roda tudo de uma vez:** checklist + dashboard + catálogos + fichas |
 
-Tudo (exceto o que vai pra `site/`) cai em `saida/`.
+Fichas e catálogos digitais caem em `saida/digital/`; catálogos impressos, em `saida/impresso/`; previews
+e dashboard, em `saida/`. O site só lê de `saida/digital/`.
 
 ### `tudo` — geração completa num comando
 ```
@@ -124,18 +127,21 @@ no bloco `<style>` de `_doc_html()` (dentro de `catalogo.py`/`fichas.py`).
 O preview injeta um CSS equivalente ao `@page` de impressão (que o navegador
 ignora) só pra essa visualização — não vai pro PDF final.
 
-### Catálogo — dois perfis
+### Catálogo — dois perfis (dois trilhos, nunca misturados)
 
-**`--perfil digital`** (tela): 1 PDF navegável, **sem páginas em branco**, com
-**índice/bookmarks** (especialidade → família) e **link de contato** clicável
-(opcional, via `CONTATO_URL` em `config.py`).
+**`--perfil digital`** (padrão; tela): 1 PDF navegável, **sem páginas em branco**, com
+**índice/bookmarks** (especialidade → família), **foto reduzida (1200 px)** e **link de contato** clicável
+(opcional, via `CONTATO_URL` em `config.py`). Sai em `saida/digital/`. O catálogo **completo** (montado por
+`gerar.py site`) leva a capa `assets/capas/Catalogo_Completo.pdf` + todos os miolos; os catálogos por linha saem só
+com miolo e índice (capa de cada linha: colocar em `assets/capas/<Especialidade>.pdf` quando existir).
 ```
 python gerar.py catalogo --todos --perfil digital
 python gerar.py catalogo Laparoscopia --perfil digital
 ```
 
-**`--perfil impressao`** (gráfica, frente e verso): 1 PDF por especialidade,
-com **paridade** para encaixar capa/contra sem desalinhar.
+**`--perfil impressao`** (gráfica, frente e verso): 1 PDF por especialidade, com **foto ORIGINAL**
+(alta resolução) e **paridade** para encaixar capa/contra sem desalinhar. Sai em `saida/impresso/`,
+**só local**: nunca vai ao site, ao Actions nem ao git. Fichas só existem no digital.
 
 | Cenário | Montagem | Miolo | Flag |
 |---|---|---|---|

@@ -26,10 +26,12 @@ você ligar assim:
    python gerar.py catalogo --todos --perfil digital
    python gerar.py site
    ```
-   O primeiro comando gera os miolos em `saida/`; o segundo copia pra `site/catalogos/`
-   com os nomes que o `js/config.js` espera (`Catalogo_Completo_MDTech.pdf`,
-   `Catalogo_Laparoscopia_MDTech.pdf` etc.) e monta o catálogo completo. Esses são os
-   arquivos a subir na release.
+   O primeiro comando gera os miolos **digitais** (foto reduzida, com índice) em `saida/digital/`; o
+   segundo copia pra `site/catalogos/` com os nomes que o `js/config.js` espera
+   (`Catalogo_Completo_MDTech.pdf`, `Catalogo_Laparoscopia_MDTech.pdf` etc.) e monta o catálogo completo
+   **com a capa** `assets/capas/Catalogo_Completo.pdf`. Esses são os arquivos a subir na release. Os
+   catálogos por linha saem só com miolo e índice, até haver capa própria. Os **impressos** (foto original)
+   ficam em `saida/impresso/` e não entram aqui.
 2. No GitHub, repositório `catalogo-mdtech` → **Releases** → **Create a new release**
    (tag, por exemplo, `catalogos-v1`).
 3. Anexar os PDFs de `site/catalogos/` como assets da release (aceita até 2 GB por arquivo).
