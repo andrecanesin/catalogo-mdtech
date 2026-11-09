@@ -46,6 +46,9 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - Não editar `produtos.json`, `meta.json`, `site/fotos/`, `site/fichas/`, `site/catalogos/` — são gerados.
 
 ## UX e acessibilidade
+- **Trilha (breadcrumb) no desktop** (`MD.trilha`): produto = Catálogo › Especialidade › Família › Produto (links levam à grade já
+  filtrada, `?esp=&fam=`); grade = conforme o filtro (some na página inicial sem filtro). No celular fica o "← Voltar ao catálogo".
+  Hierarquia, não histórico (Nielsen); último passo sem link, com `aria-current="page"`.
 - Mobile primeiro (a equipe comercial usa celular): grade com paginação (`produtosPorPagina` em `config.js`), 2 cards por linha
   até 560 px, alvos de toque ≥ 44px, sem rolagem horizontal. Busca, filtros e página ficam na URL.
 - Contraste AA mínimo, foco visível por teclado, `alt` nas fotos (código + nome), rótulos nos filtros.

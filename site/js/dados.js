@@ -148,6 +148,15 @@ window.MD = (function () {
     return `mailto:${mail}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto(produtos))}`;
   }
 
+  // ---- trilha de navegação (breadcrumb): onde estou na hierarquia Catálogo › Especialidade › Família › Produto ----
+  // passos: [{t: texto, href?: link}]; o último é a página atual (sem link, aria-current). Só aparece no desktop (CSS).
+  const urlGrade = (esp, fam) => "index.html" + (esp || fam ? "?" + new URLSearchParams(
+    [esp ? ["esp", esp] : null, fam ? ["fam", fam] : null].filter(Boolean)).toString() : "");
+  function trilha(passos) {
+    return `<nav class="trilha" aria-label="Você está em"><ol>` + passos.map((p, i) => i === passos.length - 1
+      ? `<li aria-current="page">${esc(p.t)}</li>` : `<li><a href="${esc(p.href)}">${esc(p.t)}</a></li>`).join("") + `</ol></nav>`;
+  }
+
   // ---- envio por e-mail sem sair do site (Web3Forms; chave em config.js -> suporte.chaveEmail) ----
   // Usado pelo Suporte e pelo pedido de orçamento. Sem a chave, os dois caem no modo antigo (WhatsApp / mailto).
   const _chaveEmail = ((cfg.suporte && cfg.suporte.chaveEmail) || "").trim();
@@ -351,7 +360,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

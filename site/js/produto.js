@@ -90,6 +90,10 @@
     const diametroTxt = fmtDiametro(p);
 
     $("#alvo").innerHTML = `
+      ${MD.trilha([{ t: "Catálogo", href: "index.html" },
+        ...(p.especialidade ? [{ t: p.especialidade, href: MD.urlGrade(p.especialidade) }] : []),
+        ...(p.familia ? [{ t: p.familia, href: MD.urlGrade(p.especialidade, p.familia) }] : []),
+        { t: (p.nome || p.codigo) + " · " + p.codigo }])}
       <a class="voltar" href="index.html">← Voltar ao catálogo</a>
       <div class="ph">
         ${foto}

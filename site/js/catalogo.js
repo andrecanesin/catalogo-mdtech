@@ -216,6 +216,24 @@
     });
   }
 
+  // trilha da grade: Catálogo › Especialidade › Família (ou › Proposta básica: X). Sem filtro, não aparece (é a página inicial).
+  function trilhaGrade() {
+    const alvo = $("#trilha-grade"); if (!alvo) return;
+    const kit = propostaAtiva(), esp = [...estado.especialidades], fam = [...estado.familias];
+    const passos = [{ t: "Catálogo", href: "index.html" }];
+    if (kit) passos.push({ t: "Proposta básica: " + kit.titulo });
+    else {
+      if (esp.length === 1) passos.push({ t: esp[0], href: MD.urlGrade(esp[0]) });
+      else if (esp.length > 1) passos.push({ t: esp.join(" + "), href: "index.html?" + esp.map(e => "esp=" + encodeURIComponent(e)).join("&") });
+      if (fam.length === 1) passos.push({ t: fam[0] });
+      else if (fam.length > 1) passos.push({ t: fam.length + " famílias" });
+    }
+    if (passos.length === 1) { alvo.innerHTML = ""; return; }
+    // o último passo é a página atual (sem link)
+    delete passos[passos.length - 1].href;
+    alvo.innerHTML = MD.trilha(passos);
+  }
+
   function nAtivos() { return estado.especialidades.size + estado.familias.size + (estado.proposta ? 1 : 0); }
 
   // faixa da proposta escolhida: resumo, PDF e "adicionar tudo ao orçamento" (depois, "Pedir por e-mail" na bandeja)
@@ -281,7 +299,7 @@
     const ilustr = MD.mostrarPreco() && PRODUTOS.some(p => p.preco && p.preco_ficticio);
     $("#cont").innerHTML = `<b>${listaFiltrada.length}</b> de ${PRODUTOS.length} produtos` +
       (ilustr ? ` <span class="cont-aviso">· preços ilustrativos</span>` : "");
-    chipsAtivos(); faixaProposta();
+    chipsAtivos(); faixaProposta(); trilhaGrade();
     const n = nAtivos();
     $("#fnum").textContent = n ? ` (${n})` : "";
     montarPaginacao(listaFiltrada.length);

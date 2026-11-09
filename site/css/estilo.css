@@ -425,3 +425,15 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
   .sup-fab{font-size:0;gap:0;padding:0;width:52px;height:52px;justify-content:center;border-radius:50%;}
   .sup-fab svg{width:22px;height:22px;}
 }
+
+/* trilha de navegação (breadcrumb): desktop. No celular fica o "Voltar ao catálogo". */
+.trilha{display:none;font-size:13px;margin:0 0 14px;}
+.trilha ol{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;}
+.trilha li{display:flex;align-items:center;color:var(--mut);}
+.trilha li + li::before{content:"›";margin:0 8px;color:#9aa5b5;}
+.trilha a{color:var(--mut);text-decoration:none;padding:4px 0;}
+.trilha a:hover{color:var(--navy);text-decoration:underline;}
+.trilha a:focus-visible{outline:2px solid var(--ciano);outline-offset:2px;border-radius:3px;}
+.trilha [aria-current]{color:var(--navy);font-weight:600;}
+@media (min-width:901px){ .trilha{display:block;} .voltar{display:none;} }
+#alvo > .trilha{margin:22px 0 16px;}
