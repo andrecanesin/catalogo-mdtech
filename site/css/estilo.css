@@ -473,3 +473,11 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 @media (max-width:900px){ .ph{gap:0;} .ph .info{padding:20px 20px 24px;} }
 /* Entradas da página inicial só no celular/tablet: no desktop a lateral já mostra especialidades e propostas (sem repetir). */
 @media (min-width:901px){ #entrada{display:none;} }
+
+/* preço com destaque singelo: azul MDTech escuro (AA), "R$" pequeno e centavos menores, números alinhados */
+.card .preco:not(.sem),.preco-g b{color:#1874A1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;}
+.pz-m{font-size:.62em;font-weight:600;margin-right:.22em;vertical-align:.32em;opacity:.85;}
+.pz-c{font-size:.68em;font-weight:600;}
+.card .preco:not(.sem){font-size:18px;line-height:1.2;}
+.preco-g b{font-size:30px;}
+@media (max-width:560px){ .card .preco:not(.sem){font-size:16px;} }

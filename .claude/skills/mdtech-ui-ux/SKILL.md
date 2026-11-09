@@ -25,7 +25,7 @@ Lê `CLAUDE.md` antes de mexer em qualquer coisa. Para decisões estéticas nova
 Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Evitar linguagem genérica de marketing, promessas vagas, estética "hospital genérico" e apelo emocional. Pergunta-guia: "isso abre caminhos ou cria obstáculos?"
 
 ## Regras de produto
-- Site estático. **Preço** vem da coluna `Preço (R$)` da base e hoje é FICTÍCIO: aparece no card, no detalhe ("Preço de tabela"), no subtotal/total
+- Site estático. **Preço** (destaque singelo: azul MDTech escuro `#1874A1`, "R$" pequeno, reais em negrito, centavos menores; `MD.precoHTML`) vem da coluna `Preço (R$)` da base e hoje é FICTÍCIO: aparece no card, no detalhe ("Preço de tabela"), no subtotal/total
   do orçamento e na mensagem (**só no site**: catálogos, fichas e propostas não levam preço), sempre com o aviso "valores ilustrativos" (`config.js` → `precos`). Preço REAL só no servidor com acesso controlado
   (o workflow trava a publicação no Pages). Ação do visitante:
   **"+ Adicionar no orçamento"** → "✓ No orçamento" → "Ver lista" (quantidade por item, remover) → pedido por WhatsApp/e-mail
