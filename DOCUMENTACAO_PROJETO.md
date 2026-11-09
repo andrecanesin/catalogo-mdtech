@@ -87,7 +87,7 @@ catalogo-mdtech/
     ├── js/{config,dados,catalogo,produto}.js
     ├── img/angulos/                   mesmos ícones de assets/icones/angulos, versão site
     ├── produtos.json / meta.json      GERADOS — não editar à mão, não vão pro git
-    ├── fotos/                         GERADO — cópia das fotos casadas (não vai pro git)
+    ├── fotos/                         GERADO — JPEG 1600 px (+ thumbs/ de 600 px) das fotos casadas (não vai pro git)
     ├── fichas/                        GERADO — 1 PDF por produto (não vai pro git; o Actions recria)
     └── catalogos/                     GERADO localmente — PDFs grandes, nunca no git (ver seção 7)
 ```

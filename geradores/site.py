@@ -82,10 +82,34 @@ def _produto(it):
                         else (it.get("autoclavavel") or "").strip(),
         "anvisa": (it.get("anvisa") or "").strip(),
         "ncm": (it.get("ncm") or "").strip(),
-        "foto": None,                          # preenchido se a foto for copiada
+        "foto": None,                          # preenchido se a foto for exportada (1600 px)
+        "foto_thumb": None,                    # miniatura (600 px) usada na grade
         "ficha_pdf": None,                     # preenchido se a ficha técnica for copiada
         "_foto_src": None,                     # interno, removido no fim
     }
+
+
+# Fotos do site: JPEG sobre fundo branco em dois tamanhos (o original chega a 7000 px / 5 MB).
+FOTO_GRANDE = 1600   # lado maior: página de detalhe e zoom
+FOTO_THUMB = 600     # lado maior: cards da grade
+
+
+def _exportar_foto(src, codigo, fotodir, thumbdir):
+    """Gera fotos/<codigo>.jpg (grande) e fotos/thumbs/<codigo>.jpg (miniatura). Não amplia."""
+    from PIL import Image, ImageOps
+    with Image.open(src) as im:
+        im = ImageOps.exif_transpose(im)
+        if im.mode in ("RGBA", "LA") or (im.mode == "P" and "transparency" in im.info):
+            im = im.convert("RGBA")
+            fundo = Image.new("RGB", im.size, (255, 255, 255))
+            fundo.paste(im, mask=im.split()[3])
+            im = fundo
+        else:
+            im = im.convert("RGB")
+        for pasta, lado, qual in ((fotodir, FOTO_GRANDE, 84), (thumbdir, FOTO_THUMB, 82)):
+            c = im.copy()
+            c.thumbnail((lado, lado), Image.LANCZOS)
+            c.save(pasta / f"{codigo}.jpg", "JPEG", quality=qual, optimize=True, progressive=True)
 
 
 def _copiar_fichas(produtos, outdir):
@@ -172,22 +196,24 @@ def gerar():
 
     produtos = [porcod[k] for k in ordem]
 
-    # copia fotos casadas p/ site/fotos/
+    # exporta as fotos casadas p/ site/fotos/ (pasta gerada: recriada do zero a cada execução)
     outdir = config.SITE
     fotodir = outdir / "fotos"
-    fotodir.mkdir(parents=True, exist_ok=True)
+    thumbdir = fotodir / "thumbs"
+    if fotodir.exists():
+        shutil.rmtree(fotodir)
+    thumbdir.mkdir(parents=True, exist_ok=True)
     copiadas = 0
     for p in produtos:
         src = p.pop("_foto_src")
         if src:
-            ext = Path(src).suffix.lower()
-            destino = fotodir / f"{p['codigo']}{ext}"
             try:
-                shutil.copyfile(src, destino)
-                p["foto"] = f"fotos/{destino.name}"
+                _exportar_foto(src, p["codigo"], fotodir, thumbdir)
+                p["foto"] = f"fotos/{p['codigo']}.jpg"
+                p["foto_thumb"] = f"fotos/thumbs/{p['codigo']}.jpg"
                 copiadas += 1
             except Exception as e:
-                print(f"[aviso] falha copiando foto {p['codigo']}: {e}")
+                print(f"[aviso] falha exportando foto {p['codigo']}: {e}")
 
     fichas_copiadas = _copiar_fichas(produtos, outdir)
     catalogos_copiados = _copiar_catalogos(outdir)

@@ -58,7 +58,7 @@ catalogo-mdtech/
     ├── js/{config,dados,catalogo,produto}.js
     ├── img/angulos/        mesmos ícones de assets/icones/angulos, versão site
     ├── produtos.json / meta.json   GERADOS por `gerar.py site` — não editar à mão
-    ├── fotos/              GERADO — cópia das fotos casadas
+    ├── fotos/              GERADO — JPEG 1600 px + thumbs/ 600 px das fotos casadas (originais ficam em assets/)
     ├── fichas/             GERADO — 1 PDF por produto (o Actions recria)
     └── catalogos/          GERADO local — PDFs grandes, nunca no git
 ```
