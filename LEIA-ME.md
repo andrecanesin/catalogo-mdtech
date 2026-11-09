@@ -106,6 +106,14 @@ parte) nem **site** (rode `site` à parte só para conferir local; quem publica 
 de rodar `tudo` + `site`, é por isso — rode `fichas --separados` manualmente
 antes de `gerar.py site`. (No GitHub Actions isso já é feito na ordem certa.)
 
+### Painel local (botões, sem terminal)
+```
+python painel.py
+```
+Abre `http://127.0.0.1:8800` com botões para conferir pendências, gerar fichas, catálogos e dados do
+site, ver o log e o `git status`, e abrir o site local. Só biblioteca padrão; escuta apenas em
+127.0.0.1 e só roda as ações da lista `ACOES` em `painel.py`. Não faz commit nem push.
+
 ### Preview rápido sem gerar PDF
 ```
 python gerar.py catalogo Histeroscopia --preview   # -> saida/Preview_Catalogo_Histeroscopia.html
