@@ -46,8 +46,10 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - Não editar `produtos.json`, `meta.json`, `site/fotos/`, `site/fichas/`, `site/catalogos/` — são gerados.
 
 ## UX e acessibilidade
-- **Público inicial: vendedores** (teste de 09/11). Página inicial sem filtro mostra entradas por **Linha** (cartões por especialidade, foto
-  em `config.js` → `fotoLinha` ou automática) e por **Proposta básica**; somem com busca/filtro. Topo compacto no celular (logo + botão
+- **Público inicial: vendedores** (teste de 09/11). No **celular/tablet**, a página inicial sem filtro mostra cartões de **Especialidades**
+  (foto em `config.js` → `fotoLinha` ou automática) e de **Propostas básicas**; somem com busca/filtro. **No desktop não aparecem**
+  (a lateral já mostra os dois: nunca repetir a mesma escolha em dois lugares da tela). **Nomes iguais em todo lugar:** títulos de
+  grupo no plural ("Especialidades", "Propostas básicas", "Famílias"); "Linha" não é usado. Topo compacto no celular (logo + botão
   "PDFs" na mesma linha, busca fixa). **Compartilhar** no produto e na proposta (menu nativo no celular; no computador copia o link).
 - **Trilha (breadcrumb) no desktop** (`MD.trilha`): produto = Catálogo › Especialidade › Família › Produto (links levam à grade já
   filtrada, `?esp=&fam=`); grade = conforme o filtro (some na página inicial sem filtro). No celular fica o "← Voltar ao catálogo".

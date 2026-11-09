@@ -150,11 +150,11 @@
     const fam = (META && META.familias) || Object.keys(contar("familias"));
 
     // especialidade = filtro principal (destacado). família = secundário, recolhível (também no celular).
-    side.appendChild(facetGrupo("Especialidade", esp, "especialidades", contar("especialidades"), "grupo-esp"));
+    side.appendChild(facetGrupo("Especialidades", esp, "especialidades", contar("especialidades"), "grupo-esp"));
 
     // proposta básica (kit): escolha única; mostra só os itens dela e permite pedir o orçamento da proposta toda
     if (PROPOSTAS.length) {
-      const box = el("div", "grupo grupo-prop"); box.appendChild(el("h3", null, "Proposta básica"));
+      const box = el("div", "grupo grupo-prop"); box.appendChild(el("h3", null, "Propostas básicas"));
       PROPOSTAS.forEach(k => {
         const lab = el("label", "facet"), cb = el("input"); cb.type = "checkbox"; cb.value = k.id; cb.checked = estado.proposta === k.id;
         cb.addEventListener("change", () => {
@@ -167,7 +167,7 @@
       });
       side.appendChild(box);
     }
-    side.appendChild(facetGrupo("Família", fam, "familias", contar("familias"), "grupo-fam", true));
+    side.appendChild(facetGrupo("Famílias", fam, "familias", contar("familias"), "grupo-fam", true));
 
     const limpar = el("button", "limpar", "Limpar filtros");
     limpar.addEventListener("click", () => {
@@ -234,7 +234,8 @@
     alvo.innerHTML = MD.trilha(passos);
   }
 
-  // ---- página inicial (sem busca nem filtro): entrada pelas linhas (especialidades) e pelas propostas básicas ----
+  // ---- página inicial (sem busca nem filtro), só no celular/tablet: entrada pelas especialidades e propostas básicas ----
+  // (no desktop a lateral já mostra os dois; o CSS esconde #entrada para não repetir)
   function entrada() {
     const alvo = $("#entrada"); if (!alvo) return;
     const inicio = !estado.termo && !nAtivos() && estado.pagina === 1;
@@ -253,7 +254,7 @@
         || PRODUTOS.find(daLinha);
       if (p) usadas.add(p.codigo);
       return p ? `<img src="${MD.esc(p.foto_thumb || p.foto)}" alt="" loading="lazy">` : ""; };
-    alvo.innerHTML = `<section class="ent" aria-labelledby="ent-l"><h2 class="ent-t" id="ent-l">Linhas</h2>
+    alvo.innerHTML = `<section class="ent" aria-labelledby="ent-l"><h2 class="ent-t" id="ent-l">Especialidades</h2>
         <div class="ent-linhas">${esps.map(e => `<button type="button" class="ent-linha" data-esp="${MD.esc(e)}" style="--c:${MD.corEsp(e)}">
           <span class="ent-foto">${foto(e)}</span><span class="ent-txt"><b>${MD.esc(e)}</b><small>${cont[e]} produtos</small></span></button>`).join("")}</div>
       ${PROPOSTAS.length ? `<h2 class="ent-t">Propostas básicas</h2><div class="ent-props">${PROPOSTAS.map(k => `
