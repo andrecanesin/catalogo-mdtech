@@ -148,6 +148,15 @@ window.MD = (function () {
     return `mailto:${mail}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto(produtos))}`;
   }
 
+  // ---- trilha de navegação (breadcrumb): onde estou na hierarquia Catálogo › Especialidade › Família › Produto ----
+  // passos: [{t: texto, href?: link}]; o último é a página atual (sem link, aria-current). Só aparece no desktop (CSS).
+  const urlGrade = (esp, fam) => "index.html" + (esp || fam ? "?" + new URLSearchParams(
+    [esp ? ["esp", esp] : null, fam ? ["fam", fam] : null].filter(Boolean)).toString() : "");
+  function trilha(passos) {
+    return `<nav class="trilha" aria-label="Você está em"><ol>` + passos.map((p, i) => i === passos.length - 1
+      ? `<li aria-current="page">${esc(p.t)}</li>` : `<li><a href="${esc(p.href)}">${esc(p.t)}</a></li>`).join("") + `</ol></nav>`;
+  }
+
   // ---- envio por e-mail sem sair do site (Web3Forms; chave em config.js -> suporte.chaveEmail) ----
   // Usado pelo Suporte e pelo pedido de orçamento. Sem a chave, os dois caem no modo antigo (WhatsApp / mailto).
   const _chaveEmail = ((cfg.suporte && cfg.suporte.chaveEmail) || "").trim();
@@ -256,7 +265,8 @@ window.MD = (function () {
           <button class="lista-x" aria-label="Fechar lista">×</button></div>
         <ul>${itens.map(c => {
           const p = byCod[c], q = qtd(c), e = esc(c);
-          const sub = mostrarPreco() && p && p.preco ? `<span class="sub">${brl(p.preco * q)}</span>` : "";
+          const sub = mostrarPreco() && p && p.preco ? `<span class="sub">${brl(p.preco * q)}` +
+            (q > 1 ? `<small>${q} × ${brl(p.preco)}</small>` : "") + `</span>` : "";
           return `<li><span class="mono">${e}</span><span class="n">${esc(p ? p.nome : "")}</span>${sub}
             <span class="qtd">
               <button data-menos="${e}" aria-label="Diminuir quantidade de ${e}" ${q <= 1 ? "disabled" : ""}>−</button>
@@ -294,7 +304,9 @@ window.MD = (function () {
       const n = lista().length;
       bandeja.classList.toggle("on", n > 0);
       document.body.classList.toggle("com-bandeja", n > 0);
-      $("qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento`;
+      const tq = mostrarPreco() ? totalLista(produtos) : { total: 0 };
+      $("qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento` +
+        (tq.total ? `<em class="qt-tot">Total estimado ${brl(tq.total)}</em>` : "");
       const wpp = linkWhatsApp(produtos), mail = linkEmail(produtos);
       const bw = $("bt-wpp"), bm = $("bt-mail");
       if (wpp) { bw.style.display = ""; bw.onclick = () => location.href = wpp; } else bw.style.display = "none";
@@ -348,7 +360,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

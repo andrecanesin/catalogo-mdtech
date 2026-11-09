@@ -410,3 +410,30 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .faixa-prop .pr-pdf{border:1px solid var(--navy);background:#fff;color:var(--navy);}
 .kit-qtd{font-size:12px;font-weight:600;color:var(--navy);margin:2px 0 6px;}
 @media (max-width:600px){.faixa-prop .acoes{width:100%}.faixa-prop .pr-add,.faixa-prop .pr-pdf{flex:1 1 100%;}}
+
+/* preço: refinamentos de UX (09/11) */
+.barra .cont .cont-aviso{font-size:12px;color:var(--mut);white-space:nowrap;}
+.lista-pop li .sub{text-align:right;}
+.lista-pop li .sub small{display:block;font-size:11px;font-weight:500;color:var(--mut);}
+.bandeja .qt .qt-tot{display:block;font-style:normal;font-weight:500;font-size:12.5px;color:#cfe3f5;}
+.b-pedir{background:#1874A1;color:#fff;}
+@media (max-width:900px){
+  .ph .foto-g{min-height:220px;padding:16px;}
+  .ph .foto-g img.principal{max-height:240px;}
+}
+@media (max-width:560px){
+  .sup-fab{font-size:0;gap:0;padding:0;width:52px;height:52px;justify-content:center;border-radius:50%;}
+  .sup-fab svg{width:22px;height:22px;}
+}
+
+/* trilha de navegação (breadcrumb): desktop. No celular fica o "Voltar ao catálogo". */
+.trilha{display:none;font-size:13px;margin:0 0 14px;}
+.trilha ol{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;}
+.trilha li{display:flex;align-items:center;color:var(--mut);}
+.trilha li + li::before{content:"›";margin:0 8px;color:#9aa5b5;}
+.trilha a{color:var(--mut);text-decoration:none;padding:4px 0;}
+.trilha a:hover{color:var(--navy);text-decoration:underline;}
+.trilha a:focus-visible{outline:2px solid var(--ciano);outline-offset:2px;border-radius:3px;}
+.trilha [aria-current]{color:var(--navy);font-weight:600;}
+@media (min-width:901px){ .trilha{display:block;} .voltar{display:none;} }
+#alvo > .trilha{margin:22px 0 16px;}
