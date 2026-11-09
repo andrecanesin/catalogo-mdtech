@@ -25,6 +25,7 @@ COLUNAS = {
     "ncm":          "NCM",
     "id":           "Id (sistema)",
     "tambem_em":    "Também em",
+    "preco":        "Preço (R$)",
 }
 
 def carregar(caminho=None, aba=None):

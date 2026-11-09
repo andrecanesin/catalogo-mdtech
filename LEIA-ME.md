@@ -116,6 +116,8 @@ python gerar.py kits --kit "Hérnia de Hiato"  # um kit
 python gerar.py kits --kit "Hérnia de Hiato" --preview   # HTML no navegador, sem gerar PDF
 python gerar.py kits --perfil impressao --paridade par   # IMPRESSO: foto original + páginas casadas -> saida/impresso/
 ```
+O preço de cada item vem da coluna `Preço (R$)` da base (ou da coluna `Preço unit. (R$)` da aba KITS, para preço especial do kit);
+a proposta mostra preço, subtotal e **total do kit**. Hoje os valores são **fictícios** (`PRECOS_FICTICIOS` em `mdtech/config.py`) e saem com o aviso.
 Um PDF por kit em `saida/propostas/`; o Actions também os gera e `gerar.py site` os copia para `site/propostas/` e escreve
 `site/propostas.json`, de onde o menu **"Catálogos e propostas"** do site monta a lista (kit novo na aba KITS = aparece sozinho).
 Um PDF por kit em `saida/propostas/` (ex.: `Kit_Proposta_Basica_Hernia_de_Hiato_MDTech.pdf`). Os kits ficam na aba

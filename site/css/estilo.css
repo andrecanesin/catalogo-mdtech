@@ -339,6 +339,21 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
   .bandeja .bt-ver{display:none;}   /* no celular, "Limpar lista" fica dentro de "Ver lista" */
   .bandeja .bt-mail,.bandeja .bt-wpp{flex:1 1 calc(50% - 4px);}
 }
+/* ---------- preços (hoje fictícios: o aviso "valores ilustrativos" acompanha) ---------- */
+.card .preco{font-size:15px;font-weight:700;color:var(--navy);margin-top:6px;}
+.card .preco.sem{font-size:12.5px;font-weight:500;color:var(--mut);}
+.preco-g{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin:0 0 16px;padding:12px 14px;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;}
+.preco-g .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600;flex-basis:100%;}
+.preco-g b{font-size:26px;color:var(--navy);line-height:1.1;}
+.preco-g small{flex-basis:100%;font-size:12px;color:var(--mut);}
+.lista-pop li .sub{flex:none;font-size:13px;font-weight:600;color:var(--navy);}
+.lista-total{display:flex;align-items:baseline;justify-content:space-between;border-top:2px solid var(--navy);margin-top:6px;padding-top:10px;
+  font-size:14px;color:var(--navy);}
+.lista-total b{font-size:20px;}
+.aviso-preco{font-size:12px;color:var(--mut);margin:4px 0 0;}
+@media (max-width:560px){.card .preco{font-size:14px;}}
+
 /* ---------- botão e painel de Suporte (menu guiado antes do WhatsApp) ---------- */
 .sup-fab{position:fixed;right:16px;bottom:calc(var(--h-bandeja,0px) + 16px);z-index:45;display:inline-flex;align-items:center;
   gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:24px;background:var(--navy);color:#fff;font:inherit;

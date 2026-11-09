@@ -35,7 +35,7 @@ Pré-requisitos para os dois passos novos (fichas/catálogos):
   Se um PDF não existir em saida/, o passo correspondente é pulado sem erro
   (o botão/link some no front até o arquivo existir).
 """
-import json, shutil, unicodedata
+import json, os, shutil, unicodedata
 from pathlib import Path
 
 from mdtech import config, base as B, fotos as F, textos as T, marca as M
@@ -82,6 +82,9 @@ def _produto(it):
                         else (it.get("autoclavavel") or "").strip(),
         "anvisa": (it.get("anvisa") or "").strip(),
         "ncm": (it.get("ncm") or "").strip(),
+        "preco": T.preco_num(it),              # R$ da coluna "Preço (R$)" da base (hoje FICTÍCIO), ou None
+        "preco_fmt": T.brl(T.preco_num(it)) or None,
+        "preco_ficticio": bool(config.PRECOS_FICTICIOS and T.preco_num(it)),
         "foto": None,                          # preenchido se a foto for exportada (1600 px)
         "foto_thumb": None,                    # miniatura (600 px) usada na grade
         "ficha_pdf": None,                     # preenchido se a ficha técnica for copiada
@@ -325,6 +328,11 @@ def gerar():
                 p["familias"].append(f)
 
     produtos = [porcod[k] for k in ordem]
+
+    # TRAVA: preço REAL não vai ao site público. O workflow define SITE_PUBLICO=1 (GitHub Pages é público).
+    if os.environ.get("SITE_PUBLICO") == "1" and not config.PRECOS_FICTICIOS and any(p["preco"] for p in produtos):
+        raise SystemExit("ERRO: há preços reais na base e o destino é público (GitHub Pages). Publique no servidor com acesso "
+                         "controlado, ou volte PRECOS_FICTICIOS = True (mdtech/config.py) com valores ilustrativos.")
 
     # exporta as fotos casadas p/ site/fotos/ (pasta gerada: recriada do zero a cada execução)
     outdir = config.SITE

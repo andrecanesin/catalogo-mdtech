@@ -80,6 +80,7 @@
     link.querySelector(".cod").style.color = cor;
     corpo.appendChild(link);
     corpo.appendChild(el("div", "specs", MD.esc(specsLinha(p)) || "&nbsp;"));
+    if (MD.mostrarPreco()) corpo.appendChild(el("div", "preco" + (p.preco ? "" : " sem"), p.preco ? MD.esc(MD.brl(p.preco)) : "Preço sob consulta"));
 
     const add = el("button", "add");
     add.dataset.cod = p.codigo;

@@ -63,6 +63,8 @@ jobs:
         run: python gerar.py kits
 
       - name: Dados do site (produtos.json, fotos, fichas, catálogos, propostas)
+        env:
+          SITE_PUBLICO: "1"        # Pages é público: preço REAL na base derruba a publicação (ver mdtech/config.py)
         run: python gerar.py site
 
       - name: Conferir resultado

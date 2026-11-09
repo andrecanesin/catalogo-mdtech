@@ -49,6 +49,10 @@ window.MDTECH = {
   // Quantidade de produtos por página na grade (mobile-friendly).
   produtosPorPagina: 20,
 
+  // Preços: vêm da coluna "Preço (R$)" da base (produtos.json). Hoje são FICTÍCIOS: o site avisa "valores ilustrativos"
+  // (flag preco_ficticio de cada produto, definida por PRECOS_FICTICIOS em mdtech/config.py). mostrar:false esconde tudo.
+  precos: { mostrar: true, aviso: "Valores ilustrativos, sujeitos à tabela comercial vigente." },
+
   // Botão "Suporte" (canto da tela): menu guiado ANTES do WhatsApp. É suporte interno do catálogo
   // (problema técnico, dúvida de uso, dado do produto, sugestão), não venda. Usa o mesmo WhatsApp do
   // contato; sem WhatsApp configurado, o botão some. Mude textos, categorias e respostas só aqui.

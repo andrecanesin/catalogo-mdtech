@@ -88,7 +88,16 @@ def _tabela(linhas, produtos, com_preco):
     return f'<table class="it"><thead><tr>{"".join(cab)}</tr></thead><tbody>{corpo}</tbody></table>'
 
 
+def _resolver_precos(linhas, produtos):
+    """Preço do item no kit: o da aba KITS (se preenchido, ex.: preço especial do kit); senão, o da base (Preço (R$))."""
+    for r in linhas:
+        if r["preco"] is None:
+            it = B.por_codigo_exato(produtos, r["codigo"])
+            r["preco"] = T.preco_num(it) if it else None
+
+
 def _doc_html(nome, linhas, produtos):
+    _resolver_precos(linhas, produtos)
     ac = accent("Laparoscopia")
     faces = "".join([font_face("Poppins", "Poppins-Regular.ttf", 400), font_face("Poppins", "Poppins-Medium.ttf", 500),
                      font_face("Poppins", "Poppins-SemiBold.ttf", 600), font_face("Poppins", "Poppins-Bold.ttf", 700),
@@ -113,6 +122,8 @@ def _doc_html(nome, linhas, produtos):
     if com_preco:
         tot = sum((r["preco"] or 0) * (r["qtd"] or 1) for r in linhas)
         secoes += f'<div class="total">Total do kit: <b>R$ {_brl(tot)}</b></div>'
+        if config.PRECOS_FICTICIOS:
+            secoes += '<div class="aviso-p">Valores ilustrativos, sujeitos à tabela comercial vigente.</div>'
 
     resumo = f'<b>{n_itens}</b> itens · <b>{n_un}</b> unidades'
     if len(grupos) > 1:
@@ -161,7 +172,8 @@ def _doc_html(nome, linhas, produtos):
     td.q,th.q{{width:11mm;text-align:center;font-weight:700;color:{NAVY};font-size:10pt;}}
     td.p,th.p{{width:21mm;text-align:right;font-size:8.5pt;white-space:nowrap;}}
     .falta{{color:#E06666;font-weight:700;}} .it{{font-style:italic;font-weight:400;}}
-    .total{{text-align:right;margin-top:3mm;font-size:10pt;color:{NAVY};}}
+    .total{{text-align:right;margin-top:3mm;font-size:12pt;color:{NAVY};}}
+    .aviso-p{{text-align:right;font-size:8pt;color:#46515f;margin-top:1mm;}}
     .grp{{page-break-inside:avoid;}}
     .wm{{text-align:center;margin-top:9mm;page-break-inside:avoid;}} .wm img{{height:12mm;}}
     </style></head><body>

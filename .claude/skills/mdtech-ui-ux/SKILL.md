@@ -25,7 +25,9 @@ Lê `CLAUDE.md` antes de mexer em qualquer coisa. Para decisões estéticas nova
 Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Evitar linguagem genérica de marketing, promessas vagas, estética "hospital genérico" e apelo emocional. Pergunta-guia: "isso abre caminhos ou cria obstáculos?"
 
 ## Regras de produto
-- Site estático, **sem preço** (preço só no deploy em servidor, com acesso controlado — ver `CLAUDE.md`). Ação do visitante:
+- Site estático. **Preço** vem da coluna `Preço (R$)` da base e hoje é FICTÍCIO: aparece no card, no detalhe ("Preço de tabela"), no subtotal/total
+  do orçamento e na mensagem, sempre com o aviso "valores ilustrativos" (`config.js` → `precos`). Preço REAL só no servidor com acesso controlado
+  (o workflow trava a publicação no Pages). Ação do visitante:
   **"+ Adicionar no orçamento"** → "✓ No orçamento" → "Ver lista" (quantidade por item, remover) → pedido por WhatsApp/e-mail
   com códigos e quantidades. A lista fica no navegador como `[{codigo, qtd}]`.
 - Selo de ângulo só em óticas/endoscópios (família **sem** "Pinça"), só na página de detalhe do site; ícone = `img/angulos/<graus>.png`.
