@@ -131,10 +131,19 @@ def card(i,accent):
             f'<div class="cncm">NCM {val(i["NCM"])}</div>'
             f'<div class="canv">{anv}</div></div>')
 
-def familia_html(fam,items,accent,idx):
+def _nav_fam(idx, nomes, pre):
+    """Barra fixa do rodapé (digital): família anterior / próxima, para a página atual. Elemento 'running':
+    cada família redefine a barra, e o WeasyPrint a repete em todas as páginas dela.
+    Os ids levam o prefixo da linha (pre) para não colidirem quando os catálogos são juntados no completo."""
+    ant = f'<a class="np" href="#{pre}-fam{idx-1}">&#8249; {esc(nomes[idx-1])}</a>' if idx > 0 else ""
+    prox = f'<a class="np" href="#{pre}-fam{idx+1}">{esc(nomes[idx+1])} &#8250;</a>' if idx < len(nomes)-1 else ""
+    return f'<div class="navfam">{ant}<span class="sp"></span>{prox}</div>'
+
+def familia_html(fam,items,accent,idx,nomes=None,pre="c"):
     cards="".join(card(i,accent) for i in items)
+    nav = _nav_fam(idx, nomes, pre) if nomes else ""
     return f"""
-    <section class="fam" id="fam{idx}">
+    <section class="fam" id="{pre}-fam{idx}">{nav}
       <div class="fam-head">
         <span class="tab"></span>
         <div class="fh-txt"><div class="kicker">{esc(items[0]['_linha'])}</div>
@@ -144,10 +153,10 @@ def familia_html(fam,items,accent,idx):
       <div class="grid">{cards}</div>
     </section>"""
 
-def indice_html(fam_list, titulo, accent):
-    lis="".join(f'<li><a href="#fam{idx}">{esc(f)}</a></li>' for idx,(f,_) in enumerate(fam_list))
+def indice_html(fam_list, titulo, accent, pre="c"):
+    lis="".join(f'<li><a href="#{pre}-fam{idx}">{esc(f)}</a></li>' for idx,(f,_) in enumerate(fam_list))
     return f"""
-    <section class="toc">
+    <section class="toc" id="{pre}-toc">
       <div class="toc-head"><span class="tab"></span>
         <div><div class="kicker">MDTech {esc(titulo)}</div><h2>Índice</h2></div></div>
       <ul class="toc-list">{lis}</ul>
@@ -176,56 +185,70 @@ def _doc_html(espec_nome, incluir_indice):
     logo=b64file(LOGO)
     fam_list=list(fam.items())
     body=""
+    pre=_slug(espec_nome).lower()                  # prefixo dos ids: único por linha (catálogo completo)
     if incluir_indice:
-        body+=indice_html(fam_list, titulo, accent)
-    body+="".join(familia_html(f,items,accent,i) for i,(f,items) in enumerate(fam_list))
+        body+=indice_html(fam_list, titulo, accent, pre)
+    nomes=[f for f,_ in fam_list] if incluir_indice else None      # navegação fixa só no digital
+    body+="".join(familia_html(f,items,accent,i,nomes,pre) for i,(f,items) in enumerate(fam_list))
+    nav_idx=(f'<div class="navidx"><a class="np" href="#{pre}-toc">&#9776;&nbsp; Índice</a></div>' if incluir_indice else "")
     total=sum(len(v) for v in fam.values())
     skus=len({d["Código"] for v in fam.values() for d in v})
     A_TINT=tint(accent,0.10)
+    ACC_TXT=M.accent_texto_hex(espec_nome)          # código do produto na cor da linha, versão AA
+    if incluir_indice:   # digital: rodapé vira barra de navegação clicável
+        RODAPE=(f'@bottom-left {{ content:element(navidx); vertical-align:middle; width:34mm; }}'
+                f'@bottom-center {{ content:element(navfam); vertical-align:middle; width:112mm; }}'
+                f'@bottom-right {{ content:counter(page); font-family:Plex; font-size:9pt; color:{NAVY}; vertical-align:middle; width:14mm; }}')
+    else:                # impresso: rodapé institucional
+        RODAPE=(f'@bottom-left {{ content:"Tecnologia que abre caminhos"; font-family:Poppins; font-size:7.5pt; color:{MUT}; }}'
+                f'@bottom-right {{ content:counter(page); font-family:Plex; font-size:9pt; color:{NAVY}; }}')
 
     doc=f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
     {faces}
     @page {{ size:A4; margin:18mm;
       @top-left {{ content:element(brand); vertical-align:middle; }}
-      @top-right {{ content:"{esc(titulo)}"; font-family:Poppins; font-weight:600; font-size:7.5pt;
+      @top-right {{ content:"{esc(titulo)}"; font-family:Poppins; font-weight:600; font-size:9pt;
                     color:{accent}; letter-spacing:.14em; text-transform:uppercase; vertical-align:middle; }}
-      @bottom-left {{ content:"Tecnologia que abre caminhos"; font-family:Poppins; font-size:6.5pt;
-                      color:{MUT}; letter-spacing:.03em; }}
-      @bottom-right {{ content:counter(page); font-family:Plex; font-size:8pt; color:{NAVY}; }}
+      {RODAPE}
     }}
     *{{box-sizing:border-box;margin:0;padding:0;}}
     body{{font-family:Poppins;color:{INK};}}
     .brand{{position:running(brand);}} .brand img{{height:7mm;}}
+    /* barra fixa de navegação (digital). NÃO usar display:flex aqui: o WeasyPrint descarta os links. */
+    .navidx{{position:running(navidx);}} .navfam{{position:running(navfam);text-align:center;}}
+    .navfam .sp{{display:inline-block;width:5mm;}}
+    .np{{display:inline-block;color:{NAVY};text-decoration:none;font-family:Poppins;font-weight:600;font-size:9.5pt;
+         background:{A_TINT};border:.5pt solid {tint(accent,0.35)};border-radius:2mm;padding:1.6mm 3.4mm;white-space:nowrap;}}
 
     .toc{{break-after:page;}}
     .toc-head{{display:flex;align-items:stretch;gap:3.5mm;border-bottom:1.6pt solid {accent};
                padding-bottom:2mm;margin-bottom:6mm;}}
-    .toc-head .kicker{{font-size:6.5pt;font-weight:600;color:{accent};letter-spacing:.16em;
+    .toc-head .kicker{{font-size:8pt;font-weight:600;color:{accent};letter-spacing:.16em;
                        text-transform:uppercase;margin-bottom:.6mm;}}
-    .toc-head h2{{font-size:22pt;font-weight:600;color:{NAVY};line-height:1;}}
+    .toc-head h2{{font-size:26pt;font-weight:600;color:{NAVY};line-height:1;}}
     .toc-list{{list-style:none;}}
-    .toc-list li{{margin:0 0 3.5mm 0;}}
-    .toc-list a{{display:block;color:{NAVY};text-decoration:none;font-weight:600;font-size:11pt;}}
+    .toc-list li{{margin:0;border-bottom:.5pt solid {LINE};}}
+    .toc-list a{{display:block;color:{NAVY};text-decoration:none;font-weight:600;font-size:13pt;padding:3mm 0;}}
     .toc-list a::after{{content:leader('.  ') target-counter(attr(href url),page);
-                        color:{MUT};font-weight:400;font-family:Plex;font-size:9pt;}}
+                        color:{NAVY};font-weight:500;font-family:Plex;font-size:11pt;}}
 
     .fam{{margin-bottom:7mm;}}
     .fam-head{{display:flex;align-items:stretch;gap:3.5mm;border-bottom:1.6pt solid {accent};
                padding-bottom:2mm;margin-bottom:4mm;break-after:avoid;}}
     .tab{{width:2.4mm;background:{accent};border-radius:1.2mm;flex:none;}}
     .fh-txt{{flex:1;display:flex;flex-direction:column;justify-content:center;}}
-    .kicker{{font-size:6.5pt;font-weight:600;color:{accent};letter-spacing:.16em;
+    .kicker{{font-size:8pt;font-weight:600;color:{accent};letter-spacing:.16em;
              text-transform:uppercase;margin-bottom:.6mm;}}
-    .fam-head h2{{font-size:15pt;font-weight:600;color:{NAVY};line-height:1;}}
-    .badge{{align-self:center;font-size:6.8pt;font-weight:500;color:#5b6675;background:{A_TINT};
+    .fam-head h2{{font-size:18pt;font-weight:600;color:{NAVY};line-height:1;}}
+    .badge{{align-self:center;font-size:8pt;font-weight:500;color:#3d4756;background:{A_TINT};
             padding:1mm 2.4mm;border-radius:2mm;white-space:nowrap;}}
 
     .grid{{font-size:0;}}
     .card{{display:inline-block;width:50%;vertical-align:top;break-inside:avoid;
-           padding-bottom:5mm;}}
+           padding-bottom:4.5mm;}}
     .card:nth-child(odd){{padding-right:3mm;}}
     .card:nth-child(even){{padding-left:3mm;}}
-    .cphoto{{height:34mm;background:#fff;border:.5pt solid {LINE};border-radius:1.5mm;
+    .cphoto{{height:30mm;background:#fff;border:.5pt solid {LINE};border-radius:1.5mm;
              display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3mm;
              position:relative;}}
     .cphoto img{{max-width:100%;max-height:100%;object-fit:contain;}}
@@ -236,16 +259,17 @@ def _doc_html(espec_nome, incluir_indice):
                border-radius:1.5mm;padding:.6mm;line-height:0;}}
     .selo-ang img{{width:20mm;height:13mm;display:block;}}
     .falta{{color:#E06666;font-weight:700;}} .canv .reg.falta{{color:#E06666;font-style:italic;}}
-    .pht{{font-size:7pt;font-weight:600;color:{accent};letter-spacing:.06em;}}
-    .phc{{font-family:Plex;font-size:7pt;color:#8a94a3;}}
-    .ccod{{display:block;font-family:Plex;font-weight:500;color:{accent};font-size:7.5pt;margin-top:2mm;}}
-    .cname{{font-family:Poppins;font-weight:600;color:{NAVY};font-size:9pt;line-height:1.15;margin:.6mm 0;}}
-    .cdims{{font-family:Poppins;font-size:7.5pt;color:#5b6675;}}
-    .cncm{{font-family:Plex;font-size:7pt;color:{MUT};margin-top:.4mm;}}
-    .canv{{font-family:Plex;font-size:7pt;color:{MUT};margin-top:.2mm;}}
-    .canv .reg{{font-family:Poppins;font-style:italic;color:#b6bdc8;}}
+    .pht{{font-size:8.5pt;font-weight:600;color:{accent};letter-spacing:.06em;}}
+    .phc{{font-family:Plex;font-size:8.5pt;color:#5b6675;}}
+    .ccod{{display:block;font-family:Plex;font-weight:500;color:{ACC_TXT};font-size:9.5pt;margin-top:2.2mm;}}
+    .cname{{font-family:Poppins;font-weight:600;color:{NAVY};font-size:11pt;line-height:1.2;margin:.8mm 0 1mm;}}
+    .cdims{{font-family:Poppins;font-size:9.5pt;color:#2f3a49;}}
+    .cncm{{font-family:Plex;font-size:8.5pt;color:#46515f;margin-top:.8mm;}}
+    .canv{{font-family:Plex;font-size:8.5pt;color:#46515f;margin-top:.3mm;}}
+    .canv .reg{{font-family:Poppins;font-style:italic;color:#46515f;}}
+    .canv .reg.falta{{color:#C62828;}}
     </style></head><body>
-    <div class="brand"><img src="data:image/png;base64,{logo}"></div>
+    <div class="brand"><img src="data:image/png;base64,{logo}"></div>{nav_idx}
     {body}</body></html>"""
     return doc, skus, total, len(fam), accent
 

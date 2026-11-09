@@ -38,7 +38,7 @@ Pré-requisitos para os dois passos novos (fichas/catálogos):
 import json, shutil, unicodedata
 from pathlib import Path
 
-from mdtech import config, base as B, fotos as F, textos as T
+from mdtech import config, base as B, fotos as F, textos as T, marca as M
 
 
 def _norm(s):
@@ -138,6 +138,112 @@ def _copiar_fichas(produtos, outdir):
     return copiadas
 
 
+MM = 72 / 25.4      # milímetro -> ponto PDF
+
+# Índice geral do catálogo completo: cartões em posição fixa (mm) para os links serem colocados exatamente sobre eles.
+_IG_TOPO, _IG_ALT, _IG_PASSO, _IG_ESQ, _IG_LARG = 72, 40, 46, 18, 174
+# Botão "Todas as linhas" no topo de cada página do completo (centro do cabeçalho, livre de logo e rótulo).
+_TL_ESQ, _TL_TOPO, _TL_LARG, _TL_ALT = 78, 5, 54, 8
+
+
+def _fontes_css():
+    from geradores.fichas import font_face
+    return "".join([font_face("Poppins", "Poppins-Regular.ttf", 400), font_face("Poppins", "Poppins-SemiBold.ttf", 600),
+                    font_face("Poppins", "Poppins-Bold.ttf", 700)])
+
+
+def _pdf_indice_geral(linhas, destino):
+    """Página 'Índice geral' (A4) do catálogo completo. linhas = [(nome, cor, n_produtos, n_familias)]."""
+    from weasyprint import HTML
+    from geradores.fichas import b64file
+    logo = b64file(str(config.LOGO_COLORIDO))
+    cards = "".join(
+        f'<div class="c" style="top:{_IG_TOPO + i * _IG_PASSO}mm"><span class="b" style="background:{cor}"></span>'
+        f'<div class="n">{nome}</div><div class="i">{np_} produtos · {nf} famílias</div>'
+        f'<span class="go">Abrir &#8250;</span></div>'
+        for i, (nome, cor, np_, nf) in enumerate(linhas))
+    html = f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>{_fontes_css()}
+    @page{{size:A4;margin:0}} *{{margin:0;padding:0;box-sizing:border-box}} body{{font-family:Poppins;color:#232D3C}}
+    .logo{{position:absolute;left:18mm;top:13mm;height:9mm}}
+    .k{{position:absolute;left:18mm;top:33mm;font-size:9pt;font-weight:600;color:#36A9E1;letter-spacing:.16em}}
+    h1{{position:absolute;left:18mm;top:38mm;font-size:30pt;font-weight:700;color:#193C6C;bookmark-level:none}}
+    .s{{position:absolute;left:18mm;top:55mm;width:174mm;font-size:10.5pt;color:#46515f}}
+    .c{{position:absolute;left:{_IG_ESQ}mm;width:{_IG_LARG}mm;height:{_IG_ALT}mm;border:.6pt solid #DFE6EF;border-radius:3mm;background:#F4F7FB}}
+    .c .b{{position:absolute;left:0;top:0;bottom:0;width:4mm;border-radius:3mm 0 0 3mm}}
+    .c .n{{position:absolute;left:12mm;top:9mm;font-size:20pt;font-weight:700;color:#193C6C}}
+    .c .i{{position:absolute;left:12mm;top:22mm;font-size:11pt;color:#46515f}}
+    .c .go{{position:absolute;right:8mm;top:14mm;font-size:11pt;font-weight:600;color:#193C6C;background:#fff;
+            border:.6pt solid #DFE6EF;border-radius:2mm;padding:2mm 4mm}}
+    .t{{position:absolute;left:18mm;bottom:12mm;font-size:8pt;color:#606C7E}}
+    </style></head><body><img class="logo" src="data:image/png;base64,{logo}">
+    <div class="k">CATÁLOGO DE PRODUTOS</div><h1>Índice geral</h1>
+    <div class="s">Toque em uma linha para ir ao índice dela. Em qualquer página, o botão “Todas as linhas”, no topo, volta para cá.</div>
+    {cards}<div class="t">MDTech · Tecnologia que abre caminhos</div></body></html>"""
+    HTML(string=html).write_pdf(str(destino))
+
+
+def _pdf_botao_todas(destino):
+    """Página A4 transparente só com o botão 'Todas as linhas' (sobreposta a cada página do completo)."""
+    from weasyprint import HTML
+    html = f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>{_fontes_css()}
+    @page{{size:A4;margin:0}} body{{margin:0;font-family:Poppins}}
+    .b{{position:absolute;left:{_TL_ESQ}mm;top:{_TL_TOPO}mm;width:{_TL_LARG}mm;height:{_TL_ALT}mm;border-radius:2mm;
+        background:#193C6C;color:#fff;font-size:9pt;font-weight:600;text-align:center;line-height:{_TL_ALT}mm}}
+    </style></head><body><div class="b">&#9666;&nbsp; Todas as linhas</div></body></html>"""
+    HTML(string=html).write_pdf(str(destino))
+
+
+def _link_interno(w, pagina, rect, alvo):
+    """Link clicável na página `pagina` levando à página `alvo` (índices 0-based). O pypdf grava o destino como
+    número; aqui ele é trocado pela referência da página (formato do padrão PDF, aceito por todos os leitores)."""
+    from pypdf.annotations import Link
+    from pypdf.generic import ArrayObject, NameObject
+    a = w.add_annotation(page_number=pagina, annotation=Link(rect=rect, target_page_index=alvo))
+    a[NameObject("/Dest")] = ArrayObject([w.pages[alvo].indirect_reference, NameObject("/Fit")])
+
+
+def _montar_completo(arquivos, destino):
+    """Catálogo completo navegável: capa + Índice geral + miolos na ordem da capa.
+    arquivos = [(nome_da_linha, caminho_pdf)]. Links: Índice geral -> 1ª página (índice) de cada linha;
+    botão 'Todas as linhas' no topo de cada página -> Índice geral. Os links internos de cada linha (Índice,
+    família anterior/próxima) já vêm nos miolos, com ids únicos por linha."""
+    import tempfile
+    from pypdf import PdfReader, PdfWriter
+    itens = B.carregar()
+    linhas = []
+    for nome, _ in arquivos:
+        its = [i for i in itens if (i.get("especialidade") or "").strip() == nome]
+        linhas.append((nome, M.accent_hex(nome), len({i["codigo"] for i in its}), len({i["familia"] for i in its})))
+
+    with tempfile.TemporaryDirectory() as tmp:
+        ig, bt = Path(tmp) / "indice_geral.pdf", Path(tmp) / "botao.pdf"
+        _pdf_indice_geral(linhas, ig)
+        _pdf_botao_todas(bt)
+        w = PdfWriter()
+        if config.CAPA_COMPLETO.exists():          # capa (InDesign) só no catálogo completo
+            w.append(str(config.CAPA_COMPLETO), outline_item="Capa")
+        else:
+            print(f"[aviso] sem capa em {config.CAPA_COMPLETO}: catálogo completo sai sem capa")
+        pag_ig = len(w.pages)
+        w.append(str(ig), outline_item="Índice geral")
+        inicios = []
+        for nome, src in arquivos:
+            inicios.append(len(w.pages))
+            w.append(str(src), outline_item=nome)          # marcadores das famílias ficam dentro da linha
+        botao = PdfReader(str(bt)).pages[0]
+        H = float(w.pages[pag_ig].mediabox.height)
+        for k in range(inicios[0], len(w.pages)):
+            w.pages[k].merge_page(botao)
+            _link_interno(w, k, (_TL_ESQ * MM, H - (_TL_TOPO + _TL_ALT) * MM, (_TL_ESQ + _TL_LARG) * MM,
+                                 H - _TL_TOPO * MM), pag_ig)
+        for i, ini in enumerate(inicios):
+            topo = _IG_TOPO + i * _IG_PASSO
+            _link_interno(w, pag_ig, (_IG_ESQ * MM, H - (topo + _IG_ALT) * MM, (_IG_ESQ + _IG_LARG) * MM,
+                                      H - topo * MM), ini)
+        w.page_mode = "/UseOutlines"                         # abre com os marcadores visíveis
+        w.write(str(destino))
+
+
 def _copiar_catalogos(outdir):
     """Copia os miolos de catálogo DIGITAIS (saida/digital/Miolo_Catalogo_<Especialidade>_MDTech.pdf,
     gerados por `gerar.py catalogo --todos --perfil digital`) para site/catalogos/ e monta um
@@ -160,15 +266,11 @@ def _copiar_catalogos(outdir):
 
     if len(copiados) > 1:
         try:
-            from pypdf import PdfWriter
-            w = PdfWriter()
-            if config.CAPA_COMPLETO.exists():          # capa (InDesign) só no catálogo completo
-                w.append(str(config.CAPA_COMPLETO), outline_item="Capa")
-            else:
-                print(f"[aviso] sem capa em {config.CAPA_COMPLETO}: catálogo completo sai só com os miolos")
-            for src in copiados:
-                w.append(str(src))
-            w.write(str(catdir / "Catalogo_Completo_MDTech.pdf"))
+            from geradores.catalogo import ESPECS, _slug as slug_esp
+            por_arquivo = {p.name: p for p in copiados}
+            ordem = [(e, por_arquivo[f"Catalogo_{slug_esp(e)}_MDTech.pdf"]) for e in ESPECS
+                     if f"Catalogo_{slug_esp(e)}_MDTech.pdf" in por_arquivo]     # ordem da capa, não alfabética
+            _montar_completo(ordem, catdir / "Catalogo_Completo_MDTech.pdf")
         except Exception as e:
             print(f"[aviso] não consegui montar o catálogo completo: {e}")
     return len(copiados)

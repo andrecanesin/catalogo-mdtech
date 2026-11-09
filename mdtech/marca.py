@@ -37,6 +37,15 @@ def accent_hex(especialidade: str) -> str:
     r, g, b = accent(especialidade)
     return f"#{r:02X}{g:02X}{b:02X}"
 
+# Variante ESCURA da cor da especialidade, só para TEXTO (código do produto etc.): passa no contraste AA.
+# A cor original continua em faixas, bordas e tarjas. Espelho manual em site/js/config.js -> accentTexto.
+ACCENT_TEXTO = {
+    "Laparoscopia": "#1874A1", "Urologia": "#227974",
+    "Ginecologia": "#A83A74", "Histeroscopia": "#A83A74", "Óticas HD-4K": "#996207",
+}
+def accent_texto_hex(especialidade: str) -> str:
+    return ACCENT_TEXTO.get((especialidade or "").strip(), "#1874A1")
+
 # ----- fontes -----
 _ARQ = {
     "bold":  "Poppins-Bold.ttf",
