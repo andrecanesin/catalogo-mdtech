@@ -471,3 +471,5 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
   .ent-prop{flex:0 0 auto;}
 }
 @media (max-width:900px){ .ph{gap:0;} .ph .info{padding:20px 20px 24px;} }
+/* Entradas da página inicial só no celular/tablet: no desktop a lateral já mostra especialidades e propostas (sem repetir). */
+@media (min-width:901px){ #entrada{display:none;} }
