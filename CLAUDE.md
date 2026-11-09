@@ -114,3 +114,4 @@ O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o
   adaptadores, evacuadores nem clips.
 - 09/11: A108 com Ø 4 mm e descrição "D=4MM" (catálogo TONGLU prevalece); A2101 mantém 82568290002. Site com a auditoria
   de UX/UI aplicada (PR #4): contraste AA, orçamento com quantidade, fotos otimizadas, 2 colunas no celular.
+- 09/11: propostas básicas (kits em PDF, aba KITS) publicadas no site: Hérnia de Hiato (33 itens) e Colecistectomia (21 itens).
