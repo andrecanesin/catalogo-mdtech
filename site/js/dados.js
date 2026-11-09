@@ -96,6 +96,13 @@ window.MD = (function () {
     if (i >= 0) itens.splice(i, 1); else itens.push({ codigo: cod, qtd: 1 });
     _gravar(itens); return i < 0;
   }
+  // adiciona vários de uma vez (ex.: proposta básica): [{codigo, qtd}]; quem já está na lista ganha a quantidade da proposta
+  function adicionarVarios(novos) {
+    const itens = _ler();
+    novos.forEach(n => { const i = itens.find(x => x.codigo === n.codigo);
+      if (i) i.qtd = Math.min(999, Math.max(i.qtd, n.qtd || 1)); else itens.push({ codigo: n.codigo, qtd: Math.min(999, n.qtd || 1) }); });
+    _gravar(itens);
+  }
   function remover(cod) { _gravar(_ler().filter(x => x.codigo !== cod)); }
   function limpar() { _gravar([]); }
 
@@ -208,8 +215,8 @@ window.MD = (function () {
       o.send.addEventListener("click", async () => {
         if (!pronto()) { (o.nome.value.trim() ? o.ret : o.nome).focus(); return; }
         const nome = o.nome.value.trim(), emp = o.emp.value.trim(), ret = o.ret.value.trim(), obs = o.obs.value.trim();
-        const corpo = ["Pedido de orçamento — Catálogo MDTech", "Nome: " + nome, emp ? "Empresa: " + emp : "", "Contato: " + ret,
-          obs ? "Observação: " + obs : "", "", texto(produtos)].filter((l, i, a) => l !== "" || a[i - 1] !== "").join("\n");
+        const corpo = ["Pedido de orçamento — Catálogo MDTech", "Nome: " + nome, emp ? "Empresa: " + emp : null, "Contato: " + ret,
+          obs ? "Observação: " + obs : null, "", texto(produtos)].filter(l => l !== null).join("\n");
         enviando = true; o.st.className = "sup-st"; o.st.textContent = "Enviando…"; checar();
         try {
           await enviarEmail({ assunto: "Orçamento catálogo MDTech · " + lista().length + " ite" + (lista().length === 1 ? "m" : "ns") + " · " + nome,
@@ -343,6 +350,6 @@ window.MD = (function () {
   }
   return { brl, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
-           lista, tem, alternar, remover, limpar,
+           lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };
 })();

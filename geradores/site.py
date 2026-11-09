@@ -279,9 +279,10 @@ def _copiar_catalogos(outdir):
     return len(copiados)
 
 
-def _copiar_propostas(outdir):
+def _copiar_propostas(outdir, porcod):
     """Copia as propostas básicas (saida/propostas/<Kit>_MDTech.pdf, geradas por `gerar.py kits`) para
-    site/propostas/ e escreve site/propostas.json com a lista dos kits (o site monta o menu a partir dele)."""
+    site/propostas/ e escreve site/propostas.json com a lista dos kits (o site monta o menu e o filtro "Proposta básica"
+    a partir dele). Cada kit leva `itens_lista` [{codigo, qtd}] na ordem da proposta, com o código já no formato do site."""
     pdir = outdir / "propostas"
     lista = []
     try:
@@ -296,7 +297,14 @@ def _copiar_propostas(outdir):
         pdir.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, pdir / src.name)
         partes = [p.strip() for p in nome.split(" - ") if p.strip()]
-        lista.append({"nome": nome, "titulo": partes[-1], "tipo": " · ".join(partes[1:-1]) or "Proposta básica",
+        itens_kit = []
+        for r in linhas:
+            prod = porcod.get(_norm(r["codigo"]))
+            if prod:
+                itens_kit.append({"codigo": prod["codigo"], "qtd": r["qtd"] or 1})
+            else:
+                print(f"[aviso] proposta '{nome}': código {r['codigo']} não está no catálogo do site")
+        lista.append({"id": T.slug_arquivo(nome), "nome": nome, "itens_lista": itens_kit, "titulo": partes[-1], "tipo": " · ".join(partes[1:-1]) or "Proposta básica",
                       "arquivo": f"propostas/{src.name}", "itens": len(linhas),
                       "unidades": sum((r["qtd"] or 1) for r in linhas)})
     (outdir / "propostas.json").write_text(json.dumps(lista, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -355,7 +363,7 @@ def gerar():
 
     fichas_copiadas = _copiar_fichas(produtos, outdir)
     catalogos_copiados = _copiar_catalogos(outdir)
-    propostas_copiadas = _copiar_propostas(outdir)
+    propostas_copiadas = _copiar_propostas(outdir, porcod)
 
     # facetas p/ montar os filtros do front
     def _facet(campo):

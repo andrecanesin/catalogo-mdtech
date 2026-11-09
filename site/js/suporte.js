@@ -104,8 +104,8 @@
       const c = cat(), x = contexto();
       if (enviando || !c || !e.msg.value.trim()) { if (!e.msg.value.trim()) e.msg.focus(); return; }
       const nome = e.nome.value.trim(), ret = e.ret.value.trim();
-      const corpo = [e.msg.value.trim(), "", "— Contexto —", ret ? "Retorno: " + ret : "", x.produto ? "Produto: " + x.produto : "",
-        "Página: " + x.pagina, "Aparelho: " + x.aparelho].filter((l, i, a) => l !== "" || a[i - 1] !== "").join("\n");
+      const corpo = [e.msg.value.trim(), "", "— Contexto —", ret ? "Retorno: " + ret : null, x.produto ? "Produto: " + x.produto : null,
+        "Página: " + x.pagina, "Aparelho: " + x.aparelho].filter(l => l !== null).join("\n");
       enviando = true; e.st.className = "sup-st"; e.st.textContent = "Enviando…"; atualizar();
       try {
         await MD.enviarEmail({ assunto: "Suporte catálogo MDTech · " + c.nome, nome, contato: ret, corpo });
