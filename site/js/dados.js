@@ -13,6 +13,16 @@ window.MD = (function () {
   // cor para texto (ou fundo de texto branco): variante escura que passa no AA
   function corTexto(esp) { return (cfg.accentTexto || {})[esp] || "#1874A1"; }
 
+  // Etiqueta da especialidade: fundo na cor viva da especialidade e texto (branco ou azul-marinho) escolhido pelo contraste (AA).
+  // É a MESMA etiqueta em todo lugar onde o nome da especialidade aparece (card, produto, filtro, chip, menu de catálogos).
+  function _lum(hex) { const c = [1, 3, 5].map(i => parseInt(hex.substr(i, 2), 16) / 255)
+      .map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
+  function corSobre(esp) {
+    const l = _lum(corEsp(esp)), navy = "#10294A", ln = _lum(navy);
+    return (1.05 / (l + .05)) >= ((l + .05) / (ln + .05)) ? "#FFFFFF" : navy;
+  }
+  function pillEsp(esp) { return `<span class="pill-esp" style="background:${corEsp(esp)};color:${corSobre(esp)}">${esc(esp)}</span>`; }
+
   // ângulo só é dado pendente em ótica/endoscópio; nos demais itens "não se aplica"
   function ehOtica(p) { return /^(endosc[oó]pio|[oó]tica|telesc)/i.test((p && p.nome) || ""); }
 
@@ -362,7 +372,7 @@ window.MD = (function () {
     const seta = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>';
     const secCats = cats.length ? '<div class="grupo-menu">Catálogos</div>' + cats.map(c => `
       <a href="${MD.esc(base + c.arquivo)}" ${externo ? 'target="_blank" rel="noopener"' : "download"}
-         class="${c.completo ? "completo" : ""}">${seta}${MD.esc(c.nome)}</a>${c.completo ? '<div class="sep"></div>' : ""}`).join("") : "";
+         class="${c.completo ? "completo" : ""}">${seta}${(cfg.accent || {})[c.nome] ? pillEsp(c.nome) : MD.esc(c.nome)}</a>${c.completo ? '<div class="sep"></div>' : ""}`).join("") : "";
     const secProps = props.length ? (cats.length ? '<div class="sep"></div>' : "") + '<div class="grupo-menu">Propostas básicas (kits)</div>'
       + props.map(p => `<a href="${MD.esc(p.arquivo)}" download>${seta}${MD.esc(p.titulo)}
           <small>${MD.esc(p.itens)} itens</small></a>`).join("") : "";
@@ -376,7 +386,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, precoHTML, totalLista, mostrarPreco, cfg, corEsp, corTexto, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { brl, precoHTML, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

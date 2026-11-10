@@ -47,6 +47,10 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
 - Não editar `produtos.json`, `meta.json`, `site/fotos/`, `site/fichas/`, `site/catalogos/` — são gerados.
 
 ## UX e acessibilidade
+- **Etiqueta da especialidade** (`MD.pillEsp`): fundo na cor VIVA da especialidade, texto branco ou azul-marinho escolhido pelo contraste
+  (`MD.corSobre`, AA). É a mesma etiqueta no card, no produto, no filtro de Especialidades, no chip do filtro, nos títulos dos grupos de
+  famílias, nos cartões da página inicial e no menu de catálogos: o usuário liga cor e nome. Texto corrido na cor da especialidade (códigos)
+  continua usando a variante escura `accentTexto`.
 - **Público inicial: vendedores** (teste de 09/11). No **celular/tablet**, a página inicial sem filtro mostra cartões de **Especialidades**
   (foto em `config.js` → `fotoLinha` ou automática) e de **Propostas básicas**; somem com busca/filtro. **No desktop não aparecem**
   (a lateral já mostra os dois: nunca repetir a mesma escolha em dois lugares da tela). **Nomes iguais em todo lugar:** títulos de

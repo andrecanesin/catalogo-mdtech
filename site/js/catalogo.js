@@ -80,7 +80,7 @@
     const tags = el("span", "tags");
     esps.forEach(e => {
       const t = el("span", "tag", MD.esc(e));
-      t.style.background = MD.corTexto(e);
+      t.style.background = MD.corEsp(e); t.style.color = MD.corSobre(e);
       tags.appendChild(t);
     });
     foto.appendChild(tags);
@@ -122,7 +122,7 @@
         render();
       });
       lab.appendChild(cb);
-      lab.appendChild(el("span", null, MD.esc(v)));
+      lab.appendChild(chave === "especialidades" ? el("span", null, MD.pillEsp(v)) : el("span", null, MD.esc(v)));
       if (contagem && contagem[v] != null) lab.appendChild(el("span", "n", contagem[v]));
       box.appendChild(lab);
     });
@@ -146,7 +146,8 @@
     grupos.filter(g => g[1].length).forEach(([e, fs]) => {
       const sub = facetGrupo(e, fs, "familias", contagem, "fam-sub");
       sub.style.setProperty("--c", e === "Outras" ? "var(--line)" : MD.corEsp(e));
-      sub.querySelector("h3").style.color = e === "Outras" ? "var(--mut)" : MD.corTexto(e);
+      const h3 = sub.querySelector("h3");
+      if (e === "Outras") h3.style.color = "var(--mut)"; else h3.innerHTML = MD.pillEsp(e);
       det.appendChild(sub);
     });
     return det;
@@ -230,6 +231,7 @@
     }
     todos.forEach(([chave, v]) => {
       const c = el("span", "chip", MD.esc(v));
+      if (chave === "especialidades") { c.style.background = MD.corEsp(v); c.style.color = MD.corSobre(v); c.style.borderColor = "transparent"; }
       const x = el("button", null, "×");
       x.setAttribute("aria-label", `Remover filtro ${v}`);
       x.addEventListener("click", () => {
@@ -283,7 +285,7 @@
       return p ? `<img src="${MD.esc(p.foto_thumb || p.foto)}" alt="" loading="lazy">` : ""; };
     alvo.innerHTML = `<section class="ent" aria-labelledby="ent-l"><h2 class="ent-t" id="ent-l">Especialidades</h2>
         <div class="ent-linhas">${esps.map(e => `<button type="button" class="ent-linha" data-esp="${MD.esc(e)}" style="--c:${MD.corEsp(e)}">
-          <span class="ent-foto">${foto(e)}</span><span class="ent-txt"><b>${MD.esc(e)}</b><small>${cont[e]} produtos</small></span></button>`).join("")}</div>
+          <span class="ent-foto">${foto(e)}</span><span class="ent-txt"><b>${MD.pillEsp(e)}</b><small>${cont[e]} produtos</small></span></button>`).join("")}</div>
       ${PROPOSTAS.length ? `<h2 class="ent-t">Propostas básicas</h2><div class="ent-props">${PROPOSTAS.map(k => `
           <button type="button" class="ent-prop" data-prop="${MD.esc(k.id)}"><b>${MD.esc(k.titulo)}</b>
           <small>${k.itens_lista.length} itens · ${k.itens_lista.reduce((s, i) => s + i.qtd, 0)} unidades</small></button>`).join("")}</div>` : ""}

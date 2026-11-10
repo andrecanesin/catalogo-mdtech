@@ -83,7 +83,7 @@
     // especialidades (cross-listing) como tags
     const esps = (p.especialidades && p.especialidades.length ? p.especialidades : [p.especialidade])
       .filter(Boolean)
-      .map(e => `<span class="esp-tag" style="background:${MD.corTexto(e)}">${esc(e)}</span>`).join(" ");
+      .map(e => `<span class="esp-tag" style="background:${MD.corEsp(e)};color:${MD.corSobre(e)}">${esc(e)}</span>`).join(" ");
 
     const anvisaMiss = !(p.anvisa && p.anvisa.trim());
     const ncmMiss = !(p.ncm && p.ncm.trim());
