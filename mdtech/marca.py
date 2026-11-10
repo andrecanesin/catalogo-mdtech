@@ -24,11 +24,10 @@ TAGLINE = "TECNOLOGIA QUE ABRE CAMINHOS"
 # catálogo é automático (via accent()), no site precisa copiar o hex manual
 # em site/js/config.js -> accent{} porque JS não importa Python) -----
 ACCENT = {
-    "Laparoscopia": (54, 169, 225),    # #36A9E1
-    "Urologia":     (47, 169, 162),    # #2FA9A2
-    "Ginecologia":  (198, 75, 140),    # #C64B8C
-    "Histeroscopia":(198, 75, 140),    # #C64B8C
-    "Óticas HD-4K": (245, 166, 35),    # #F5A623
+    "Laparoscopia": (245, 166, 35),    # #F5A623  laranja
+    "Urologia":     (54, 169, 225),    # #36A9E1  azul
+    "Ginecologia":  (198, 75, 140),    # #C64B8C  rosa
+    "Histeroscopia":(198, 75, 140),    # #C64B8C  rosa
 }
 def accent(especialidade: str):
     return ACCENT.get((especialidade or "").strip(), CYAN)
@@ -40,8 +39,8 @@ def accent_hex(especialidade: str) -> str:
 # Variante ESCURA da cor da especialidade, só para TEXTO (código do produto etc.): passa no contraste AA.
 # A cor original continua em faixas, bordas e tarjas. Espelho manual em site/js/config.js -> accentTexto.
 ACCENT_TEXTO = {
-    "Laparoscopia": "#1874A1", "Urologia": "#227974",
-    "Ginecologia": "#A83A74", "Histeroscopia": "#A83A74", "Óticas HD-4K": "#996207",
+    "Laparoscopia": "#996207", "Urologia": "#1874A1",
+    "Ginecologia": "#A83A74", "Histeroscopia": "#A83A74",
 }
 def accent_texto_hex(especialidade: str) -> str:
     return ACCENT_TEXTO.get((especialidade or "").strip(), "#1874A1")

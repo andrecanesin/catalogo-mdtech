@@ -53,6 +53,8 @@ def _slug(s):
 def _fornecedor(it):
     m = (it.get("marca") or "").upper()
     e = (it.get("especialidade") or "").strip()
+    if "ASAP" in m:                       # óticas HD-4K: fornecedor ASAP, mesmo dentro de Uro/Histero/Lap
+        return "ASAP"
     if "TONGLU" in m or e == "Laparoscopia":
         return "TONGLU"
     if "TIAN" in m or e in ("Urologia", "Histeroscopia", "Ginecologia"):

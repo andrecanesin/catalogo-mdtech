@@ -5,7 +5,8 @@
   --verm:#E06666;                 /* campo pendente = vermelho (regra do projeto): bordas e traços */
   --verm-txt:#C62828;             /* mesmo vermelho para TEXTO pequeno (contraste AA) */
   --uro-txt:#227974;              /* fundo de texto branco no botão "No orçamento" (AA) */
-  --lap:#36A9E1; --uro:#2FA9A2; --gine:#C64B8C; --otica:#F5A623;
+  --laranja:#F5A623;
+  --lap:#F5A623; --uro:#36A9E1; --gine:#C64B8C;   /* cor por especialidade (espelho de mdtech/marca.py::ACCENT) */
   --sombra:0 1px 3px rgba(25,60,108,.06), 0 6px 20px rgba(25,60,108,.06);
   --raio:12px;
 }
@@ -26,7 +27,7 @@ img{display:block;max-width:100%;}
 /* ---------- topo ---------- */
 .top{background:var(--navy);color:#fff;position:sticky;top:0;z-index:40;}
 .top::after{content:"";display:block;height:4px;
-  background:linear-gradient(90deg,var(--ciano),var(--uro),var(--gine),var(--otica));}
+  background:linear-gradient(90deg,var(--lap),var(--uro),var(--gine));}
 .top .wrap{display:flex;align-items:center;gap:20px;padding:16px 20px;}
 .brand{font-size:20px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;}
 .brand .logo{height:38px;width:auto;display:block;}
@@ -246,7 +247,7 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
   overflow:hidden;}
 .regbox .col::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;}
 .regbox .col.a::before{background:var(--ciano);}
-.regbox .col.b::before{background:var(--otica);}
+.regbox .col.b::before{background:var(--laranja);}
 .regbox .rlab{font-size:10px;color:#aeb9cc;letter-spacing:.08em;text-transform:uppercase;
   margin-bottom:4px;padding-left:8px;}
 .regbox .rval{font-size:15px;color:#fff;font-weight:500;padding-left:8px;}

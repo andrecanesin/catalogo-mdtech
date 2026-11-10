@@ -11,20 +11,18 @@ window.MDTECH = {
   // cor de destaque por especialidade — ESPELHO MANUAL de mdtech/marca.py::ACCENT
   // (fonte única da verdade). JS não importa Python, então mudou lá, muda aqui também à mão.
   accent: {
-    "Laparoscopia":  "#36A9E1",
-    "Urologia":      "#2FA9A2",
+    "Laparoscopia":  "#F5A623",
+    "Urologia":      "#36A9E1",
     "Histeroscopia": "#C64B8C",
-    "Ginecologia":   "#C64B8C",
-    "Óticas HD-4K":  "#F5A623"
+    "Ginecologia":   "#C64B8C"
   },
   // variante ESCURA, só para TEXTO e para fundo de texto branco (códigos, tags, botão "No orçamento"):
   // passa no contraste AA (≥4,5:1). A cor original segue em faixas, bordas e PDFs. Só existe no site.
   accentTexto: {
-    "Laparoscopia":  "#1874A1",
-    "Urologia":      "#227974",
+    "Laparoscopia":  "#996207",
+    "Urologia":      "#1874A1",
     "Histeroscopia": "#A83A74",
-    "Ginecologia":   "#A83A74",
-    "Óticas HD-4K":  "#996207"
+    "Ginecologia":   "#A83A74"
   },
   // Catálogos em PDF disponíveis para download (botão "Baixar catálogos" no topo).
   //
@@ -40,8 +38,7 @@ window.MDTECH = {
     { nome: "Catálogo completo",   arquivo: "Catalogo_Completo_MDTech.pdf",        completo: true },
     { nome: "Laparoscopia",        arquivo: "Catalogo_Laparoscopia_MDTech.pdf" },
     { nome: "Urologia",            arquivo: "Catalogo_Urologia_MDTech.pdf" },
-    { nome: "Histeroscopia",       arquivo: "Catalogo_Histeroscopia_MDTech.pdf" },
-    { nome: "Óticas HD-4K",        arquivo: "Catalogo_Oticas_HD-4K_MDTech.pdf" }
+    { nome: "Histeroscopia",       arquivo: "Catalogo_Histeroscopia_MDTech.pdf" }
   ],
   // Ordem na grade quando o filtro de família está ativo: estes códigos ficam por último.
   // (A ordem da base e dos PDFs não muda; vale só para o site.)

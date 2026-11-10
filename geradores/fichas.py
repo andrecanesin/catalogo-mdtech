@@ -15,16 +15,14 @@ import os, base64, html, unicodedata
 from datetime import date
 from weasyprint import HTML
 
-from mdtech import config, base as B, fotos as F, textos as T
+from mdtech import config, base as B, fotos as F, textos as T, marca as M
 
 FONTS = str(config.FONTES)
 NAVY="#193C6C"; INK="#1a2230"; LINE="#d8dee8"; MUT="#9aa4b2"; LAB="#8a94a3"
 ZEBRA="#f4f6fa"; PANEL="#f7f9fc"
 
-# accent por especialidade (igual ao catálogo)
-ACCENT = {"Laparoscopia":"#36A9E1","Urologia":"#2FA9A2",
-          "Histeroscopia":"#C64B8C","Ginecologia":"#C64B8C","Óticas HD-4K":"#F5A623"}
-def accent(esp): return ACCENT.get((esp or "").strip(), "#36A9E1")
+# accent por especialidade: fonte única em mdtech/marca.py::ACCENT (igual ao catálogo)
+def accent(esp): return M.accent_hex(esp)
 
 def font_face(fam,file,w,style="normal"):
     with open(os.path.join(FONTS,file),"rb") as f: b=base64.b64encode(f.read()).decode()
@@ -43,7 +41,7 @@ def _eh_pinca(familia):
 
 def _selo_angulo_html(angulo, familia):
     """Selo com o ícone de ângulo sobre a foto. Aparece em qualquer
-    ótica/endoscópio (Uro, Histero, Óticas HD-4K — todos usam 'ângulo' como
+    ótica/endoscópio (Uro, Histero e as óticas HD-4K — todos usam 'ângulo' como
     ângulo de visão da lente); a única exceção é a pinça Mixter 90°
     (Laparoscopia), onde 'ângulo' é geometria da ponta, não vista de lente.
     Sem ícone correspondente ao valor = sem selo."""

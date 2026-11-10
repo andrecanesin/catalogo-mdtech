@@ -35,7 +35,7 @@ catalogo-mdtech/
 │   ├── imagens/   fotos por código — em subpastas por fornecedor:
 │   │   ├── TONGLU/      (Laparoscopia)
 │   │   ├── TIAN_SONG/   (Urologia / Histeroscopia)
-│   │   └── ASAP/        (Óticas HD-4K)
+│   │   └── ASAP/        (óticas HD-4K, dentro das especialidades)
 │   │   └── (fotos soltas na raiz também funcionam)
 │   ├── logos/     logo-mdtech-hor-branco.png + logo-topo-reduzido.png
 │   ├── fontes/    Poppins-Bold/SemiBold/Medium/Regular + IBMPlexMono-Bold/Medium/Regular
