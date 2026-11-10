@@ -5,7 +5,7 @@
 
 ## O que é
 Marca própria MDTech, com produtos de 3 fornecedores (TONGLU = Laparoscopia, TIAN SONG = Urologia/Histeroscopia,
-ASAP = Óticas HD-4K). Uma planilha (`dados/Base_MDTech_Consolidada.xlsx`) é a **fonte única da verdade** e
+ASAP = óticas HD-4K, que ficam dentro das especialidades). Uma planilha (`dados/Base_MDTech_Consolidada.xlsx`) é a **fonte única da verdade** e
 alimenta, via `gerar.py`: catálogos PDF, fichas técnicas PDF e o catálogo digital (site estático no GitHub Pages).
 
 ## Um repositório só
@@ -110,7 +110,7 @@ O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o
 - **Publicação:** `.github/workflows/publicar.yml` hoje publica no Pages; trocar pelo envio ao servidor.
 - **Catálogos digitais:** hoje vão no artefato do site; no servidor, gerados e enviados junto. Os impressos continuam só locais.
 
-## Estado dos dados (base de 08/11/2026, 174 linhas / 152 SKUs únicos)
+## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: aguardando novos registros do regulatório. Vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /
   14 códigos sem registro e sem processo: A0320, A0322, A0323, A0210.1, A0211.1, A0222, A1101.1–A1104.1, A1105.1,
   A1106.1, A1106.2, F1104.
@@ -134,3 +134,8 @@ O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o
 - 09/11: A108 com Ø 4 mm e descrição "D=4MM" (catálogo TONGLU prevalece); A2101 mantém 82568290002. Site com a auditoria
   de UX/UI aplicada (PR #4): contraste AA, orçamento com quantidade, fotos otimizadas, 2 colunas no celular.
 - 09/11: propostas básicas (kits em PDF, aba KITS) publicadas no site: Hérnia de Hiato (33 itens) e Colecistectomia (21 itens).
+- 10/11: **"Óticas HD-4K" deixou de ser especialidade**: é um tipo de item (endoscópios rígidos da ASAP, família "Endoscópios") dentro das
+  especialidades: 2.9 mm (10-0385-00, 10-0393-00) só Histeroscopia; 4 mm (10-2023-00) Histeroscopia + Urologia; 10 mm (10-2516-00) só
+  Laparoscopia. Fornecedor segue ASAP (marca vem primeiro). **Cores novas por especialidade: Laparoscopia laranja `#F5A623`, Urologia azul
+  `#36A9E1`, Histeroscopia rosa `#C64B8C`** (o verde-água saiu). Catálogo PDF "Óticas HD-4K" deixou de existir (agora 3 por especialidade + o
+  completo) e a capa do catálogo completo foi refeita com as 3 cores. Sem selo "HD-4K" nos cards.

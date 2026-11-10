@@ -10,10 +10,11 @@ Lê `CLAUDE.md` antes de mexer em qualquer coisa. Para decisões estéticas nova
 
 ## Identidade (fonte: `mdtech/marca.py`)
 - Navy `#193C6C` (títulos, cabeçalhos), Cyan `#36A9E1` (destaque/ação), texto `#232D3C`, cinza `#606C7E`, painel `#F4F7FB`, linha `#DFE6EF`.
-- Cor por especialidade: Laparoscopia `#36A9E1` · Urologia `#2FA9A2` · Histeroscopia/Ginecologia `#C64B8C` · Óticas HD-4K `#F5A623`.
-  Mudou aqui → mudar também `site/js/config.js` (espelho manual).
+- Cor por especialidade (desde 10/11): Laparoscopia `#F5A623` (laranja) · Urologia `#36A9E1` (azul) · Histeroscopia/Ginecologia `#C64B8C` (rosa).
+  "Óticas HD-4K" não é especialidade (são endoscópios dentro delas), não tem cor própria. O verde-água saiu da identidade.
+  Fonte única `mdtech/marca.py::ACCENT` (fichas e catálogo leem de lá). Mudou aqui → mudar também `site/js/config.js` e as variáveis `--lap/--uro/--gine` do CSS (espelho manual).
 - **Texto na cor da especialidade** (código, tag, botão "No orçamento") usa a variante escura `accentTexto` de
-  `site/js/config.js` (Lap `#1874A1` · Uro `#227974` · Histero/Gine `#A83A74` · Óticas `#996207`), que passa no AA.
+  `site/js/config.js` (Lap `#996207` · Uro `#1874A1` · Histero/Gine `#A83A74`), que passa no AA.
   A cor original fica em faixas, bordas e nos PDFs.
 - Fontes: Poppins (texto) e IBM Plex Mono (códigos, NCM, ANVISA). Arquivos em `assets/fontes/`.
 - **Campo pendente = vermelho `#E06666`** (traço vermelho, "em registro" vermelho, foto ausente com borda tracejada vermelha). Nunca deixar campo vazio em branco.

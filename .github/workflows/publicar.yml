@@ -73,7 +73,7 @@ jobs:
           test -n "$(ls site/fotos)"
           test -n "$(ls site/fichas)"
           test -s site/catalogos/Catalogo_Completo_MDTech.pdf
-          test "$(ls site/catalogos | wc -l)" -ge 5
+          test "$(ls site/catalogos | wc -l)" -ge 4
           test -n "$(ls site/propostas)"
           python -c "import json; assert len(json.load(open('site/propostas.json',encoding='utf-8')))>0"
           python -c "import json; d=json.load(open('site/meta.json',encoding='utf-8')); print(d); assert d['total']>0 and d['com_foto']>0"

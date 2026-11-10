@@ -21,7 +21,7 @@ completo tem ~3 MB e os quatro por linha somam ~3 MB, em cerca de 25 s) e `gerar
 `site/catalogos/`. O botão "Baixar catálogos" está ligado (`catalogosAtivo: true` em `js/config.js`):
 
 - **Catálogo completo:** a capa (`assets/capas/Catalogo_Completo.pdf`) + os miolos de todas as linhas.
-- **Catálogo por linha** (Laparoscopia, Urologia, Histeroscopia, Óticas HD-4K): miolo + índice navegável. Quando
+- **Catálogo por linha** (Laparoscopia, Urologia, Histeroscopia): miolo + índice navegável. Quando
   existir a capa de uma linha, salvar em `assets/capas/<Especialidade>.pdf` (a inclusão por linha ainda precisa
   ser ligada no gerador).
 - `site/catalogos/` está no `.gitignore` (gerado). Se faltar um catálogo, a etapa "Conferir resultado" do

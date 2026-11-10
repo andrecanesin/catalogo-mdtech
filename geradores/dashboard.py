@@ -18,6 +18,7 @@ def _vazio(v): return str(v or "").strip()==""
 def _norm(s): return re.sub(r'[^A-Za-z0-9]','',str(s or '')).upper()
 def _forn(it):
     m=(it.get("marca") or "").upper(); e=it.get("especialidade","")
+    if "ASAP" in m: return "ASAP"      # óticas HD-4K ficam dentro das especialidades, mas o fornecedor é a ASAP
     if "TONGLU" in m or e=="Laparoscopia": return "TONGLU"
     if "TIAN" in m or e in ("Urologia","Histeroscopia"): return "TIAN SONG"
     return "ASAP"

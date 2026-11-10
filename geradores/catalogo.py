@@ -35,16 +35,15 @@ ESPECS = {
                  "Trocateres","Eletrodos e Cabos HF","Cabos de fibra ótica","Agulhas",
                  "Irrigação e aspiração","Manipulador uterino"]},
     "Urologia":{"marca":"TIAN SONG","linha":"MDTech Urologia",
-        "ordem":["Endoscópios autoclaváveis","Conjunto de camisas para cistoscopia",
+        "ordem":["Endoscópios autoclaváveis","Endoscópios","Conjunto de camisas para cistoscopia",
                  "Pinças endoscópicas flexíveis","Conjunto para uretrotomia",
                  "Ressectoscópio monopolar 4mm","Ressectoscópio bipolar 4mm",
                  "Cistoscopia pediátrica","Litotripsia para cálculo de bexiga",
                  "Trocater de cistostomia","Evacuador de Hoffman","Evacuador de Ellik",
                  "Adaptador de Ev. Ellik","Acessórios"]},
     "Histeroscopia":{"marca":"TIAN SONG","linha":"MDTech Ginecologia",
-                 "ordem":["Endoscópios autoclaváveis","Histeroscopia 2.9mm",
+                 "ordem":["Endoscópios autoclaváveis","Endoscópios","Histeroscopia 2.9mm",
                  "Ressectoscópio monopolar 4mm","Ressectoscópio bipolar 4mm","Acessórios"]},
-    "Óticas HD-4K":{"marca":"ASAP","linha":"MDTech Óticas HD-4K","ordem":[]},
 }
 
 def hex2rgb(h): h=h.lstrip("#"); return tuple(int(h[i:i+2],16) for i in (0,2,4))
@@ -93,7 +92,7 @@ def _eh_pinca(familia):
 
 def selo_angulo_html(angulo, familia):
     """Selo com o ícone de ângulo sobre a foto do card. Aparece em qualquer
-    ótica/endoscópio (Uro, Histero, Óticas HD-4K — todos usam 'ângulo' como
+    ótica/endoscópio (Uro, Histero e as óticas HD-4K — todos usam 'ângulo' como
     ângulo de visão da lente); a única exceção é a pinça Mixter 90°
     (Laparoscopia), onde 'ângulo' é geometria da ponta, não vista de lente.
     Sem ícone correspondente ao valor = sem selo."""

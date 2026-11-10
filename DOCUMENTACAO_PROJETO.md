@@ -9,8 +9,8 @@ o Claude Code lê sozinho está no `CLAUDE.md`; os comandos e flags, no `LEIA-ME
 ## 1. O que é isso
 
 Marca própria MDTech, consolidando o catálogo de 3 fornecedores originais
-(TONGLU = Laparoscopia, TIAN SONG = Urologia/Histeroscopia, ASAP = Óticas
-HD-4K) numa base de dados única, que alimenta 3 saídas automatizadas:
+(TONGLU = Laparoscopia, TIAN SONG = Urologia/Histeroscopia, ASAP = óticas
+HD-4K, que ficam dentro das especialidades) numa base de dados única, que alimenta 3 saídas automatizadas:
 
 1. **Catálogos em PDF** (um por especialidade + um completo) — pra impressão
    gráfica ou distribuição digital.
