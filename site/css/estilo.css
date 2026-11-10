@@ -503,3 +503,7 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .fam-sub h3 .pill-esp{font-size:10.5px;}
 .ent-txt b .pill-esp{font-size:12px;padding:4px 12px;}
 .menu-catalogos a .pill-esp{font-size:11px;padding:3px 12px;}
+
+/* texto branco das etiquetas de especialidade: negrito + sombra sutil para ler bem sobre laranja e azul vivos */
+.pill-esp,.tag,.ph .esp-tag{font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.28);}
+.chip[style*="background"] button{color:inherit;opacity:.85;}
