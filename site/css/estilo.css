@@ -299,7 +299,7 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
   .backdrop.on{opacity:1;visibility:visible;}
   .aplicar.so-mobile{display:block;}
 
-  .grupo-esp{box-shadow:none;border-left-width:4px;}
+  .grupo-esp,.grupo-prop,.fam-sub{box-shadow:none;border-left-width:4px;}
   .facet{min-height:44px;padding:0;}
   .paginacao button{min-width:44px;height:44px;}
   .drawer-x{min-width:44px;min-height:44px;}
@@ -398,7 +398,8 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}html{scroll-behavior:auto;}}
 
 /* proposta básica (kit) no filtro */
-.grupo-prop{margin-top:18px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:10px;padding:10px 12px;}
+.grupo-prop{background:#fff;border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:10px;padding:12px 14px;
+  box-shadow:var(--sombra);margin-bottom:16px;}
 .grupo-prop h3{margin-top:0;color:var(--navy);font-size:12px;}
 .faixa-prop{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);
   border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:10px;padding:12px 14px;margin-bottom:14px;}
@@ -483,5 +484,7 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 @media (max-width:560px){ .card .preco:not(.sem){font-size:16px;} }
 
 /* famílias agrupadas por especialidade, com a cor da linha (borda e título) */
-.fam-sub{border-left:3px solid var(--c);padding-left:10px;margin:10px 0 14px;}
-.fam-sub h3{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin:0 0 2px;}
+/* mesmo cartão branco das Especialidades e das Propostas básicas (borda esquerda na cor da especialidade) */
+.fam-sub{background:#fff;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;
+  padding:12px 14px;box-shadow:var(--sombra);margin:0 0 12px;}
+.fam-sub h3{margin-top:0;font-size:12px;}
