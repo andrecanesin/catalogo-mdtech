@@ -125,6 +125,29 @@
     return box;
   }
 
+  // Famílias agrupadas pela especialidade (cor da linha na borda e no título). Família presente em mais de uma
+  // especialidade fica na que tem mais produtos; sem especialidade, vai para "Outras".
+  function gruposFamilia(esp, fam) {
+    const cnt = {};
+    PRODUTOS.forEach(p => (p.familias || []).forEach(f => (p.especialidades && p.especialidades.length ? p.especialidades : [p.especialidade])
+      .filter(Boolean).forEach(e => { cnt[f] = cnt[f] || {}; cnt[f][e] = (cnt[f][e] || 0) + 1; })));
+    const dona = f => cnt[f] ? Object.entries(cnt[f]).sort((a, b) => b[1] - a[1])[0][0] : "";
+    const det = el("details", "grupo grupo-fam");
+    det.appendChild(el("summary", null, `Famílias (${fam.length})`));
+    if (window.matchMedia("(min-width:901px)").matches || estado.familias.size) det.open = true;
+    const contagem = contar("familias");
+    const grupos = esp.map(e => [e, fam.filter(f => dona(f) === e)]);
+    const sobras = fam.filter(f => !esp.includes(dona(f)));
+    if (sobras.length) grupos.push(["Outras", sobras]);
+    grupos.filter(g => g[1].length).forEach(([e, fs]) => {
+      const sub = facetGrupo(e, fs, "familias", contagem, "fam-sub");
+      sub.style.setProperty("--c", e === "Outras" ? "var(--line)" : MD.corEsp(e));
+      sub.querySelector("h3").style.color = e === "Outras" ? "var(--mut)" : MD.corTexto(e);
+      det.appendChild(sub);
+    });
+    return det;
+  }
+
   function contar(campo) {
     const c = {};
     PRODUTOS.forEach(p => {
@@ -167,7 +190,7 @@
       });
       side.appendChild(box);
     }
-    side.appendChild(facetGrupo("Famílias", fam, "familias", contar("familias"), "grupo-fam", true));
+    side.appendChild(gruposFamilia(esp, fam));
 
     const limpar = el("button", "limpar", "Limpar filtros");
     limpar.addEventListener("click", () => {
