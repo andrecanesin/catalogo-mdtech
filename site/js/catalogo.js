@@ -7,6 +7,10 @@
   const propostaAtiva = () => PROPOSTAS.find(k => k.id === estado.proposta) || null;
   const PORPAGINA = (MD.cfg.produtosPorPagina) || 20;
 
+  // ordem das especialidades = a da capa e dos catálogos (ordem das chaves de config.js -> accent), não a alfabética
+  const ordemEsp = Object.keys(MD.cfg.accent || {});
+  const porOrdemEsp = (a, b) => { const i = ordemEsp.indexOf(a), j = ordemEsp.indexOf(b); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); };
+
   const $ = s => document.querySelector(s);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
 
@@ -169,7 +173,7 @@
     head.appendChild(fechar);
     side.appendChild(head);
 
-    const esp = (META && META.especialidades) || Object.keys(contar("especialidades"));
+    const esp = ((META && META.especialidades) || Object.keys(contar("especialidades"))).slice().sort(porOrdemEsp);
     const fam = (META && META.familias) || Object.keys(contar("familias"));
 
     // especialidade = filtro principal (destacado). família = secundário, recolhível (também no celular).
@@ -264,7 +268,7 @@
     const inicio = !estado.termo && !nAtivos() && estado.pagina === 1;
     if (!inicio) { alvo.innerHTML = ""; return; }
     const cont = contar("especialidades");
-    const esps = ((META && META.especialidades) || Object.keys(cont)).filter(e => cont[e]);
+    const esps = ((META && META.especialidades) || Object.keys(cont)).filter(e => cont[e]).sort(porOrdemEsp);
     const usadas = new Set();   // uma foto diferente por linha (óticas aparecem em mais de uma especialidade)
     // foto da linha: a escolhida em config.js (fotoLinha) ou, por padrão, o 1º instrumento só daquela linha (ótica por último)
     const daLinha = x => (x.especialidades || [x.especialidade]).includes(e_) && (x.foto_thumb || x.foto) && !usadas.has(x.codigo);
