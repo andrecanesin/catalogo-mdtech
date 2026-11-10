@@ -13,14 +13,10 @@ window.MD = (function () {
   // cor para texto (ou fundo de texto branco): variante escura que passa no AA
   function corTexto(esp) { return (cfg.accentTexto || {})[esp] || "#1874A1"; }
 
-  // Etiqueta da especialidade: fundo na cor viva da especialidade e texto (branco ou azul-marinho) escolhido pelo contraste (AA).
+  // Etiqueta da especialidade: fundo na cor viva da especialidade e texto BRANCO (decisão do André, 10/11: o branco em negrito, com sombra
+  // sutil, basta para o uso em tela; sobre laranja e azul vivos o contraste fica abaixo de 4,5:1, é exceção consciente ao AA só nas etiquetas).
   // É a MESMA etiqueta em todo lugar onde o nome da especialidade aparece (card, produto, filtro, chip, menu de catálogos).
-  function _lum(hex) { const c = [1, 3, 5].map(i => parseInt(hex.substr(i, 2), 16) / 255)
-      .map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
-  function corSobre(esp) {
-    const l = _lum(corEsp(esp)), navy = "#10294A", ln = _lum(navy);
-    return (1.05 / (l + .05)) >= ((l + .05) / (ln + .05)) ? "#FFFFFF" : navy;
-  }
+  function corSobre(esp) { return "#FFFFFF"; }
   function pillEsp(esp) { return `<span class="pill-esp" style="background:${corEsp(esp)};color:${corSobre(esp)}">${esc(esp)}</span>`; }
 
   // ângulo só é dado pendente em ótica/endoscópio; nos demais itens "não se aplica"
