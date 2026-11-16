@@ -509,10 +509,23 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .chip[style*="background"] button{color:inherit;opacity:.85;}
 
 /* ---------- acesso de vendedores (entrar.html) e rodapé da conta ---------- */
-.conta-rodape{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 14px;margin-top:10px;font-size:13px;}
-.conta-rodape b{color:var(--ink);font-weight:600;}
-.conta-rodape a,.conta-rodape button{color:var(--navy);font:inherit;font-weight:600;text-decoration:underline;
-  text-underline-offset:3px;background:none;border:0;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;padding:0 4px;}
+.conta-topo{display:flex;align-items:center;gap:7px;min-height:40px;border:1px solid rgba(255,255,255,.35);background:transparent;
+  color:#fff;border-radius:8px;padding:8px 13px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;position:relative;}
+.conta-topo svg{stroke:#fff;flex:none;}
+.conta-topo:hover{background:rgba(255,255,255,.1);}
+.conta-topo.on{border-color:var(--ciano);}
+.conta-ponto{position:absolute;top:5px;left:24px;width:9px;height:9px;border-radius:50%;background:#3ddc84;border:2px solid var(--navy);}
+.conta-menu{position:fixed;z-index:66;background:#fff;color:var(--ink);border-radius:12px;box-shadow:0 10px 34px rgba(15,25,45,.22);
+  padding:10px;width:min(300px,calc(100vw - 20px));}
+.conta-menu-quem{font-size:12.5px;color:var(--mut);padding:6px 10px 0;}
+.conta-menu-quem b{display:block;color:var(--navy);font-size:14px;word-break:break-all;}
+.conta-menu-info{font-size:12.5px;color:var(--mut);padding:4px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:6px;}
+.conta-menu a,.conta-menu button{display:flex;align-items:center;width:100%;min-height:44px;padding:0 10px;border:0;background:none;
+  border-radius:8px;font:inherit;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;text-align:left;}
+.conta-menu a:hover,.conta-menu button:hover{background:var(--panel);color:var(--navy);}
+.conta-menu[hidden]{display:none;}
+@media (max-width:900px){ .conta-topo{min-height:44px;} .conta-topo .l-conta{display:none;} }
+@media (max-width:560px){ .conta-topo{padding:8px 11px;font-size:13px;} }
 .pg-conta{min-height:100vh;display:flex;flex-direction:column;}
 .conta-wrap{flex:1;width:100%;max-width:440px;margin:0 auto;padding:28px 16px 40px;}
 .conta-caixa{background:#fff;border:1px solid var(--line);border-radius:var(--raio);box-shadow:var(--sombra);padding:26px 22px 24px;}
