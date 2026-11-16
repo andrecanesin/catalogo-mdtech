@@ -106,7 +106,8 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - **Clientes** (raiz do domínio, aberto): `produtos.json` sem preço; o front esconde preço, total e aviso sozinho. É o que o Actions gera.
 - **Interno** (`/interno`, 1 login por vendedor, Apache): igual, mas com o preço de `dados/precos_reais.xlsx`. Só se gera na máquina do André:
   `python gerar.py site --interno` → `saida/servidor/` (raiz = clientes, `interno/` = vendedores). O build interno recusa rodar com `SITE_PUBLICO=1`.
-- Falta fazer: script de deploy por SSH/rsync, `.htaccess`/`.htpasswd` do `/interno` (Apache), HTTPS. Aguardando dados do servidor.
+- Deploy (`deploy/`, ver `deploy/LEIA-ME.md`): `deploy/deploy.sh` gera tudo e envia por rsync/SSH para `catalogo.mdtechsm.com.br`; `deploy/logins.py` cria 1 login
+  por vendedor (e-mail). Roda na máquina do André: a sessão na nuvem não alcança o SSH do servidor (só HTTPS). Credenciais, lista e senhas ficam fora do git.
 
 ## Antes do deploy em servidor (lembrete)
 O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o deploy:
