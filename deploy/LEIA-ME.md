@@ -9,5 +9,5 @@ Roda na **máquina do André** (o build interno usa `dados/precos_reais.xlsx`, q
 3. `deploy/deploy.sh`. No fim ele confere que `/interno` responde 401 (pede login) e que a raiz não tem preço.
 
 - Vendedor novo/saiu: editar `vendedores.txt`, rodar `logins.py` e `deploy.sh --so-enviar`. Nova senha de alguém: `logins.py --resetar email`.
-- Exige no Apache: `AllowOverride AuthConfig` (e `Indexes`/`Limit` se pedir) na pasta do domínio. Se `/interno` não responder 401, o script avisa.
+- Exige no Apache: `AllowOverride AuthConfig` na pasta do domínio. O `.htaccess` do `/interno` só tem diretivas de login (com `Options`/`Header` o servidor dava erro 500). Se `/interno` não responder 401, o script avisa.
 - Nada daqui (`.env`, `.htpasswd`, lista e senhas) vai ao git: o repositório é público.

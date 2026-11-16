@@ -1,9 +1,6 @@
 # Área dos vendedores (preços). Um login por vendedor; arquivo de senhas fora da pasta pública.
+# Só diretivas de autenticação (AllowOverride AuthConfig): "Options" e "Header" davam erro 500 neste servidor.
 AuthType Basic
 AuthName "MDTech - area interna"
 AuthUserFile __HTPASSWD__
 Require valid-user
-Options -Indexes
-<IfModule mod_headers.c>
-  Header set Cache-Control "no-store"
-</IfModule>
