@@ -11,3 +11,8 @@ Roda na **máquina do André** (o build interno usa `dados/precos_reais.xlsx`, q
 - Vendedor novo/saiu: editar `vendedores.txt`, rodar `logins.py` e `deploy.sh --so-enviar`. Nova senha de alguém: `logins.py --resetar email`.
 - Exige no Apache: `AllowOverride AuthConfig` na pasta do domínio. O `.htaccess` do `/interno` só tem diretivas de login (com `Options`/`Header` o servidor dava erro 500). Se `/interno` não responder 401, o script avisa.
 - Nada daqui (`.env`, `.htpasswd`, lista e senhas) vai ao git: o repositório é público.
+
+## Login novo dos vendedores (Fase 1, substitui o Basic Auth)
+O `deploy.sh` também envia o app de login (`servidor/`, ver `servidor/LEIA-ME.md`) e os preços para `~/mdtech_dados` (fora da pasta pública),
+e confere que `/conta.py/precos` responde 401 sem login. Vendedores: `ssh ... python3 mdtech_app/admin.py adicionar email`.
+Enquanto o login novo não estiver testado, o `/interno` com Basic Auth (`logins.py`) continua no ar.

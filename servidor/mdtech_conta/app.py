@@ -1,0 +1,194 @@
+"""App WSGI do login dos vendedores (só biblioteca padrão).
+
+Hoje roda por CGI (public_html/conta.py); depois pode ir para mod_wsgi ou proxy sem reescrever: basta servir `criar_app(...)`.
+Endereços (PATH_INFO, porque o servidor não tem mod_rewrite):
+  GET  /conta.py/eu             quem está conectado          200 | 401
+  POST /conta.py/entrar         {email, senha}               200 {trocar_senha} | 401 | 429
+  POST /conta.py/trocar-senha   {senha_atual, nova}          200 | 400 | 401
+  POST /conta.py/sair                                        200
+  GET  /conta.py/precos         preços reais (só com sessão) 200 | 401 | 403 (falta trocar a senha inicial)
+Todo POST exige corpo JSON (application/json): um formulário de outro site não consegue enviar isso sem permissão (CSRF).
+"""
+import json
+import os
+from http.cookies import SimpleCookie
+from pathlib import Path
+
+from . import banco as B
+from . import senhas as S
+
+COOKIE = "mdtech_sessao"
+MARCA = "mdtech_vendedor"     # sem segredo, legível pelo JS: só diz ao site "consulte /precos" (clientes nunca acionam o CGI)
+_STATUS = {200: "200 OK", 400: "400 Bad Request", 401: "401 Unauthorized", 403: "403 Forbidden",
+           404: "404 Not Found", 405: "405 Method Not Allowed", 413: "413 Payload Too Large",
+           415: "415 Unsupported Media Type", 429: "429 Too Many Requests", 500: "500 Internal Server Error"}
+
+
+class Resposta:
+    def __init__(self, codigo, corpo, cookies=()):
+        self.codigo, self.corpo, self.cookies = codigo, corpo, list(cookies)
+
+
+def _cookies_sessao(token, seguro, apagar=False):
+    def um(nome, valor, http_only):
+        partes = [f"{nome}={'' if apagar else valor}", "Path=/", "SameSite=Lax"]
+        partes.append("Max-Age=0" if apagar else f"Max-Age={B.SESSAO_DIAS * 86400}")
+        if http_only:
+            partes.append("HttpOnly")
+        if seguro:
+            partes.append("Secure")
+        return "; ".join(partes)
+    return [um(COOKIE, token, True), um(MARCA, "1", False)]
+
+
+def _minutos(segundos):
+    m = max(1, (segundos + 59) // 60)
+    return f"{m} minuto{'s' if m > 1 else ''}"
+
+
+def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
+    caminho_precos = Path(caminho_precos)
+
+    def app(environ, start_response):
+        try:
+            r = _rotear(environ)
+        except Exception:                       # nunca mostrar detalhes do erro ao navegador
+            import traceback
+            traceback.print_exc(file=environ.get("wsgi.errors"))
+            r = Resposta(500, {"erro": "Erro no servidor. Tente de novo em instantes."})
+        corpo = json.dumps(r.corpo, ensure_ascii=False).encode("utf-8")
+        cab = [("Content-Type", "application/json; charset=utf-8"), ("Content-Length", str(len(corpo))),
+               ("Cache-Control", "no-store"), ("X-Content-Type-Options", "nosniff"),
+               ("Referrer-Policy", "same-origin"), ("X-Frame-Options", "DENY")]
+        cab += [("Set-Cookie", c) for c in r.cookies]
+        start_response(_STATUS.get(r.codigo, f"{r.codigo} Erro"), cab)
+        return [corpo]
+
+    def _token(environ):
+        c = SimpleCookie()
+        try:
+            c.load(environ.get("HTTP_COOKIE", ""))
+        except Exception:
+            return None
+        return c[COOKIE].value if COOKIE in c else None
+
+    def _ler_json(environ):
+        tipo = environ.get("CONTENT_TYPE", "").split(";")[0].strip().lower()
+        if tipo != "application/json":
+            return Resposta(415, {"erro": "Envio inválido."})
+        origem = environ.get("HTTP_ORIGIN")
+        host = environ.get("HTTP_HOST", "")
+        if origem and origem.split("://", 1)[-1] != host:
+            return Resposta(403, {"erro": "Origem não permitida."})
+        try:
+            tam = int(environ.get("CONTENT_LENGTH") or 0)
+        except ValueError:
+            tam = 0
+        if tam > 10_000:
+            return Resposta(413, {"erro": "Envio grande demais."})
+        try:
+            dados = json.loads(environ["wsgi.input"].read(tam) or b"{}")
+        except (ValueError, UnicodeDecodeError):
+            return Resposta(400, {"erro": "Envio inválido."})
+        return dados if isinstance(dados, dict) else Resposta(400, {"erro": "Envio inválido."})
+
+    def _rotear(environ):
+        metodo = environ.get("REQUEST_METHOD", "GET")
+        rota = environ.get("PATH_INFO", "").rstrip("/") or "/"
+        rotas = {"/eu": ("GET", _eu), "/precos": ("GET", _precos), "/entrar": ("POST", _entrar),
+                 "/trocar-senha": ("POST", _trocar), "/sair": ("POST", _sair)}
+        if rota not in rotas:
+            return Resposta(404, {"erro": "Endereço não encontrado."})
+        esperado, func = rotas[rota]
+        if metodo != esperado:
+            return Resposta(405, {"erro": "Método não permitido."})
+        dados = None
+        if metodo == "POST":
+            dados = _ler_json(environ)
+            if isinstance(dados, Resposta):
+                return dados
+        db = B.Banco(caminho_banco)
+        try:
+            return func(db, environ, dados)
+        finally:
+            db.fechar()
+
+    # ---------- rotas ----------
+    def _eu(db, environ, _):
+        u = db.sessao(_token(environ))
+        if not u:
+            return Resposta(401, {"erro": "Não conectado."})
+        return Resposta(200, {"email": u["email"], "nome": u["nome"], "trocar_senha": bool(u["trocar_senha"])})
+
+    def _entrar(db, environ, dados):
+        email = B.normalizar_email(str(dados.get("email", "")))[:200]
+        senha = str(dados.get("senha", ""))[:200]
+        if not email or not senha:
+            return Resposta(400, {"erro": "Informe o e-mail e a senha."})
+        ip = environ.get("REMOTE_ADDR", "?")
+        k_email, k_ip = "email:" + email, "ip:" + ip
+        for chave, limite in ((k_email, B.MAX_POR_EMAIL), (k_ip, B.MAX_POR_IP)):
+            n, falta = db.falhas(chave)
+            if n >= limite:
+                return Resposta(429, {"erro": f"Muitas tentativas erradas. Tente de novo em {_minutos(falta)}."})
+        u = db.usuario(email)
+        ok = S.conferir(senha, u["hash"]) if u else S.conferir_falso(senha)
+        if not ok or not u["ativo"]:
+            db.registrar_falha(k_email, k_ip)
+            n, _ = db.falhas(k_email)
+            resta = B.MAX_POR_EMAIL - n
+            msg = "E-mail ou senha incorretos."
+            if 0 < resta <= 2:
+                msg += f" Depois de mais {resta} erro{'s' if resta > 1 else ''}, o acesso fica bloqueado por 15 minutos."
+            return Resposta(401, {"erro": msg})
+        db.limpar_falhas(k_email)
+        db.marcar_login(u["id"])
+        token = db.criar_sessao(u["id"])
+        return Resposta(200, {"email": u["email"], "nome": u["nome"], "trocar_senha": bool(u["trocar_senha"])},
+                        _cookies_sessao(token, cookie_seguro))
+
+    def _trocar(db, environ, dados):
+        token = _token(environ)
+        u = db.sessao(token)
+        if not u:
+            return Resposta(401, {"erro": "Sua sessão expirou. Entre de novo."})
+        atual = str(dados.get("senha_atual", ""))[:200]
+        nova = str(dados.get("nova", ""))[:201]
+        k_email = "email:" + u["email"]
+        n, falta = db.falhas(k_email)
+        if n >= B.MAX_POR_EMAIL:
+            return Resposta(429, {"erro": f"Muitas tentativas erradas. Tente de novo em {_minutos(falta)}."})
+        if not S.conferir(atual, u["hash"]):
+            db.registrar_falha(k_email)
+            return Resposta(400, {"erro": "A senha atual não confere."})
+        problema = S.problema_nova_senha(nova, u["email"], atual)
+        if problema:
+            return Resposta(400, {"erro": problema})
+        db.definir_senha(u["id"], S.gerar_hash(nova), trocar_senha=False)
+        db.encerrar_sessoes(u["id"], exceto_token=token)     # sai dos outros aparelhos
+        return Resposta(200, {"ok": True})
+
+    def _sair(db, environ, _):
+        db.encerrar_sessao(_token(environ))
+        return Resposta(200, {"ok": True}, _cookies_sessao("", cookie_seguro, apagar=True))
+
+    def _precos(db, environ, _):
+        u = db.sessao(_token(environ))
+        if not u:
+            return Resposta(401, {"erro": "Não conectado."})
+        if u["trocar_senha"]:
+            return Resposta(403, {"erro": "Troque a senha inicial para ver os preços."})
+        try:
+            dados = json.loads(caminho_precos.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            dados = {"precos": {}, "atualizado": None}
+        return Resposta(200, {**dados, "email": u["email"]})
+
+    return app
+
+
+def app_do_servidor(home):
+    """Caminhos no servidor: dados em ~/mdtech_dados (fora da pasta pública)."""
+    dados = Path(os.environ.get("MDTECH_DADOS") or Path(home) / "mdtech_dados")
+    return criar_app(dados / "usuarios.sqlite", dados / "precos.json",
+                     cookie_seguro=os.environ.get("MDTECH_COOKIE_INSEGURO") != "1")

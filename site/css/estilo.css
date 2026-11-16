@@ -507,3 +507,44 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 /* texto branco das etiquetas de especialidade: negrito + sombra sutil para ler bem sobre laranja e azul vivos */
 .pill-esp,.tag,.ph .esp-tag{font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.28);}
 .chip[style*="background"] button{color:inherit;opacity:.85;}
+
+/* ---------- acesso de vendedores (entrar.html) e rodapé da conta ---------- */
+.conta-rodape{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 14px;margin-top:10px;font-size:13px;}
+.conta-rodape b{color:var(--ink);font-weight:600;}
+.conta-rodape a,.conta-rodape button{color:var(--navy);font:inherit;font-weight:600;text-decoration:underline;
+  text-underline-offset:3px;background:none;border:0;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;padding:0 4px;}
+.pg-conta{min-height:100vh;display:flex;flex-direction:column;}
+.conta-wrap{flex:1;width:100%;max-width:440px;margin:0 auto;padding:28px 16px 40px;}
+.conta-caixa{background:#fff;border:1px solid var(--line);border-radius:var(--raio);box-shadow:var(--sombra);padding:26px 22px 24px;}
+.conta-caixa h1{font-size:22px;color:var(--navy);line-height:1.25;}
+.conta-sub{color:var(--mut);font-size:14px;margin-top:6px;}
+.conta-msg{margin-top:16px;padding:11px 14px;border-radius:8px;font-size:14px;background:#fdecec;color:var(--verm-txt);
+  border-left:4px solid var(--verm);}
+.conta-msg.ok{background:#e9f5fc;color:var(--navy);border-left-color:var(--ciano);}
+.conta-form{display:flex;flex-direction:column;margin-top:18px;}
+.conta-form label{font-size:13.5px;font-weight:600;color:var(--navy);margin:12px 0 6px;}
+.conta-form input{width:100%;min-height:48px;border:1px solid #b9c6d6;border-radius:8px;padding:11px 14px;font:inherit;
+  font-size:16px;color:var(--ink);background:#fff;}
+.conta-form input:focus{outline:3px solid var(--ciano);outline-offset:1px;border-color:var(--navy);}
+.conta-senha{position:relative;}
+.conta-senha input{padding-right:92px;}
+.ver-senha{position:absolute;right:4px;top:50%;transform:translateY(-50%);min-height:40px;padding:0 12px;border:0;
+  background:none;color:var(--navy);font:inherit;font-size:13px;font-weight:600;cursor:pointer;border-radius:6px;}
+.ver-senha:hover{background:var(--panel);}
+.conta-dica{font-size:12.5px;color:var(--mut);margin-top:6px;}
+.conta-bt{margin-top:20px;min-height:48px;border:1px solid var(--navy);border-radius:8px;background:var(--navy);color:#fff;
+  font:inherit;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;}
+.conta-bt:hover{background:var(--navy-2);}
+.conta-bt.sec{background:#fff;color:var(--navy);margin-top:10px;}
+.conta-bt.sec:hover{background:var(--panel);}
+.conta-bt:disabled{opacity:.6;cursor:wait;}
+.conta-bt.carregando::after{content:"";width:16px;height:16px;margin-left:10px;border:2px solid rgba(255,255,255,.5);
+  border-top-color:#fff;border-radius:50%;animation:conta-gira .8s linear infinite;}
+@keyframes conta-gira{to{transform:rotate(360deg);}}
+@media (prefers-reduced-motion:reduce){.conta-bt.carregando::after{animation:none;}}
+.conta-ajuda{margin-top:16px;font-size:13.5px;color:var(--mut);text-align:center;}
+.conta-ajuda a{color:var(--navy);font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+.conta-quem{font-size:15px;}
+.conta-quem b{color:var(--navy);word-break:break-all;}
+.conta-voltar{display:inline-flex;align-items:center;min-height:44px;margin-top:14px;color:var(--navy);font-weight:600;font-size:14px;}
+.pg-conta [hidden]{display:none !important;}

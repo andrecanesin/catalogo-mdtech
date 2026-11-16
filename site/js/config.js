@@ -52,6 +52,16 @@ window.MDTECH = {
   // produtos.json não tem preço e o front esconde tudo sozinho. mostrar:false esconde mesmo no interno.
   precos: { mostrar: true, aviso: "Valores ilustrativos, sujeitos à tabela comercial vigente." },
 
+  // Login dos vendedores (app em servidor/, rodando no servidor como /conta.py). Com sessão, o front busca os preços reais em
+  // /conta.py/precos e os junta aos cards. Só funciona nos endereços de `hosts` (no GitHub Pages não existe o app: o site
+  // segue sem preço e a tela de login aponta para `endereco`).
+  conta: {
+    ativo: true,
+    url: "/conta.py",
+    endereco: "https://catalogo.mdtechsm.com.br/",
+    hosts: ["catalogo.mdtechsm.com.br", "localhost", "127.0.0.1"]
+  },
+
   // Botão "Suporte" (canto da tela): menu guiado ANTES do WhatsApp. É suporte interno do catálogo
   // (problema técnico, dúvida de uso, dado do produto, sugestão), não venda. Usa o mesmo WhatsApp do
   // contato; sem WhatsApp configurado, o botão some. Mude textos, categorias e respostas só aqui.
