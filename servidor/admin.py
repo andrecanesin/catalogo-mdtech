@@ -27,7 +27,7 @@ def main(argv, caminho=None):
     cmd, emails = argv[0], [B.normalizar_email(e) for e in argv[1:]]
     if cmd != "listar" and not emails:
         print("Informe o e-mail."); return 1
-    db = B.Banco(caminho or Path.home() / "mdtech_dados" / "usuarios.sqlite")
+    db = B.Banco(caminho or Path("/var/lib/mdtech") / "usuarios.sqlite")
     erro = 0
     try:
         if cmd == "listar":

@@ -1,0 +1,4 @@
+# Scripts que rodam no servidor Linux (CGI, deploy) precisam de quebra de linha LF mesmo num checkout do Windows:
+# com CRLF, a 1ª linha "#!/usr/bin/python3" vira "python3\r" e o Apache devolve erro 500.
+*.py  text eol=lf
+*.sh  text eol=lf
