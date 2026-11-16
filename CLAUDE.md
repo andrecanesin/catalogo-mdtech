@@ -191,7 +191,8 @@ produtos: **adotar o termo de mercado** (pesquisar antes, ex.: trocarte/trocater
    por e-mail vira atraso progressivo (hoje qualquer um bloqueia um vendedor errando 5 vezes); política de senha com lista de senhas comuns.
 2. **Rede de proteção:** testes + ruff em cada PR (workflow `pull_request`) e no `deploy.sh` (subir só a `main` limpa); backup diário do SQLite
    (`sqlite3 .backup`, 14 cópias, cron do usuário + cópia fora do servidor); deploy que apaga arquivos velhos, atômico e com rollback; transações no
-   banco (`adicionar`, `usar_convite`); desligar o `/interno` (Fase 1).
+   banco (`adicionar`, `usar_convite`); testes do núcleo (`nome_produto`, `diametro_fmt`, fotos, colunas obrigatórias em `base.carregar`);
+   desligar o `/interno` (Fase 1).
 3. **O que o cliente vê errado:** selo de ângulo em não-óticas (usar `MD.ehOtica`, ex.: 1.3-DS-24, A4001); nome dos endoscópios ("AV=30°,") e cards
    idênticos (A275/A276, A189-x: `mdtech/textos.py::nome_produto`); busca aceitando as grafias; NCM num formato só (88 com ponto, 64 sem);
    "Autoclavável" de uso único como "não se aplica"; medidas com vírgula.
@@ -199,7 +200,7 @@ produtos: **adotar o termo de mercado** (pesquisar antes, ex.: trocarte/trocater
    (`pushState`); foco preso nos painéis; bandeja vazia fora do teclado; `role="menu"` errado; paginação com rótulos; botão "Ver resultados" (2,65:1);
    faixa de ajuda que some; textos de 9–11 px; grade sem esperar o `/precos`.
 5. **Privacidade e dados:** aviso de LGPD (formulários → Web3Forms) e anti-spam (honeypot); fontes locais (`assets/fontes`); retenção de eventos/IPs;
-   grafias e acentos da base e nomes de família (com o André); PDFs nos testes do núcleo (`nome_produto`, `diametro_fmt`, fotos, colunas obrigatórias).
+   grafias e acentos da base e nomes de família (com o André).
 6. Depois: **app offline (PWA)**; Open Graph por produto; deploy pelo Actions (sem a máquina do André); repositório pesado (Git LFS).
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
