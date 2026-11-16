@@ -23,15 +23,21 @@ fi
 HOME_REMOTO="$("${SSH[@]}" "$ALVO" 'echo $HOME')"
 HTPASSWD_REMOTO="$HOME_REMOTO/.htpasswd_mdtech"      # fora da pasta pública
 if [ -f deploy/.htpasswd ]; then
-  rsync -e "ssh -p $PORTA" --chmod=F640 deploy/.htpasswd "$ALVO:$HTPASSWD_REMOTO"
+  "${SSH[@]}" "$ALVO" "cat > '$HTPASSWD_REMOTO' && chmod 640 '$HTPASSWD_REMOTO'" < deploy/.htpasswd
 elif ! "${SSH[@]}" "$ALVO" "test -s '$HTPASSWD_REMOTO'"; then
   echo "ERRO: não há logins. Rode: python deploy/logins.py"; exit 1
 fi
 sed "s|__HTPASSWD__|$HTPASSWD_REMOTO|" deploy/htaccess_interno > saida/servidor/interno/.htaccess
 
-# 2) envio (sem --delete por padrão: DEPLOY_DELETE=1 apaga no servidor o que não existe mais aqui)
-EXTRA=(); [ "${DEPLOY_DELETE:-0}" = "1" ] && EXTRA=(--delete)
-rsync -az --info=stats1 "${EXTRA[@]}" -e "ssh -p $PORTA" saida/servidor/ "$ALVO:$DEPLOY_PATH/"
+# 2) envio. Com rsync (Linux/Mac): sem --delete por padrão (DEPLOY_DELETE=1 apaga no servidor o que não existe mais aqui).
+#    Sem rsync (Git Bash do Windows): tar compactado por SSH, que sobrescreve os arquivos e não apaga nada.
+if command -v rsync >/dev/null 2>&1; then
+  EXTRA=(); [ "${DEPLOY_DELETE:-0}" = "1" ] && EXTRA=(--delete)
+  rsync -az --info=stats1 "${EXTRA[@]}" -e "ssh -p $PORTA" saida/servidor/ "$ALVO:$DEPLOY_PATH/"
+else
+  echo "rsync não encontrado: enviando com tar por SSH (sobrescreve, não apaga)."
+  tar -C saida/servidor -czf - . | "${SSH[@]}" "$ALVO" "mkdir -p '$DEPLOY_PATH' && tar -C '$DEPLOY_PATH' -xzf -"
+fi
 
 # 3) conferência no ar
 cod="$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/interno/produtos.json")"
