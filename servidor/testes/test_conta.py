@@ -155,7 +155,7 @@ class TesteConta(unittest.TestCase):
         self.assertIsNone(S.problema_nova_senha("cirurgia-laparo-26"))
 
     def test_permissao_do_banco(self):
-        self.assertEqual(self.banco.stat().st_mode & 0o777, 0o600)
+        self.assertEqual(self.banco.stat().st_mode & 0o777, 0o666)   # protegido pela pasta (700 + ACL), ver deploy.sh
 
 
 if __name__ == "__main__":
