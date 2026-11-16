@@ -187,8 +187,12 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
     return app
 
 
-def app_do_servidor(home):
-    """Caminhos no servidor: dados em ~/mdtech_dados (fora da pasta pública)."""
-    dados = Path(os.environ.get("MDTECH_DADOS") or Path(home) / "mdtech_dados")
+DADOS_SERVIDOR = Path("/var/lib/mdtech")
+
+
+def app_do_servidor(home=None):
+    """Caminhos no servidor: dados em /var/lib/mdtech (fora da pasta pública). Não pode ser em /home: o serviço do Apache
+    roda com ProtectHome=read-only (o CGI lê /home, mas não grava). A pasta é www-data:catalogo_mdtech, modo 2770."""
+    dados = Path(os.environ.get("MDTECH_DADOS") or DADOS_SERVIDOR)
     return criar_app(dados / "usuarios.sqlite", dados / "precos.json",
                      cookie_seguro=os.environ.get("MDTECH_COOKIE_INSEGURO") != "1")

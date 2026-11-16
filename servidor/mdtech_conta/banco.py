@@ -52,11 +52,11 @@ class Banco:
         self.caminho = Path(caminho)
         self.caminho.parent.mkdir(parents=True, exist_ok=True)
         if not self.caminho.exists():
-            # 0666 de propósito: no servidor o CGI roda como www-data e o admin.py como o dono da conta, e os dois gravam aqui.
-            # Quem protege é a PASTA (~/mdtech_dados: 700 + ACL só para o www-data, ver deploy.sh). O SQLite cria o diário
-            # (-journal) com o mesmo modo do banco, então os dois usuários continuam conseguindo gravar.
-            os.close(os.open(self.caminho, os.O_CREAT | os.O_WRONLY, 0o666))
-            os.chmod(self.caminho, 0o666)
+            # 0660: no servidor o CGI roda como www-data e o admin.py como catalogo_mdtech, e os dois gravam aqui. A pasta
+            # /var/lib/mdtech é www-data:catalogo_mdtech com setgid (2770): todo arquivo novo fica no grupo catalogo_mdtech e
+            # o SQLite cria o diário (-journal) com o mesmo modo do banco. Os demais usuários não entram na pasta.
+            os.close(os.open(self.caminho, os.O_CREAT | os.O_WRONLY, 0o660))
+            os.chmod(self.caminho, 0o660)
         self.con = sqlite3.connect(self.caminho, timeout=10, isolation_level=None)
         self.con.row_factory = sqlite3.Row
         self.con.execute("PRAGMA foreign_keys = ON")

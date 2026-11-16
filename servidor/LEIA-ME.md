@@ -7,14 +7,20 @@ App Python **só com a biblioteca padrão** (padrão WSGI). Hoje roda por CGI no
 |---|---|
 | `~/public_html/conta.py` | porta de entrada CGI (único arquivo do app na pasta pública) |
 | `~/mdtech_app/` | código (`mdtech_conta/`, `admin.py`) |
-| `~/mdtech_dados/usuarios.sqlite` | vendedores (senha só como hash scrypt), sessões e tentativas erradas |
-| `~/mdtech_dados/precos.json` | preços reais (de `dados/precos_reais.xlsx`), entregues só a quem tem sessão |
+| `/var/lib/mdtech/usuarios.sqlite` | vendedores (senha só como hash scrypt), sessões e tentativas erradas |
+| `/var/lib/mdtech/precos.json` | preços reais (de `dados/precos_reais.xlsx`), entregues só a quem tem sessão |
 
 Tudo vai pelo `bash deploy/deploy.sh`.
 
-**Permissões:** o Apache roda o CGI como `www-data`, não como `catalogo_mdtech`. Por isso `~/mdtech_app` é legível por todos (o código já é
-público no GitHub), e `~/mdtech_dados` fica `700` com uma ACL que libera só o `www-data` (`setfacl -m u:www-data:rwx`). Os arquivos lá dentro
-são `666`/`644`, e quem os protege é a pasta. O `deploy.sh` aplica tudo isso.
+**Permissões:** o Apache roda o CGI como `www-data` e com `ProtectHome=read-only` (o CGI lê `/home`, mas não grava). Por isso os dados ficam
+em `/var/lib/mdtech` (`www-data:catalogo_mdtech`, modo `2770`: só o Apache e o dono da conta entram; o setgid mantém os arquivos novos no grupo).
+`~/mdtech_app` é legível por todos (o código já é público no GitHub).
+
+## Instalação (uma vez, com sudo)
+```bash
+ssh -t catalogo_mdtech@173.214.164.179 'sudo install -d -o www-data -g catalogo_mdtech -m 2770 /var/lib/mdtech && ls -ld /var/lib/mdtech'
+```
+Para desfazer: `sudo rm -rf /var/lib/mdtech` (apaga vendedores e sessões). Incluir `/var/lib/mdtech` no backup do servidor.
 
 ## Vendedores (um comando por vez, no Git Bash)
 ```bash
