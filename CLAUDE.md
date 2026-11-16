@@ -120,6 +120,24 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - Preços: só no site interno (decisão de 09/11 mantida: catálogos, fichas e propostas saem SEM preço). Reais, em `dados/precos_reais.xlsx` (local, fora do git);
   o repositório e o Pages são públicos, então o build interno recusa rodar com `SITE_PUBLICO=1`.
 
+## Próximas fases: login dos vendedores e intranet (planejado em 16/11; construir no Opus 5.5)
+- **Servidor consultado em 16/11:** Python 3.14.4 + venv, Apache 2.4.66 com CGI/cgid; **sem** PHP, MySQL, Node, mod_wsgi, mod_proxy e mod_rewrite; sem sudo; 1 vCPU, 3,4 GB.
+  Então WordPress está descartado e um aplicativo ligado o tempo todo depende do administrador de infra.
+- **Fase 1 (já, sem depender do administrador): login dos vendedores.** App Python no padrão WSGI, rodando por CGI hoje (migra para mod_wsgi/proxy depois sem reescrever).
+  Usuários em SQLite fora da pasta pública, senha só como hash (scrypt/pbkdf2 da biblioteca padrão), troca obrigatória da senha inicial no 1º acesso, sessão por cookie seguro,
+  bloqueio por tentativas, script para cadastrar/redefinir vendedores (substitui `deploy/logins.py`). Tela de login mobile first com a logo (skill `mdtech-ui-ux`).
+  Os preços saem de um endereço que exige sessão e o front os junta aos cards: o catálogo vira um site só, sem preço, e `/interno` deixa de ser uma cópia.
+  Manter o Basic Auth atual até o novo estar testado. Tudo por PR; o André usa Git Bash no Windows e prefere **um comando por vez**, esperando a resposta.
+- **A confirmar com o André:** login por e-mail e recuperação de senha manual no começo (automática quando o servidor puder enviar e-mail); SSO com a GEWEB só se ela
+  oferecer OIDC/OAuth/SAML ou API para validar usuário (o André vai perguntar à GEWEB).
+- **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
+  Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,
+  PostgreSQL (recomendado), disco e monitoramento. Aguardando o André falar com ele.
+- **Institucional:** páginas estáticas no repositório, editadas pelo André (marketing). Aguardando o conteúdo.
+- **Orçamento (ferramenta + campanha):** conversar depois do login. Perguntas: quem usa (vendedor, cliente ou os dois), saída (PDF com preço, WhatsApp), desconto, registro das
+  propostas, objetivo e canais da campanha.
+- **Pendências de segurança do André:** trocar a senha do usuário do servidor (apareceu no chat); enviar as senhas aos vendedores e apagar `deploy/senhas_vendedores.txt`.
+
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).
   Ainda vazio em 18 SKUs: 814, A108, A151, A189(-1/-2/-3), A201(-1/-2), A204, A207(-2/-3/-4/-4-1), A215-2.C, A310.C.
