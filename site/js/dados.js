@@ -40,8 +40,57 @@ window.MD = (function () {
       fetch("produtos.json").then(r => r.json()),
       fetch("meta.json").then(r => r.json()).catch(() => null)
     ]);
+    await aplicarPrecosVendedor(prod);
     detectarPrecos(prod);
     return { produtos: prod, meta };
+  }
+
+  // ---- login dos vendedores (app /conta.py no servidor; ver servidor/LEIA-ME.md) ----
+  const _conta = cfg.conta || {};
+  let _estadoConta = { status: 0 };       // 0 = sem app aqui · 200 conectado · 401 não conectado · 403 falta trocar a senha
+  function contaAtiva() { return !!_conta.ativo && (_conta.hosts || []).includes(location.hostname); }
+  // cookie sem segredo que o servidor põe no login: só quem já entrou aciona o servidor (clientes nunca chamam o CGI)
+  function ehVendedor() { return /(?:^|;\s*)mdtech_vendedor=1/.test(document.cookie); }
+  function esquecerVendedor() { document.cookie = "mdtech_vendedor=; Path=/; Max-Age=0; SameSite=Lax"; }
+  async function contaReq(rota, corpo) {
+    const op = { credentials: "same-origin", cache: "no-store", headers: {} };
+    if (corpo !== undefined) { op.method = "POST"; op.headers["Content-Type"] = "application/json"; op.body = JSON.stringify(corpo); }
+    try {
+      const r = await fetch((_conta.url || "/conta.py") + rota, op);
+      let dados = {}; try { dados = await r.json(); } catch (e) { /* resposta sem JSON (ex.: 404 do servidor) */ }
+      return { status: r.status, dados };
+    } catch (e) { return { status: 0, dados: { erro: "Sem conexão com o servidor. Confira a internet e tente de novo." } }; }
+  }
+  // Com sessão de vendedor, troca o preço de cada produto pelo preço real. Sem sessão (ou fora do servidor), não mexe em nada.
+  async function aplicarPrecosVendedor(prod) {
+    if (!contaAtiva()) return;
+    if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaRodape(); return; }
+    const r = await contaReq("/precos");
+    if (r.status === 401) esquecerVendedor();          // sessão expirou ou foi encerrada
+    _estadoConta = { status: r.status, email: r.dados.email || "" };
+    if (r.status === 200 && r.dados.precos) {
+      (prod || []).forEach(p => { const v = r.dados.precos[p.codigo];
+        if (v) { p.preco = v; p.preco_ficticio = false; } });
+    }
+    montarContaRodape();
+  }
+  // Rodapé: "Acesso de vendedores" para quem não entrou; "Conectado como ... · Sair" para o vendedor.
+  function montarContaRodape() {
+    const rod = document.querySelector(".rodape");
+    if (!rod || !contaAtiva()) return;
+    let box = rod.querySelector(".conta-rodape");
+    if (!box) { box = document.createElement("div"); box.className = "conta-rodape"; rod.appendChild(box); }
+    const volta = encodeURIComponent(location.pathname.split("/").pop() + location.search);
+    const st = _estadoConta.status;
+    if (st === 200) {
+      box.innerHTML = `<span>Conectado como <b>${esc(_estadoConta.email)}</b> · preços de tabela visíveis</span>
+        <a href="entrar.html">Minha conta</a><button type="button" class="conta-sair">Sair</button>`;
+      box.querySelector(".conta-sair").onclick = async () => { await contaReq("/sair", {}); location.reload(); };
+    } else if (st === 403) {
+      box.innerHTML = `<a href="entrar.html?volta=${volta}">Troque a senha inicial para ver os preços</a>`;
+    } else if (st === 401) {
+      box.innerHTML = `<a href="entrar.html?volta=${volta}">Acesso de vendedores</a>`;
+    } else box.remove();
   }
 
   // ---- ícone de ângulo ----
@@ -386,7 +435,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

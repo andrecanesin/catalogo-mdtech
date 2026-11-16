@@ -339,6 +339,19 @@ def _montar_servidor(produtos_internos, meta):
     return dest
 
 
+def _precos_app(produtos_internos):
+    """Preços do login dos vendedores: saida/app_dados/precos.json, que o deploy envia para ~/mdtech_dados (FORA da pasta
+    pública). O app /conta.py só entrega este arquivo a quem tem sessão."""
+    import datetime
+    dest = config.SAIDA / "app_dados"
+    dest.mkdir(parents=True, exist_ok=True)
+    precos = {p["codigo"]: p["preco"] for p in produtos_internos if p.get("preco")}
+    arq = dest / "precos.json"
+    arq.write_text(json.dumps({"precos": precos, "atualizado": datetime.date.today().isoformat()},
+                              ensure_ascii=False, indent=1), encoding="utf-8")
+    return arq
+
+
 def gerar(interno=False):
     """interno=False: site de clientes em site/ (sem preço). interno=True: além disso monta saida/servidor/ com /interno (preço real)."""
     if interno and os.environ.get("SITE_PUBLICO") == "1":
@@ -427,6 +440,7 @@ def gerar(interno=False):
         internos = copy.deepcopy(produtos)
         sem = _aplicar_precos(internos, precos)
         dest = _montar_servidor(internos, meta)
+        print(f"Preços do login dos vendedores: {_precos_app(internos)}")
         print(f"Servidor: {dest} (raiz = clientes sem preço · interno/ = com preço real: {len(internos)-len(sem)}/{len(internos)} preços)")
         if sem:
             print(f"[aviso] sem preço no interno: {', '.join(sem)}")

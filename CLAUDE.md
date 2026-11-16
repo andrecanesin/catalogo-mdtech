@@ -128,7 +128,10 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   bloqueio por tentativas, script para cadastrar/redefinir vendedores (substitui `deploy/logins.py`). Tela de login mobile first com a logo (skill `mdtech-ui-ux`).
   Os preços saem de um endereço que exige sessão e o front os junta aos cards: o catálogo vira um site só, sem preço, e `/interno` deixa de ser uma cópia.
   Manter o Basic Auth atual até o novo estar testado. Tudo por PR; o André usa Git Bash no Windows e prefere **um comando por vez**, esperando a resposta.
-- **A confirmar com o André:** login por e-mail e recuperação de senha manual no começo (automática quando o servidor puder enviar e-mail); SSO com a GEWEB só se ela
+- **Fase 1 em construção (16/11):** confirmado login por e-mail e recuperação de senha manual (admin `redefinir`). Código em `servidor/`
+  (`servidor/LEIA-ME.md`), tela `site/entrar.html`, preços via `/conta.py/precos` juntados pelo `dados.js`; o `deploy.sh` envia tudo. Falta: instalar no servidor,
+  cadastrar os vendedores e, testado, desligar o `/interno` (Basic Auth).
+- **SSO com a GEWEB** só se ela
   oferecer OIDC/OAuth/SAML ou API para validar usuário (o André vai perguntar à GEWEB).
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
   Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,

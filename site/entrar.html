@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acesso de vendedores · MDTech</title>
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Acesso dos vendedores MDTech ao catálogo com preços de tabela.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pg-conta">
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="MDTech — voltar ao catálogo">
+        <img class="logo" src="img/logo.png" alt="MDTech"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="brand-txt">MD<b>Tech</b><small>Tecnologia que abre caminhos</small></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="conta-wrap">
+    <section class="conta-caixa" aria-labelledby="conta-titulo">
+      <h1 id="conta-titulo">Acesso de vendedores</h1>
+      <p class="conta-sub" id="conta-sub">Entre com o seu e-mail para ver os preços de tabela no catálogo.</p>
+      <div class="conta-msg" id="conta-msg" role="alert" hidden></div>
+
+      <!-- 1) entrar -->
+      <form id="f-entrar" class="conta-form" hidden novalidate>
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false" required>
+        <label for="senha">Senha</label>
+        <div class="conta-senha">
+          <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+          <button type="button" class="ver-senha" aria-controls="senha" aria-pressed="false">Mostrar</button>
+        </div>
+        <button type="submit" class="conta-bt">Entrar</button>
+        <p class="conta-ajuda" id="ajuda-senha">Esqueceu a senha? Peça uma nova ao marketing.</p>
+      </form>
+
+      <!-- 2) trocar a senha (obrigatório no 1º acesso) -->
+      <form id="f-trocar" class="conta-form" hidden novalidate>
+        <div id="bloco-atual">
+          <label for="atual">Senha atual</label>
+          <div class="conta-senha">
+            <input id="atual" type="password" autocomplete="current-password" required>
+            <button type="button" class="ver-senha" aria-controls="atual" aria-pressed="false">Mostrar</button>
+          </div>
+        </div>
+        <label for="nova">Nova senha</label>
+        <div class="conta-senha">
+          <input id="nova" type="password" autocomplete="new-password" minlength="10" required aria-describedby="dica-nova">
+          <button type="button" class="ver-senha" aria-controls="nova" aria-pressed="false">Mostrar</button>
+        </div>
+        <p class="conta-dica" id="dica-nova">Mínimo de 10 caracteres. Uma frase curta é fácil de lembrar (ex.: três palavras com um número).</p>
+        <label for="nova2">Repita a nova senha</label>
+        <input id="nova2" type="password" autocomplete="new-password" required>
+        <button type="submit" class="conta-bt">Salvar a nova senha</button>
+        <button type="button" class="conta-bt sec" id="bt-cancelar-troca" hidden>Cancelar</button>
+      </form>
+
+      <!-- 3) já conectado -->
+      <div id="v-conectado" class="conta-form" hidden>
+        <p class="conta-quem">Conectado como <b id="quem"></b></p>
+        <a class="conta-bt" href="index.html" id="bt-catalogo">Ir para o catálogo</a>
+        <button type="button" class="conta-bt sec" id="bt-trocar">Trocar a senha</button>
+        <button type="button" class="conta-bt sec" id="bt-sair">Sair</button>
+      </div>
+
+      <!-- 4) fora do servidor (ex.: GitHub Pages) -->
+      <div id="v-fora" class="conta-form" hidden>
+        <p>O acesso de vendedores funciona no endereço oficial do catálogo.</p>
+        <a class="conta-bt" id="bt-oficial" href="#">Abrir o catálogo oficial</a>
+      </div>
+    </section>
+    <a class="conta-voltar" href="index.html">← Voltar ao catálogo</a>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/entrar.js"></script>
+</body>
+</html>
