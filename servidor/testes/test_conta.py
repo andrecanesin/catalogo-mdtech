@@ -154,6 +154,86 @@ class TesteConta(unittest.TestCase):
         self.assertIsNotNone(S.problema_nova_senha("vendedor2026!", "vendedor@x.com"))
         self.assertIsNone(S.problema_nova_senha("cirurgia-laparo-26"))
 
+    def _admin_pronto(self):
+        """Entra como vendedor@ (já com senha própria) e vira administrador pelo terminal."""
+        self.entrar()
+        self.c.req("POST", "/trocar-senha", {"senha_atual": self.senha0, "nova": "umaSenhaBoa123"})
+        out = io.StringIO(); sys.stdout, velho = out, sys.stdout
+        try:
+            admin.main(["tornar-admin", "vendedor@mdtech.com.br"], self.banco)
+        finally:
+            sys.stdout = velho
+
+    def test_gestao_so_admin(self):
+        self.assertEqual(self.c.req("GET", "/admin/vendedores")[0], 401)
+        self.entrar()
+        self.assertEqual(self.c.req("GET", "/admin/vendedores")[0], 403)      # não é admin
+        self.assertEqual(self.c.req("POST", "/admin/adicionar", {"email": "x@y.com"})[0], 403)
+        out = io.StringIO(); sys.stdout, velho = out, sys.stdout
+        try:
+            admin.main(["tornar-admin", "vendedor@mdtech.com.br"], self.banco)
+        finally:
+            sys.stdout = velho
+        self.assertEqual(self.c.req("GET", "/admin/vendedores")[0], 403)      # admin, mas falta trocar a senha inicial
+        self.c.req("POST", "/trocar-senha", {"senha_atual": self.senha0, "nova": "umaSenhaBoa123"})
+        st, corpo, *_ = self.c.req("GET", "/admin/vendedores")
+        self.assertEqual(st, 200)
+        self.assertTrue(corpo["vendedores"][0]["admin"])
+        self.assertTrue(self.c.req("GET", "/eu")[1]["admin"])
+
+    def test_gestao_fluxo(self):
+        self._admin_pronto()
+        st, corpo, *_ = self.c.req("POST", "/admin/adicionar", {"email": " Novo@MDTech.com.br ", "nome": "Novo"})
+        self.assertEqual(st, 200, corpo)
+        senha = corpo["senha"]
+        self.assertEqual(self.c.req("POST", "/admin/adicionar", {"email": "novo@mdtech.com.br"})[0], 400)   # repetido
+        self.assertEqual(self.c.req("POST", "/admin/adicionar", {"email": "sem-arroba"})[0], 400)
+        novo = Cliente(self.app)
+        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": senha})[0], 200)
+        # nova senha: derruba a sessão do vendedor e a senha anterior
+        nova = self.c.req("POST", "/admin/redefinir", {"email": "novo@mdtech.com.br"})[1]["senha"]
+        self.assertEqual(novo.req("GET", "/eu")[0], 401)
+        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": senha})[0], 401)
+        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": nova})[0], 200)
+        # desativar / reativar
+        self.assertEqual(self.c.req("POST", "/admin/desativar", {"email": "novo@mdtech.com.br"})[0], 200)
+        self.assertEqual(novo.req("GET", "/eu")[0], 401)
+        reat = self.c.req("POST", "/admin/reativar", {"email": "novo@mdtech.com.br"})[1]["senha"]
+        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": reat})[0], 200)
+        # bloqueio aparece na lista e o desbloqueio funciona
+        for _ in range(B.MAX_POR_EMAIL):
+            novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "errada"}, ip="9.9.9.9")
+        lista = {v["email"]: v for v in self.c.req("GET", "/admin/vendedores")[1]["vendedores"]}
+        self.assertTrue(lista["novo@mdtech.com.br"]["bloqueado"])
+        self.c.req("POST", "/admin/desbloquear", {"email": "novo@mdtech.com.br"})
+        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": reat})[0], 200)
+        # admin: dar e tirar; não pode se rebaixar nem se desativar
+        self.assertEqual(self.c.req("POST", "/admin/admin", {"email": "novo@mdtech.com.br", "admin": True})[0], 200)
+        self.assertEqual(self.c.req("POST", "/admin/admin", {"email": "vendedor@mdtech.com.br", "admin": False})[0], 400)
+        self.assertEqual(self.c.req("POST", "/admin/desativar", {"email": "vendedor@mdtech.com.br"})[0], 400)
+        self.assertEqual(self.c.req("POST", "/admin/nome", {"email": "novo@mdtech.com.br", "nome": "Fulano"})[0], 200)
+        self.assertEqual(self.c.req("POST", "/admin/redefinir", {"email": "ninguem@x.com"})[0], 400)
+        # histórico
+        hist = self.c.req("GET", "/admin/historico")[1]["historico"]
+        acoes = [h["acao"] for h in hist]
+        self.assertIn("cadastrou", acoes)
+        self.assertIn("desativou", acoes)
+        self.assertTrue(all(h["autor"] in ("vendedor@mdtech.com.br", "terminal") for h in hist))
+        self.assertIn(("vendedor@mdtech.com.br", "desativou", "novo@mdtech.com.br"), [(h["autor"], h["acao"], h["alvo"]) for h in hist])
+
+    def test_banco_antigo_ganha_coluna_admin(self):
+        import sqlite3
+        caminho = Path(self.tmp.name) / "antigo.sqlite"
+        con = sqlite3.connect(caminho)
+        con.execute("CREATE TABLE usuarios (id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, nome TEXT NOT NULL DEFAULT '', "
+                    "hash TEXT NOT NULL, trocar_senha INTEGER NOT NULL DEFAULT 1, ativo INTEGER NOT NULL DEFAULT 1, "
+                    "criado INTEGER NOT NULL, atualizado INTEGER NOT NULL, ultimo_login INTEGER)")
+        con.execute("INSERT INTO usuarios (email, hash, criado, atualizado) VALUES ('a@b.com', 'x', 1, 1)")
+        con.commit(); con.close()
+        db = B.Banco(caminho)
+        self.assertEqual(db.usuario("a@b.com")["admin"], 0)
+        db.fechar()
+
     def test_permissao_do_banco(self):
         self.assertEqual(self.banco.stat().st_mode & 0o777, 0o660)   # www-data + grupo catalogo_mdtech (pasta 2770), ver deploy.sh
 

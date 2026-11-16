@@ -561,3 +561,55 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .conta-quem b{color:var(--navy);word-break:break-all;}
 .conta-voltar{display:inline-flex;align-items:center;min-height:44px;margin-top:14px;color:var(--navy);font-weight:600;font-size:14px;}
 .pg-conta [hidden]{display:none !important;}
+
+/* ---------- gestão dos vendedores (vendedores.html, só administradores) ---------- */
+.adm-wrap{flex:1;width:100%;max-width:760px;margin:0 auto;padding:12px 16px 48px;}
+.adm-wrap h1{font-size:24px;color:var(--navy);line-height:1.2;margin-top:6px;}
+.adm-wrap h2{font-size:17px;color:var(--navy);}
+.adm-h2{margin:26px 0 10px;}
+.adm-h2 span{font-weight:500;color:var(--mut);font-size:14px;}
+.adm-caixa{background:#fff;border:1px solid var(--line);border-radius:var(--raio);box-shadow:var(--sombra);padding:18px;margin-top:18px;}
+.adm-add{margin-top:4px;}
+.adm-add .conta-bt{margin-top:16px;}
+.opc{font-weight:400;color:var(--mut);}
+@media (min-width:700px){
+  .adm-add{display:grid;grid-template-columns:1.3fr 1fr auto;gap:0 12px;align-items:end;}
+  .adm-add .conta-bt{margin-top:0;padding:0 18px;}
+}
+.adm-senha{background:#fff;border:2px solid var(--ciano);border-radius:var(--raio);box-shadow:var(--sombra);padding:18px;margin-top:18px;}
+.adm-senha:focus{outline:3px solid var(--ciano);outline-offset:2px;}
+.adm-senha-para{font-size:14px;margin-top:4px;word-break:break-all;}
+.adm-senha-valor{font-size:26px;font-weight:500;letter-spacing:.06em;color:var(--navy);background:var(--panel);border-radius:8px;
+  padding:10px 14px;margin:12px 0 6px;user-select:all;word-break:break-all;}
+.adm-senha-acoes{display:grid;grid-template-columns:1fr;gap:0;}
+.adm-senha-acoes .conta-bt{margin-top:10px;}
+@media (min-width:560px){ .adm-senha-acoes{grid-template-columns:1fr 1fr;gap:0 10px;} }
+.adm-lista{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.adm-item{background:#fff;border:1px solid var(--line);border-radius:var(--raio);padding:14px 16px;box-shadow:var(--sombra);}
+.adm-item.inativo{background:var(--panel);box-shadow:none;}
+.adm-item.inativo .adm-quem{color:var(--mut);}
+.adm-quem{display:flex;flex-direction:column;}
+.adm-quem b{color:var(--navy);font-size:15px;}
+.adm-email{font-size:14px;word-break:break-all;}
+.adm-quem b + .adm-email{color:var(--mut);font-size:13px;}
+.adm-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.adm-badges:empty{display:none;}
+.adm-b{font-size:11.5px;font-weight:600;border-radius:20px;padding:2px 9px;background:var(--panel);color:var(--navy);border:1px solid var(--line);}
+.adm-b.off{background:#eef0f3;color:var(--mut);}
+.adm-b.alerta{background:#fdecec;color:var(--verm-txt);border-color:#f5c2c2;}
+.adm-b.pend{background:#fff6e5;color:#8a5a00;border-color:#f3dca8;}
+.adm-b.adm{background:#e9f5fc;color:#1874A1;border-color:#bfe2f5;}
+.adm-acesso{font-size:12.5px;color:var(--mut);margin-top:6px;}
+.adm-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.adm-acoes button{min-height:44px;padding:0 14px;border:1px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);
+  font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;}
+.adm-acoes button:hover{background:var(--panel);}
+.adm-acoes button.perigo{border-color:var(--verm-txt);color:var(--verm-txt);}
+.adm-acoes button.perigo:hover{background:#fdecec;}
+.adm-acoes button:disabled{opacity:.5;cursor:wait;}
+.adm-hist summary{cursor:pointer;font-weight:600;color:var(--navy);min-height:28px;}
+.adm-hist ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:13px;}
+.adm-hist time{color:var(--mut);font-size:12px;display:block;}
+.adm-hist b{font-weight:600;word-break:break-all;}
+.adm-senha,#adm-msg{scroll-margin-top:96px;}
+.adm-hist b{word-break:normal;overflow-wrap:anywhere;}

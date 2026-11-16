@@ -36,6 +36,12 @@ CREATE TABLE IF NOT EXISTS falhas (
   quando INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS falhas_chave ON falhas(chave, quando);
+CREATE TABLE IF NOT EXISTS eventos (
+  quando INTEGER NOT NULL,
+  autor TEXT NOT NULL,
+  acao TEXT NOT NULL,
+  alvo TEXT NOT NULL DEFAULT ''
+);
 """
 
 
@@ -61,6 +67,9 @@ class Banco:
         self.con.row_factory = sqlite3.Row
         self.con.execute("PRAGMA foreign_keys = ON")
         self.con.executescript(_ESQUEMA)
+        colunas = {c["name"] for c in self.con.execute("PRAGMA table_info(usuarios)")}
+        if "admin" not in colunas:                       # banco criado antes da tela de gestão (16/11)
+            self.con.execute("ALTER TABLE usuarios ADD COLUMN admin INTEGER NOT NULL DEFAULT 0")
 
     def fechar(self):
         self.con.close()
@@ -85,6 +94,12 @@ class Banco:
         self.con.execute("UPDATE usuarios SET ativo = ?, atualizado = ? WHERE id = ?", (int(ativo), int(time.time()), uid))
         if not ativo:
             self.encerrar_sessoes(uid)
+
+    def definir_admin(self, uid, admin):
+        self.con.execute("UPDATE usuarios SET admin = ?, atualizado = ? WHERE id = ?", (int(admin), int(time.time()), uid))
+
+    def definir_nome(self, uid, nome):
+        self.con.execute("UPDATE usuarios SET nome = ?, atualizado = ? WHERE id = ?", (nome, int(time.time()), uid))
 
     def listar(self):
         return self.con.execute("SELECT * FROM usuarios ORDER BY email").fetchall()
@@ -139,3 +154,11 @@ class Banco:
 
     def limpar_falhas(self, chave):
         self.con.execute("DELETE FROM falhas WHERE chave = ?", (chave,))
+
+    # ---------- histórico (quem fez o quê) ----------
+    def registrar_evento(self, autor, acao, alvo=""):
+        self.con.execute("INSERT INTO eventos (quando, autor, acao, alvo) VALUES (?, ?, ?, ?)",
+                         (int(time.time()), autor, acao, alvo))
+
+    def eventos(self, limite=50):
+        return self.con.execute("SELECT * FROM eventos ORDER BY quando DESC, rowid DESC LIMIT ?", (limite,)).fetchall()

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vendedores · MDTech</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pg-conta">
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="MDTech — voltar ao catálogo">
+        <img class="logo" src="img/logo.png" alt="MDTech"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="brand-txt">MD<b>Tech</b><small>Tecnologia que abre caminhos</small></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="adm-wrap">
+    <a class="conta-voltar" href="index.html">← Voltar ao catálogo</a>
+    <h1>Vendedores</h1>
+    <p class="conta-sub" id="adm-sub">Cadastre vendedores, gere uma nova senha para quem esqueceu e desative quem saiu.</p>
+    <div class="conta-msg" id="adm-msg" role="alert" hidden></div>
+
+    <div id="adm-conteudo" hidden>
+      <!-- senha gerada: aparece UMA vez -->
+      <section class="adm-senha" id="painel-senha" hidden aria-labelledby="senha-titulo" tabindex="-1">
+        <h2 id="senha-titulo">Senha inicial</h2>
+        <p class="adm-senha-para" id="senha-para"></p>
+        <p class="adm-senha-valor mono" id="senha-valor"></p>
+        <p class="conta-dica">Ela aparece só agora. Envie ao vendedor: no primeiro acesso, o site pede para ele criar a senha dele.</p>
+        <div class="adm-senha-acoes">
+          <a class="conta-bt" id="env-wpp" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+          <a class="conta-bt sec" id="env-mail">Enviar por e-mail</a>
+          <button type="button" class="conta-bt sec" id="env-copiar">Copiar mensagem</button>
+          <button type="button" class="conta-bt sec" id="env-fechar">Fechar</button>
+        </div>
+      </section>
+
+      <section class="adm-caixa" aria-labelledby="add-titulo">
+        <h2 id="add-titulo">Adicionar vendedor</h2>
+        <form id="f-add" class="conta-form adm-add" novalidate>
+          <div>
+            <label for="add-email">E-mail</label>
+            <input id="add-email" type="email" inputmode="email" autocapitalize="off" spellcheck="false" autocomplete="off" required>
+          </div>
+          <div>
+            <label for="add-nome">Nome <span class="opc">(opcional)</span></label>
+            <input id="add-nome" type="text" autocomplete="off">
+          </div>
+          <button type="submit" class="conta-bt">Adicionar e gerar senha</button>
+        </form>
+      </section>
+
+      <section aria-labelledby="lista-titulo">
+        <h2 id="lista-titulo" class="adm-h2">Cadastrados <span id="lista-total"></span></h2>
+        <ul class="adm-lista" id="lista"></ul>
+      </section>
+
+      <details class="adm-caixa adm-hist" id="hist">
+        <summary>Histórico</summary>
+        <ul id="hist-lista"></ul>
+      </details>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/vendedores.js"></script>
+</body>
+</html>

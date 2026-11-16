@@ -61,8 +61,9 @@
       obrigatoria ? "No primeiro acesso, troque a senha que você recebeu por uma só sua." : "");
     (temAtual ? $("nova") : $("atual")).focus();
   }
-  function telaConectado(email) {
+  function telaConectado(email, admin) {
     $("quem").textContent = email;
+    $("bt-vendedores").hidden = !admin;
     $("bt-catalogo").href = destino();
     mostrar("v-conectado", "Acesso de vendedores", "");
   }
@@ -119,8 +120,8 @@
     const r = await MD.contaReq("/eu");
     if (r.status === 401) MD.esquecerVendedor();
     if (r.status === 200 && r.dados.trocar_senha) telaTrocar(true);
-    else if (r.status === 200 && location.hash === "#trocar") { telaConectado(r.dados.email); telaTrocar(false); }
-    else if (r.status === 200) telaConectado(r.dados.email);
+    else if (r.status === 200 && location.hash === "#trocar") { telaConectado(r.dados.email, r.dados.admin); telaTrocar(false); }
+    else if (r.status === 200) telaConectado(r.dados.email, r.dados.admin);
     else if (r.status === 0) { telaEntrar(); aviso(r.dados.erro); }
     else telaEntrar();
   }
