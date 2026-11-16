@@ -50,7 +50,8 @@ tar -C servidor -czf - --exclude=__pycache__ mdtech_conta admin.py \
       && chmod 700 ~/mdtech_dados && setfacl -m u:www-data:rwx ~/mdtech_dados \
       && { [ ! -f ~/mdtech_dados/usuarios.sqlite ] || chmod 666 ~/mdtech_dados/usuarios.sqlite; }"
 "${SSH[@]}" "$ALVO" "cat > ~/mdtech_dados/precos.json && chmod 644 ~/mdtech_dados/precos.json" < saida/app_dados/precos.json
-"${SSH[@]}" "$ALVO" "cat > '$DEPLOY_PATH/conta.py' && chmod 755 '$DEPLOY_PATH/conta.py'" < servidor/conta.py
+# tr -d '\r': no Windows o git pode trazer o arquivo com CRLF, e aí a 1ª linha (#!/usr/bin/python3) quebra o CGI (erro 500)
+tr -d '\r' < servidor/conta.py | "${SSH[@]}" "$ALVO" "cat > '$DEPLOY_PATH/conta.py' && chmod 755 '$DEPLOY_PATH/conta.py'"
 
 # 3) conferência no ar
 cod="$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/interno/produtos.json")"

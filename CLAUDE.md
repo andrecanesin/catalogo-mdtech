@@ -136,6 +136,9 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   iframe, foi removido (cópia em `~/backup_antigo` no servidor).
 - **O CGI roda como `www-data`** (não como `catalogo_mdtech`): o código em `~/mdtech_app` é legível por todos e `~/mdtech_dados` fica 700 com ACL só
   para o `www-data` (`setfacl`, pacote `acl` instalado em 16/11). O `deploy.sh` aplica isso.
+- **Quebra de linha:** `.py` e `.sh` sempre LF (`.gitattributes`); com CRLF (checkout do Windows) a 1ª linha do `conta.py` quebra o CGI (erro 500).
+  O `deploy.sh` também remove o `\r` ao enviar o `conta.py`. O log do Apache em 16/11 mostra **mod_python 3.5 com Python 3.14** carregado: opção a avaliar na
+  Fase 2 para servir o app WSGI sem CGI (alternativa ao mod_wsgi).
 - **`sudo` liberado em 16/11** (`(ALL : ALL) ALL`). Regras: **nunca mexer em `/root`** (o administrador configura o sistema dele lá); fora de
   `/home/catalogo_mdtech`, só com o ok do André e explicando antes o que o comando faz e como desfazer; nunca reiniciar o servidor (é do administrador;
   em 16/11 havia um reinício de kernel pendente). A senha do `sudo` só no terminal do André (`ssh -t`).
