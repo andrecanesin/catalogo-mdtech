@@ -24,16 +24,15 @@
   <main class="adm-wrap">
     <a class="conta-voltar" href="index.html">← Voltar ao catálogo</a>
     <h1>Vendedores</h1>
-    <p class="conta-sub" id="adm-sub">Cadastre vendedores, gere uma nova senha para quem esqueceu e desative quem saiu.</p>
+    <p class="conta-sub" id="adm-sub">Cadastre vendedores, envie o convite por WhatsApp ou e-mail e desative quem saiu.</p>
     <div class="conta-msg" id="adm-msg" role="alert" hidden></div>
 
     <div id="adm-conteudo" hidden>
-      <!-- senha gerada: aparece UMA vez -->
+      <!-- convite gerado: link de uso único (7 dias) para o vendedor criar a senha -->
       <section class="adm-senha" id="painel-senha" hidden aria-labelledby="senha-titulo" tabindex="-1">
-        <h2 id="senha-titulo">Senha inicial</h2>
+        <h2 id="senha-titulo">Convite pronto</h2>
         <p class="adm-senha-para" id="senha-para"></p>
-        <p class="adm-senha-valor mono" id="senha-valor"></p>
-        <p class="conta-dica">Ela aparece só agora. Envie ao vendedor: no primeiro acesso, o site pede para ele criar a senha dele.</p>
+        <p class="conta-dica" id="senha-valor"></p>
         <div class="adm-senha-acoes">
           <a class="conta-bt" id="env-wpp" target="_blank" rel="noopener">Enviar no WhatsApp</a>
           <a class="conta-bt sec" id="env-mail">Enviar por e-mail</a>
@@ -53,7 +52,7 @@
             <label for="add-nome">Nome <span class="opc">(opcional)</span></label>
             <input id="add-nome" type="text" autocomplete="off">
           </div>
-          <button type="submit" class="conta-bt">Adicionar e gerar senha</button>
+          <button type="submit" class="conta-bt">Adicionar e criar convite</button>
         </form>
       </section>
 

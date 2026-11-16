@@ -19,16 +19,56 @@ def _usuario(db, email):
     return u
 
 
-def adicionar(db, email, nome="", autor="terminal"):
+def adicionar(db, email, nome="", autor="terminal", convite=False):
+    """convite=True (tela): devolve o código do link para o vendedor criar a senha; a senha sorteada nunca é mostrada.
+    convite=False (terminal): devolve uma senha inicial."""
     email = B.normalizar_email(email)
     if not EMAIL_OK.match(email) or len(email) > 200:
         raise GestaoErro("E-mail inválido.")
     if db.usuario(email):
-        raise GestaoErro(f"{email} já está cadastrado. Use \"Nova senha\" se ele esqueceu a senha.")
+        raise GestaoErro(f"{email} já está cadastrado. Use \"Enviar convite\" ou \"Enviar link de nova senha\".")
     senha = S.senha_inicial()
     db.criar_usuario(email, S.gerar_hash(senha), (nome or "").strip()[:100])
     db.registrar_evento(autor, "cadastrou", email)
+    if convite:
+        return convidar(db, email, autor)[0]
     return senha
+
+
+def convidar(db, email, autor="terminal"):
+    """Link de uso único (7 dias) para criar a senha: 'convite' para quem nunca criou, 'nova senha' para quem esqueceu.
+    A senha atual continua valendo até o link ser usado. Devolve (código, tipo)."""
+    u = _usuario(db, email)
+    if not u["ativo"]:
+        raise GestaoErro(f"{u['email']} está desativado. Use \"Reativar\".")
+    tipo = "convite" if u["trocar_senha"] else "nova senha"
+    token = db.criar_convite(u["id"])
+    db.registrar_evento(autor, "enviou convite para" if tipo == "convite" else "enviou link de nova senha para", u["email"])
+    return token, tipo
+
+
+def ver_convite(db, token):
+    u = db.convite(token)
+    if not u:
+        raise GestaoErro("Este link expirou ou já foi usado. Peça um novo ao marketing.")
+    return {"email": u["email"], "nome": u["nome"], "tipo": "convite" if u["trocar_senha"] else "nova senha",
+            "expira": u["convite_expira"]}
+
+
+def usar_convite(db, token, nova):
+    """O vendedor cria a senha pelo link: grava, apaga o link, desconecta os outros aparelhos e zera o bloqueio."""
+    u = db.convite(token)
+    if not u:
+        raise GestaoErro("Este link expirou ou já foi usado. Peça um novo ao marketing.")
+    problema = S.problema_nova_senha(nova, u["email"])
+    if problema:
+        raise GestaoErro(problema)
+    db.definir_senha(u["id"], S.gerar_hash(nova), trocar_senha=False)
+    db.apagar_convites(u["id"])
+    db.encerrar_sessoes(u["id"])
+    db.limpar_falhas("email:" + u["email"])
+    db.registrar_evento(u["email"], "criou a senha pelo link", u["email"])
+    return u
 
 
 def redefinir(db, email, autor="terminal"):
@@ -50,14 +90,16 @@ def desativar(db, email, autor="terminal"):
     db.registrar_evento(autor, "desativou", u["email"])
 
 
-def reativar(db, email, autor="terminal"):
-    """Volta a valer com senha inicial nova (a antiga pode ter ficado com quem saiu)."""
+def reativar(db, email, autor="terminal", convite=False):
+    """Volta a valer com senha nova (a antiga pode ter ficado com quem saiu). convite=True devolve o código do link."""
     u = _usuario(db, email)
     senha = S.senha_inicial()
     db.definir_senha(u["id"], S.gerar_hash(senha), trocar_senha=True)
     db.definir_ativo(u["id"], True)
     db.limpar_falhas("email:" + u["email"])
     db.registrar_evento(autor, "reativou", u["email"])
+    if convite:
+        return convidar(db, email, autor)[0]
     return senha
 
 
@@ -87,7 +129,7 @@ def listar(db):
         n, _ = db.falhas("email:" + u["email"])
         out.append({"email": u["email"], "nome": u["nome"], "ativo": bool(u["ativo"]), "admin": bool(u["admin"]),
                     "trocar_senha": bool(u["trocar_senha"]), "ultimo_login": u["ultimo_login"], "criado": u["criado"],
-                    "bloqueado": n >= B.MAX_POR_EMAIL})
+                    "bloqueado": n >= B.MAX_POR_EMAIL, "convite_expira": db.convite_pendente(u["id"])})
     return out
 
 
