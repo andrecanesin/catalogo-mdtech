@@ -29,3 +29,9 @@ PROJETO_MDTECH_COMPLETO.md
 # PREÇOS REAIS: nunca no git (repositório público); usados só no build interno
 dados/precos_reais*.xlsx
 saida/
+
+# deploy: credenciais e lista de vendedores NUNCA no git (repositório público)
+deploy/.env
+deploy/.htpasswd
+deploy/vendedores.txt
+deploy/senhas_vendedores.txt
