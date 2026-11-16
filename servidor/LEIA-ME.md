@@ -7,10 +7,14 @@ App Python **só com a biblioteca padrão** (padrão WSGI). Hoje roda por CGI no
 |---|---|
 | `~/public_html/conta.py` | porta de entrada CGI (único arquivo do app na pasta pública) |
 | `~/mdtech_app/` | código (`mdtech_conta/`, `admin.py`) |
-| `~/mdtech_dados/usuarios.sqlite` | vendedores (senha só como hash scrypt), sessões e tentativas erradas (chmod 600) |
+| `~/mdtech_dados/usuarios.sqlite` | vendedores (senha só como hash scrypt), sessões e tentativas erradas |
 | `~/mdtech_dados/precos.json` | preços reais (de `dados/precos_reais.xlsx`), entregues só a quem tem sessão |
 
 Tudo vai pelo `bash deploy/deploy.sh`.
+
+**Permissões:** o Apache roda o CGI como `www-data`, não como `catalogo_mdtech`. Por isso `~/mdtech_app` é legível por todos (o código já é
+público no GitHub), e `~/mdtech_dados` fica `700` com uma ACL que libera só o `www-data` (`setfacl -m u:www-data:rwx`). Os arquivos lá dentro
+são `666`/`644`, e quem os protege é a pasta. O `deploy.sh` aplica tudo isso.
 
 ## Vendedores (um comando por vez, no Git Bash)
 ```bash

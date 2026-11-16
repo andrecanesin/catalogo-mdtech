@@ -1,5 +1,6 @@
 """Usuários, sessões e tentativas de login em SQLite (arquivo FORA da pasta pública)."""
 import hashlib
+import os
 import secrets
 import sqlite3
 import time
@@ -49,14 +50,17 @@ def _hash_token(token):
 class Banco:
     def __init__(self, caminho):
         self.caminho = Path(caminho)
-        novo = not self.caminho.exists()
         self.caminho.parent.mkdir(parents=True, exist_ok=True)
+        if not self.caminho.exists():
+            # 0666 de propósito: no servidor o CGI roda como www-data e o admin.py como o dono da conta, e os dois gravam aqui.
+            # Quem protege é a PASTA (~/mdtech_dados: 700 + ACL só para o www-data, ver deploy.sh). O SQLite cria o diário
+            # (-journal) com o mesmo modo do banco, então os dois usuários continuam conseguindo gravar.
+            os.close(os.open(self.caminho, os.O_CREAT | os.O_WRONLY, 0o666))
+            os.chmod(self.caminho, 0o666)
         self.con = sqlite3.connect(self.caminho, timeout=10, isolation_level=None)
         self.con.row_factory = sqlite3.Row
         self.con.execute("PRAGMA foreign_keys = ON")
         self.con.executescript(_ESQUEMA)
-        if novo:
-            self.caminho.chmod(0o600)
 
     def fechar(self):
         self.con.close()
