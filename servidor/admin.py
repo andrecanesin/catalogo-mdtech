@@ -10,7 +10,10 @@
   python3 ~/mdtech_app/admin.py desbloquear email@empresa.com.br              zera as tentativas erradas
   python3 ~/mdtech_app/admin.py tornar-admin email@empresa.com.br             dá acesso à tela "Vendedores"
   python3 ~/mdtech_app/admin.py listar
+  python3 ~/mdtech_app/admin.py nomes < deploy/vendedores.txt                 preenche o nome de quem está sem nome
+                                                                             (linhas "email Nome Sobrenome"; aceita ; , ou tab)
 """
+import re
 import sys
 import time
 from pathlib import Path
@@ -19,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from mdtech_conta import banco as B, gestao as G      # noqa: E402
 
 LINK = "https://catalogo.mdtechsm.com.br/entrar.html#convite="
-COMANDOS = {"convite", "adicionar", "redefinir", "desativar", "reativar", "desbloquear", "tornar-admin", "listar"}
+COMANDOS = {"nomes", "convite", "adicionar", "redefinir", "desativar", "reativar", "desbloquear", "tornar-admin", "listar"}
 
 
 def main(argv, caminho=None):
@@ -27,6 +30,8 @@ def main(argv, caminho=None):
         print(__doc__)
         return 1
     cmd, emails = argv[0], [B.normalizar_email(e) for e in argv[1:] if e.strip()]
+    if cmd == "nomes":
+        return nomes(sys.stdin.read(), caminho)
     if cmd != "listar" and not emails:
         print("Informe o e-mail."); return 1
     db = B.Banco(caminho or Path("/var/lib/mdtech") / "usuarios.sqlite")
@@ -61,6 +66,43 @@ def main(argv, caminho=None):
     finally:
         db.fechar()
     return erro
+
+
+def ler_nomes(texto):
+    """'email Nome Sobrenome' (ou separado por ; , tab), uma pessoa por linha; # comenta. Devolve {email: nome}."""
+    out = {}
+    for linha in texto.splitlines():
+        linha = linha.strip().lstrip("\ufeff")
+        if not linha or linha.startswith("#"):
+            continue
+        partes = [p for p in re.split(r"[\s;,]+", linha) if p]
+        email = next((p for p in partes if "@" in p), None)
+        if not email:
+            continue
+        nome = " ".join(p for p in partes if p != email).strip(" \"'-")
+        if nome:
+            out[B.normalizar_email(email)] = nome[:100]
+    return out
+
+
+def nomes(texto, caminho=None):
+    db = B.Banco(caminho or Path("/var/lib/mdtech") / "usuarios.sqlite")
+    try:
+        lidos = ler_nomes(texto)
+        for email, nome in lidos.items():
+            u = db.usuario(email)
+            if not u:
+                print(f"{email}: não cadastrado (ignorado)")
+            elif u["nome"]:
+                print(f"{email}: já tem nome ({u['nome']}), mantido")
+            else:
+                G.definir_nome(db, email, nome)
+                print(f"{email}: {nome}")
+        if not lidos:
+            print("Nenhum nome encontrado (formato: e-mail e nome na mesma linha).")
+    finally:
+        db.fechar()
+    return 0
 
 
 if __name__ == "__main__":
