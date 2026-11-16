@@ -6,6 +6,7 @@ import sqlite3
 import time
 from pathlib import Path
 
+CONVITE_DIAS = 7                   # link de convite / nova senha: vale 7 dias e uma vez só
 SESSAO_DIAS = 30                   # o vendedor fica conectado no celular por até 30 dias
 JANELA = 15 * 60                   # janela das tentativas erradas (s)
 MAX_POR_EMAIL = 5                  # erros seguidos por e-mail na janela -> bloqueio
@@ -36,6 +37,12 @@ CREATE TABLE IF NOT EXISTS falhas (
   quando INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS falhas_chave ON falhas(chave, quando);
+CREATE TABLE IF NOT EXISTS convites (
+  token_hash TEXT PRIMARY KEY,
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  criado INTEGER NOT NULL,
+  expira INTEGER NOT NULL
+);
 CREATE TABLE IF NOT EXISTS eventos (
   quando INTEGER NOT NULL,
   autor TEXT NOT NULL,
@@ -94,6 +101,7 @@ class Banco:
         self.con.execute("UPDATE usuarios SET ativo = ?, atualizado = ? WHERE id = ?", (int(ativo), int(time.time()), uid))
         if not ativo:
             self.encerrar_sessoes(uid)
+            self.apagar_convites(uid)
 
     def definir_admin(self, uid, admin):
         self.con.execute("UPDATE usuarios SET admin = ?, atualizado = ? WHERE id = ?", (int(admin), int(time.time()), uid))
@@ -137,6 +145,33 @@ class Banco:
             self.con.execute("DELETE FROM sessoes WHERE usuario_id = ? AND token_hash <> ?", (uid, _hash_token(exceto_token)))
         else:
             self.con.execute("DELETE FROM sessoes WHERE usuario_id = ?", (uid,))
+
+    # ---------- convites (link para criar a senha; uso único) ----------
+    def criar_convite(self, uid):
+        """Cancela os convites anteriores do usuário e devolve o código do novo (só o hash fica no banco)."""
+        token = secrets.token_urlsafe(24)
+        agora = int(time.time())
+        self.con.execute("DELETE FROM convites WHERE usuario_id = ? OR expira < ?", (uid, agora))
+        self.con.execute("INSERT INTO convites (token_hash, usuario_id, criado, expira) VALUES (?, ?, ?, ?)",
+                         (_hash_token(token), uid, agora, agora + CONVITE_DIAS * 86400))
+        return token
+
+    def convite(self, token):
+        """Usuário (ativo) dono de um convite válido, ou None."""
+        if not token or len(token) > 100:
+            return None
+        return self.con.execute(
+            "SELECT u.*, c.expira AS convite_expira FROM convites c JOIN usuarios u ON u.id = c.usuario_id "
+            "WHERE c.token_hash = ? AND c.expira > ? AND u.ativo = 1", (_hash_token(token), int(time.time()))).fetchone()
+
+    def apagar_convites(self, uid):
+        self.con.execute("DELETE FROM convites WHERE usuario_id = ?", (uid,))
+
+    def convite_pendente(self, uid):
+        """Validade (epoch) do convite em aberto do usuário, ou None."""
+        lin = self.con.execute("SELECT MAX(expira) AS e FROM convites WHERE usuario_id = ? AND expira > ?",
+                               (uid, int(time.time()))).fetchone()
+        return lin["e"]
 
     # ---------- tentativas erradas ----------
     def registrar_falha(self, *chaves):

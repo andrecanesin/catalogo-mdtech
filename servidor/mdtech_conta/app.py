@@ -9,7 +9,9 @@ Endereços (PATH_INFO, porque o servidor não tem mod_rewrite):
   GET  /conta.py/precos         preços reais (só com sessão) 200 | 401 | 403 (falta trocar a senha inicial)
   Gestão dos vendedores (só administrador, já com a senha própria; ver gestao.py):
   GET  /conta.py/admin/vendedores · GET /conta.py/admin/historico
-  POST /conta.py/admin/{adicionar, redefinir, desativar, reativar, desbloquear, admin, nome}   {email, ...}
+  POST /conta.py/admin/{adicionar, convite, desativar, reativar, desbloquear, admin, nome}   {email, ...}
+  Link de convite / nova senha (entrar.html#convite=CÓDIGO; o código vai depois do # e não chega aos logs nem à pré-visualização):
+  POST /conta.py/convite/ver {convite} · POST /conta.py/convite/usar {convite, nova}  -> entra direto
 Todo POST exige corpo JSON (application/json): um formulário de outro site não consegue enviar isso sem permissão (CSRF).
 """
 import json
@@ -28,7 +30,8 @@ _STATUS = {200: "200 OK", 400: "400 Bad Request", 401: "401 Unauthorized", 403: 
            415: "415 Unsupported Media Type", 429: "429 Too Many Requests", 500: "500 Internal Server Error"}
 
 
-_OPERACOES = {"adicionar": None, "redefinir": G.redefinir, "desativar": G.desativar, "reativar": G.reativar,
+# operações da tela: "convite" serve para o 1º acesso e para "esqueci a senha" (link de uso único, 7 dias)
+_OPERACOES = {"adicionar": None, "convite": None, "desativar": G.desativar, "reativar": None,
               "desbloquear": G.desbloquear, "admin": None, "nome": None}
 
 
@@ -107,6 +110,7 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
                  "/trocar-senha": ("POST", _trocar), "/sair": ("POST", _sair),
                  "/admin/vendedores": ("GET", _adm_lista), "/admin/historico": ("GET", _adm_historico)}
         rotas.update({"/admin/" + op: ("POST", _adm_op) for op in _OPERACOES})
+        rotas.update({"/convite/ver": ("POST", _convite_ver), "/convite/usar": ("POST", _convite_usar)})
         if rota not in rotas:
             return Resposta(404, {"erro": "Endereço não encontrado."})
         esperado, func = rotas[rota]
@@ -195,6 +199,39 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
             dados = {"precos": {}, "atualizado": None}
         return Resposta(200, {**dados, "email": u["email"], "admin": bool(u["admin"])})
 
+    # ---------- link de convite / nova senha ----------
+    def _limite_convite(db, environ):
+        n, falta = db.falhas("ip:" + environ.get("REMOTE_ADDR", "?"))
+        if n >= B.MAX_POR_IP:
+            return Resposta(429, {"erro": f"Muitas tentativas. Tente de novo em {_minutos(falta)}."})
+        return None
+
+    def _convite_ver(db, environ, dados):
+        bloq = _limite_convite(db, environ)
+        if bloq:
+            return bloq
+        try:
+            return Resposta(200, G.ver_convite(db, str(dados.get("convite", ""))[:100]))
+        except G.GestaoErro as e:
+            db.registrar_falha("ip:" + environ.get("REMOTE_ADDR", "?"))
+            return Resposta(400, {"erro": str(e)})
+
+    def _convite_usar(db, environ, dados):
+        bloq = _limite_convite(db, environ)
+        if bloq:
+            return bloq
+        token = str(dados.get("convite", ""))[:100]
+        if not db.convite(token):
+            db.registrar_falha("ip:" + environ.get("REMOTE_ADDR", "?"))
+        try:
+            u = G.usar_convite(db, token, str(dados.get("nova", ""))[:201])
+        except G.GestaoErro as e:
+            return Resposta(400, {"erro": str(e)})
+        db.marcar_login(u["id"])
+        sessao = db.criar_sessao(u["id"])
+        return Resposta(200, {"email": u["email"], "nome": u["nome"], "trocar_senha": False, "admin": bool(u["admin"])},
+                        _cookies_sessao(sessao, cookie_seguro))
+
     # ---------- gestão dos vendedores (tela vendedores.html) ----------
     def _admin(db, environ):
         u = db.sessao(_token(environ))
@@ -226,8 +263,13 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
         email = str(dados.get("email", ""))[:200]
         autor = u["email"]
         try:
+            convite = None
             if op == "adicionar":
-                senha = G.adicionar(db, email, str(dados.get("nome", "")), autor)
+                convite = G.adicionar(db, email, str(dados.get("nome", "")), autor, convite=True); senha = None
+            elif op == "convite":
+                convite = G.convidar(db, email, autor)[0]; senha = None
+            elif op == "reativar":
+                convite = G.reativar(db, email, autor, convite=True); senha = None
             elif op == "admin":
                 G.definir_admin(db, email, bool(dados.get("admin")), autor); senha = None
             elif op == "nome":
@@ -237,6 +279,9 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
         except G.GestaoErro as e:
             return Resposta(400, {"erro": str(e)})
         corpo = {"ok": True, "email": B.normalizar_email(email)}
+        if convite:
+            corpo["convite"] = convite        # vira o link entrar.html#convite=...; no banco só existe o hash
+            corpo["validade_dias"] = B.CONVITE_DIAS
         if senha:
             corpo["senha"] = senha            # mostrada UMA vez na tela; no banco só existe o hash
         return Resposta(200, corpo)

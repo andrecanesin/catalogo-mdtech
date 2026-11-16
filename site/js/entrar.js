@@ -6,6 +6,10 @@
   const msg = $("conta-msg"), sub = $("conta-sub");
   const telas = ["f-entrar", "f-trocar", "v-conectado", "v-fora"];
   let senhaRecebida = "";           // só em memória, para o 1º acesso não pedir a senha duas vezes
+  // Link de convite / nova senha: entrar.html#convite=CÓDIGO (depois do #: não vai ao servidor nem à pré-visualização do WhatsApp).
+  // O código sai da barra de endereço logo ao abrir (não fica em favoritos nem em print) e só existe em memória.
+  let convite = (location.hash.match(/^#convite=([\w-]{10,100})$/) || [])[1] || "";
+  if (convite) history.replaceState(null, "", location.pathname + location.search);
 
   // volta=produto.html?codigo=A153 -> só endereços deste site
   function destino() {
@@ -41,7 +45,7 @@
   const wpp = (MD.cfg.contato || {}).whatsapp;
   if (wpp) {
     const p = $("ajuda-senha");
-    p.innerHTML = 'Esqueceu a senha? <a target="_blank" rel="noopener">Peça uma nova ao marketing</a>.';
+    p.innerHTML = 'Esqueceu a senha? <a target="_blank" rel="noopener">Peça um link de nova senha ao marketing</a>.';
     p.querySelector("a").href = "https://wa.me/" + wpp + "?text=" +
       encodeURIComponent("Olá! Esqueci a senha do acesso de vendedores do catálogo MDTech. Meu e-mail: ");
   }
@@ -57,9 +61,22 @@
     $("atual").value = temAtual ? senhaRecebida : "";
     $("nova").value = $("nova2").value = "";
     $("bt-cancelar-troca").hidden = obrigatoria;
+    $("f-trocar").querySelector("button[type=submit]").textContent = "Salvar a nova senha";
     mostrar("f-trocar", obrigatoria ? "Crie a sua senha" : "Trocar a senha",
       obrigatoria ? "No primeiro acesso, troque a senha que você recebeu por uma só sua." : "");
     (temAtual ? $("nova") : $("atual")).focus();
+  }
+  function telaConvite(d) {
+    $("bloco-atual").hidden = true; $("atual").value = "";
+    $("nova").value = $("nova2").value = "";
+    $("usuario-oculto").value = d.email;        // o gerenciador de senhas do celular guarda e-mail + senha juntos
+    $("bt-cancelar-troca").hidden = true;
+    $("f-trocar").querySelector("button[type=submit]").textContent = "Criar senha e entrar";
+    mostrar("f-trocar", d.tipo === "convite" ? "Crie a sua senha" : "Crie uma nova senha", "");
+    sub.innerHTML = (d.nome ? `Olá, ${MD.esc(d.nome.split(" ")[0])}! ` : "") +
+      `Esta senha é para <b>${MD.esc(d.email)}</b>. Com ela você entra no catálogo e vê os preços de tabela.`;
+    sub.hidden = false;
+    $("nova").focus();
   }
   function telaConectado(email, admin) {
     $("quem").textContent = email;
@@ -84,10 +101,22 @@
   $("f-trocar").addEventListener("submit", async e => {
     e.preventDefault(); aviso("");
     const atual = $("atual").value, nova = $("nova").value, nova2 = $("nova2").value;
-    if (!atual) { aviso("Informe a senha atual."); $("atual").focus(); return; }
+    if (!convite && !atual) { aviso("Informe a senha atual."); $("atual").focus(); return; }
     if (nova.length < 10) { aviso("A nova senha precisa ter pelo menos 10 caracteres."); $("nova").focus(); return; }
     if (nova !== nova2) { aviso("As duas senhas novas não são iguais."); $("nova2").focus(); return; }
     ocupado(e.target, true);
+    if (convite) {
+      const r = await MD.contaReq("/convite/usar", { convite, nova });
+      ocupado(e.target, false);
+      if (r.status === 200) {
+        convite = "";
+        aviso("Senha criada. Abrindo o catálogo…", true);
+        setTimeout(() => location.href = "index.html", 900); return;
+      }
+      if (/link/i.test(r.dados.erro || "")) { convite = ""; telaEntrar(); }
+      else $("nova").focus();
+      aviso(r.dados.erro || "Não foi possível salvar. Tente de novo."); return;
+    }
     const r = await MD.contaReq("/trocar-senha", { senha_atual: atual, nova });
     ocupado(e.target, false);
     if (r.status === 401) { senhaRecebida = ""; telaEntrar(); aviso(r.dados.erro); return; }
@@ -115,6 +144,11 @@
       $("bt-oficial").href = base + "entrar.html";
       mostrar("v-fora", "Acesso de vendedores", "");
       return;
+    }
+    if (convite) {
+      const c = await MD.contaReq("/convite/ver", { convite });
+      if (c.status === 200) { telaConvite(c.dados); return; }
+      convite = ""; telaEntrar(); aviso(c.dados.erro || "Não foi possível abrir o link."); return;
     }
     if (!MD.ehVendedor()) { telaEntrar(); return; }
     const r = await MD.contaReq("/eu");

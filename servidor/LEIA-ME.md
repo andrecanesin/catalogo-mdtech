@@ -23,9 +23,12 @@ ssh -t catalogo_mdtech@173.214.164.179 'sudo install -d -o www-data -g catalogo_
 Para desfazer: `sudo rm -rf /var/lib/mdtech` (apaga vendedores e sessões). Incluir `/var/lib/mdtech` no backup do servidor.
 
 ## Gestão pela tela (dia a dia)
-`vendedores.html` (menu da conta → "Gerenciar vendedores"), só para administradores: adicionar, nova senha (esqueceu), desativar/reativar,
-desbloquear, tornar administrador, nome e histórico de quem fez o quê. A senha inicial aparece uma vez, com botões para enviar por WhatsApp,
-e-mail ou copiar a mensagem pronta. O 1º administrador é feito pelo terminal: `admin.py tornar-admin email`.
+`vendedores.html` (menu da conta → "Gerenciar vendedores"), só para administradores: adicionar, **Enviar convite** (1º acesso) ou
+**Enviar link de nova senha** (esqueceu), desativar/reativar, desbloquear, tornar administrador, nome e histórico de quem fez o quê.
+**Sem senha na tela:** o convite é um link `entrar.html#convite=CÓDIGO`, de **uso único e válido por 7 dias** (gerar outro cancela o anterior),
+enviado por WhatsApp ou e-mail com a mensagem pronta. O vendedor toca, cria a senha e já entra. O código vai depois do `#`: não chega aos logs
+nem à pré-visualização do WhatsApp, e a página o tira da barra de endereço. No banco só fica o hash. A senha atual vale até o link ser usado.
+O 1º administrador é feito pelo terminal: `admin.py tornar-admin email` (e `admin.py convite email` imprime um link, para emergências).
 
 ## Pelo terminal (1º administrador e emergências)
 ```bash

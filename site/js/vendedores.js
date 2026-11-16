@@ -1,5 +1,5 @@
 /* Gestão dos vendedores (vendedores.html), só para administradores. Conversa com /conta.py/admin/... (servidor/mdtech_conta).
-   A senha inicial gerada aparece UMA vez, com atalhos para enviar ao vendedor (WhatsApp, e-mail, copiar). */
+   Sem senha na tela: "Enviar convite" / "Enviar link de nova senha" gera um link de uso único (7 dias), enviado por WhatsApp ou e-mail. */
 (function () {
   const $ = id => document.getElementById(id);
   const esc = MD.esc;
@@ -11,31 +11,35 @@
     if (texto) msg.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
   const data = t => t ? new Date(t * 1000).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+  const dia = t => new Date(t * 1000).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
   const linkEntrar = () => location.origin + location.pathname.replace(/[^/]*$/, "") + "entrar.html";
 
-  function mensagem(v, senha) {
-    const nome = (v.nome || "").split(" ")[0];
-    return `Olá${nome ? ", " + nome : ""}! Seu acesso de vendedor ao catálogo MDTech está pronto.\n\n` +
-      `Entre em ${linkEntrar()}\nE-mail: ${v.email}\nSenha inicial: ${senha}\n\n` +
-      `No primeiro acesso, o site pede para você criar a sua senha. Depois de entrar, os preços de tabela aparecem no catálogo.`;
+  // A tela não mostra senha: gera um LINK de uso único (7 dias) que o vendedor toca para criar a senha e já entrar.
+  function mensagem(v, link, tipo, dias) {
+    const nome = (v.nome || "").split(" ")[0], ola = `Olá${nome ? ", " + nome : ""}!`;
+    if (tipo === "nova senha")
+      return `${ola} Aqui está o link para criar uma nova senha no catálogo MDTech:\n${link}\n\nO link vale por ${dias} dias e funciona uma vez só.`;
+    return `${ola} Seu acesso de vendedor ao catálogo MDTech está pronto. Toque no link para criar a sua senha:\n${link}\n\n` +
+      `O link vale por ${dias} dias. Depois, é só entrar com o seu e-mail (${v.email}) e a senha que você criou: os preços de tabela aparecem no catálogo.`;
   }
-  function mostrarSenha(v, senha, titulo) {
-    ultimaMensagem = mensagem(v, senha);
-    $("senha-titulo").textContent = titulo;
+  function mostrarConvite(v, codigo, tipo, dias) {
+    const link = linkEntrar() + "#convite=" + codigo;
+    ultimaMensagem = mensagem(v, link, tipo, dias);
+    $("senha-titulo").textContent = tipo === "nova senha" ? "Link de nova senha pronto" : "Convite pronto";
     $("senha-para").innerHTML = `Para <b>${esc(v.nome ? v.nome + " · " + v.email : v.email)}</b>`;
-    $("senha-valor").textContent = senha;
+    $("senha-valor").textContent = `Vale por ${dias} dias e funciona uma vez só. Gerar outro cancela este.`;
     $("env-wpp").href = "https://wa.me/?text=" + encodeURIComponent(ultimaMensagem);
-    $("env-mail").href = "mailto:" + encodeURIComponent(v.email) + "?subject=" + encodeURIComponent("Acesso ao catálogo MDTech") +
+    $("env-mail").href = "mailto:" + encodeURIComponent(v.email) + "?subject=" +
+      encodeURIComponent(tipo === "nova senha" ? "Nova senha do catálogo MDTech" : "Seu acesso ao catálogo MDTech") +
       "&body=" + encodeURIComponent(ultimaMensagem);
     const p = $("painel-senha"); p.hidden = false; p.focus(); p.scrollIntoView({ block: "start", behavior: "smooth" });
   }
   $("env-copiar").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(ultimaMensagem); aviso("Mensagem copiada. Cole no WhatsApp ou no e-mail do vendedor.", true); }
-    catch (e) { aviso("Não consegui copiar: selecione a senha e copie à mão."); }
+    catch (e) { aviso("Não consegui copiar. Use o botão do WhatsApp ou do e-mail."); }
   });
   $("env-fechar").addEventListener("click", () => {
-    if (!confirm("Fechar? A senha não aparece de novo (se precisar, gere uma nova).")) return;
-    $("painel-senha").hidden = true; $("senha-valor").textContent = ""; ultimaMensagem = "";
+    $("painel-senha").hidden = true; ultimaMensagem = "";
   });
 
   async function op(rota, corpo) {
@@ -49,12 +53,13 @@
     const badges = [
       v.ativo ? "" : '<span class="adm-b off">Desativado</span>',
       v.bloqueado ? '<span class="adm-b alerta">Bloqueado por tentativas</span>' : "",
-      v.ativo && v.trocar_senha ? '<span class="adm-b pend">Falta criar a senha</span>' : "",
+      v.ativo && v.trocar_senha && !v.convite_expira ? '<span class="adm-b pend">Falta enviar o convite</span>' : "",
+      v.ativo && v.convite_expira ? `<span class="adm-b pend">${v.trocar_senha ? "Convite enviado" : "Link de nova senha enviado"} · vale até ${dia(v.convite_expira)}</span>` : "",
       v.admin ? '<span class="adm-b adm">Administrador</span>' : "",
       v.email === EU ? '<span class="adm-b eu">Você</span>' : ""
     ].join("");
     const acoes = [];
-    if (v.ativo) acoes.push(`<button type="button" data-op="redefinir">Nova senha</button>`);
+    if (v.ativo) acoes.push(`<button type="button" data-op="convite" class="principal">${v.trocar_senha ? "Enviar convite" : "Enviar link de nova senha"}</button>`);
     if (v.bloqueado) acoes.push(`<button type="button" data-op="desbloquear">Desbloquear</button>`);
     if (v.email !== EU) {
       acoes.push(v.ativo ? `<button type="button" data-op="desativar" class="perigo">Desativar</button>`
@@ -95,16 +100,17 @@
     const r = await MD.contaReq("/admin/historico");
     if (r.status !== 200) return;
     $("hist-lista").innerHTML = r.dados.historico.map(h =>
-      `<li><time>${data(h.quando)}</time> <b>${esc(h.autor)}</b> ${esc(h.acao)} <b>${esc(h.alvo)}</b></li>`).join("") || "<li>Nada ainda.</li>";
+      h.autor === h.alvo ? `<li><time>${data(h.quando)}</time> <b>${esc(h.autor)}</b> ${esc(h.acao)}</li>`
+        : `<li><time>${data(h.quando)}</time> <b>${esc(h.autor)}</b> ${esc(h.acao)} <b>${esc(h.alvo)}</b></li>`).join("") || "<li>Nada ainda.</li>";
   }
 
   $("lista").addEventListener("click", async e => {
     const b = e.target.closest("button[data-op]"); if (!b) return;
     const email = b.closest("[data-email]").dataset.email, v = VENDEDORES.find(x => x.email === email), o = b.dataset.op;
     aviso("");
-    if (o === "redefinir" && !confirm(`Gerar nova senha para ${email}? A senha atual deixa de valer e ele sai dos aparelhos.`)) return;
+    if (o === "convite" && v.convite_expira && !confirm(`Já existe um link em aberto para ${email}. Gerar outro cancela o anterior. Continuar?`)) return;
     if (o === "desativar" && !confirm(`Desativar ${email}? Ele sai de todos os aparelhos e não entra mais.`)) return;
-    if (o === "reativar" && !confirm(`Reativar ${email}? Será gerada uma senha inicial nova.`)) return;
+    if (o === "reativar" && !confirm(`Reativar ${email}? Será gerado um convite para ele criar uma senha nova.`)) return;
     let corpo = { email };
     if (o === "admin") {
       if (!confirm(v.admin ? `Tirar o acesso de administrador de ${email}?` : `Tornar ${email} administrador? Ele poderá gerenciar os vendedores.`)) return;
@@ -116,7 +122,7 @@
     b.disabled = false;
     if (!d) return;
     await carregar();
-    if (d.senha) mostrarSenha({ ...v, ...(corpo.nome != null ? { nome: corpo.nome } : {}) }, d.senha, o === "reativar" ? "Acesso reativado" : "Nova senha inicial");
+    if (d.convite) mostrarConvite(v, d.convite, o === "convite" && !v.trocar_senha ? "nova senha" : "convite", d.validade_dias);
     else aviso({ desativar: `${email} foi desativado.`, desbloquear: `${email} foi desbloqueado.`, admin: "Pronto.", nome: "Nome salvo." }[o] || "Pronto.", true);
   });
 
@@ -130,7 +136,7 @@
     if (!d) return;
     $("add-email").value = ""; $("add-nome").value = "";
     await carregar();
-    mostrarSenha({ email: d.email, nome }, d.senha, "Vendedor cadastrado");
+    mostrarConvite({ email: d.email, nome }, d.convite, "convite", d.validade_dias);
   });
 
   carregar();

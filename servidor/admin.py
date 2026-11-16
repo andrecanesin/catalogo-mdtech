@@ -3,6 +3,7 @@
 (menu da conta, só para administradores); este script serve para o 1º administrador e para emergências.
 
   python3 ~/mdtech_app/admin.py adicionar email@empresa.com.br [email2 ...]   cria e mostra a senha inicial
+  python3 ~/mdtech_app/admin.py convite email@empresa.com.br                  link (7 dias, uso único) para criar a senha
   python3 ~/mdtech_app/admin.py redefinir email@empresa.com.br                nova senha inicial (esqueceu a senha)
   python3 ~/mdtech_app/admin.py desativar email@empresa.com.br                saiu da empresa: bloqueia e desconecta
   python3 ~/mdtech_app/admin.py reativar email@empresa.com.br                 volta a valer (com senha nova)
@@ -17,7 +18,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from mdtech_conta import banco as B, gestao as G      # noqa: E402
 
-COMANDOS = {"adicionar", "redefinir", "desativar", "reativar", "desbloquear", "tornar-admin", "listar"}
+LINK = "https://catalogo.mdtechsm.com.br/entrar.html#convite="
+COMANDOS = {"convite", "adicionar", "redefinir", "desativar", "reativar", "desbloquear", "tornar-admin", "listar"}
 
 
 def main(argv, caminho=None):
@@ -42,6 +44,8 @@ def main(argv, caminho=None):
             try:
                 if cmd == "adicionar":
                     print(f"{email}\tsenha inicial: {G.adicionar(db, email)}")
+                elif cmd == "convite":
+                    print(f"{email}\t{LINK}{G.convidar(db, email)[0]}")
                 elif cmd == "redefinir":
                     print(f"{email}\tnova senha inicial: {G.redefinir(db, email)}")
                 elif cmd == "reativar":

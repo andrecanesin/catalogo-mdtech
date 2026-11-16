@@ -613,3 +613,5 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .adm-hist b{font-weight:600;word-break:break-all;}
 .adm-senha,#adm-msg{scroll-margin-top:96px;}
 .adm-hist b{word-break:normal;overflow-wrap:anywhere;}
+.adm-acoes button.principal{background:var(--navy);color:#fff;}
+.adm-acoes button.principal:hover{background:var(--navy-2);}

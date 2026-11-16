@@ -163,6 +163,8 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   cadastrar os vendedores e, testado, desligar o `/interno` (Basic Auth).
 - **Gestão dos vendedores pela tela** (16/11, pedido do André): `site/vendedores.html`, só administradores (coluna `admin`), com histórico
   (tabela `eventos`). Lógica em `servidor/mdtech_conta/gestao.py`, usada pela tela e pelo `admin.py`. 8 vendedores cadastrados em 16/11.
+  **Convite por link** (16/11, pedido do André: copiar senha no celular é difícil): a tela não mostra senha; envia link de uso único (7 dias)
+  por WhatsApp/e-mail para criar a senha (1º acesso e "esqueci a senha"). Tabela `convites` (só hash).
 - **SSO com a GEWEB** só se ela
   oferecer OIDC/OAuth/SAML ou API para validar usuário (o André vai perguntar à GEWEB).
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
@@ -171,7 +173,7 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - **Institucional:** páginas estáticas no repositório, editadas pelo André (marketing). Aguardando o conteúdo.
 - **Orçamento (ferramenta + campanha):** conversar depois do login. Perguntas: quem usa (vendedor, cliente ou os dois), saída (PDF com preço, WhatsApp), desconto, registro das
   propostas, objetivo e canais da campanha.
-- **Pendências de segurança do André:** trocar a senha do usuário do servidor (apareceu no chat); enviar as senhas aos vendedores e apagar `deploy/senhas_vendedores.txt`.
+- **Pendências de segurança do André:** trocar a senha do usuário do servidor (apareceu no chat); enviar os convites aos vendedores pela tela e apagar `deploy/senhas_vendedores.txt` (as senhas dele não são mais usadas).
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).

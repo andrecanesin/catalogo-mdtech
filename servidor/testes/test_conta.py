@@ -185,41 +185,73 @@ class TesteConta(unittest.TestCase):
         self._admin_pronto()
         st, corpo, *_ = self.c.req("POST", "/admin/adicionar", {"email": " Novo@MDTech.com.br ", "nome": "Novo"})
         self.assertEqual(st, 200, corpo)
-        senha = corpo["senha"]
+        self.assertNotIn("senha", corpo)                      # a tela não mostra mais senha: só o link
+        conv = corpo["convite"]
+        self.assertEqual(corpo["validade_dias"], 7)
         self.assertEqual(self.c.req("POST", "/admin/adicionar", {"email": "novo@mdtech.com.br"})[0], 400)   # repetido
         self.assertEqual(self.c.req("POST", "/admin/adicionar", {"email": "sem-arroba"})[0], 400)
+        # o vendedor abre o link: vê o e-mail; cria a senha e já entra
         novo = Cliente(self.app)
-        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": senha})[0], 200)
-        # nova senha: derruba a sessão do vendedor e a senha anterior
-        nova = self.c.req("POST", "/admin/redefinir", {"email": "novo@mdtech.com.br"})[1]["senha"]
+        st, d, *_ = novo.req("POST", "/convite/ver", {"convite": conv})
+        self.assertEqual((st, d["email"], d["tipo"]), (200, "novo@mdtech.com.br", "convite"))
+        self.assertEqual(novo.req("POST", "/convite/usar", {"convite": conv, "nova": "curta"})[0], 400)   # regra da senha
+        st, d, *_ = novo.req("POST", "/convite/usar", {"convite": conv, "nova": "cirurgia-laparo-26"})
+        self.assertEqual(st, 200, d)
+        self.assertEqual(novo.req("GET", "/precos")[0], 200)        # já entrou, sem trocar senha de novo
+        self.assertEqual(novo.req("POST", "/convite/usar", {"convite": conv, "nova": "outra-senha-boa"})[0], 400)  # uso único
+        # esqueci a senha: link novo; a senha atual vale até o link ser usado; ao usar, os aparelhos saem
+        conv2 = self.c.req("POST", "/admin/convite", {"email": "novo@mdtech.com.br"})[1]["convite"]
+        self.assertEqual(Cliente(self.app).req("POST", "/convite/ver", {"convite": conv2})[1]["tipo"], "nova senha")
+        self.assertEqual(novo.req("GET", "/eu")[0], 200)
+        conv3 = self.c.req("POST", "/admin/convite", {"email": "novo@mdtech.com.br"})[1]["convite"]
+        self.assertEqual(Cliente(self.app).req("POST", "/convite/ver", {"convite": conv2})[0], 400)       # o novo cancela o anterior
+        outro = Cliente(self.app)
+        self.assertEqual(outro.req("POST", "/convite/usar", {"convite": conv3, "nova": "nova-senha-2026"})[0], 200)
         self.assertEqual(novo.req("GET", "/eu")[0], 401)
-        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": senha})[0], 401)
-        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": nova})[0], 200)
-        # desativar / reativar
+        self.assertEqual(outro.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "nova-senha-2026"})[0], 200)
+        # desativar apaga o link; reativar devolve um link novo
+        conv4 = self.c.req("POST", "/admin/convite", {"email": "novo@mdtech.com.br"})[1]["convite"]
         self.assertEqual(self.c.req("POST", "/admin/desativar", {"email": "novo@mdtech.com.br"})[0], 200)
-        self.assertEqual(novo.req("GET", "/eu")[0], 401)
-        reat = self.c.req("POST", "/admin/reativar", {"email": "novo@mdtech.com.br"})[1]["senha"]
-        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": reat})[0], 200)
+        self.assertEqual(outro.req("GET", "/eu")[0], 401)
+        self.assertEqual(Cliente(self.app).req("POST", "/convite/ver", {"convite": conv4})[0], 400)
+        self.assertEqual(self.c.req("POST", "/admin/convite", {"email": "novo@mdtech.com.br"})[0], 400)  # desativado
+        conv5 = self.c.req("POST", "/admin/reativar", {"email": "novo@mdtech.com.br"})[1]["convite"]
+        self.assertEqual(outro.req("POST", "/convite/usar", {"convite": conv5, "nova": "volta-pra-casa-26"})[0], 200)
         # bloqueio aparece na lista e o desbloqueio funciona
         for _ in range(B.MAX_POR_EMAIL):
-            novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "errada"}, ip="9.9.9.9")
+            Cliente(self.app).req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "errada"}, ip="9.9.9.9")
         lista = {v["email"]: v for v in self.c.req("GET", "/admin/vendedores")[1]["vendedores"]}
         self.assertTrue(lista["novo@mdtech.com.br"]["bloqueado"])
         self.c.req("POST", "/admin/desbloquear", {"email": "novo@mdtech.com.br"})
-        self.assertEqual(novo.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": reat})[0], 200)
+        self.assertEqual(outro.req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "volta-pra-casa-26"})[0], 200)
         # admin: dar e tirar; não pode se rebaixar nem se desativar
         self.assertEqual(self.c.req("POST", "/admin/admin", {"email": "novo@mdtech.com.br", "admin": True})[0], 200)
         self.assertEqual(self.c.req("POST", "/admin/admin", {"email": "vendedor@mdtech.com.br", "admin": False})[0], 400)
         self.assertEqual(self.c.req("POST", "/admin/desativar", {"email": "vendedor@mdtech.com.br"})[0], 400)
         self.assertEqual(self.c.req("POST", "/admin/nome", {"email": "novo@mdtech.com.br", "nome": "Fulano"})[0], 200)
-        self.assertEqual(self.c.req("POST", "/admin/redefinir", {"email": "ninguem@x.com"})[0], 400)
+        self.assertEqual(self.c.req("POST", "/admin/convite", {"email": "ninguem@x.com"})[0], 400)
         # histórico
         hist = self.c.req("GET", "/admin/historico")[1]["historico"]
-        acoes = [h["acao"] for h in hist]
-        self.assertIn("cadastrou", acoes)
-        self.assertIn("desativou", acoes)
-        self.assertTrue(all(h["autor"] in ("vendedor@mdtech.com.br", "terminal") for h in hist))
-        self.assertIn(("vendedor@mdtech.com.br", "desativou", "novo@mdtech.com.br"), [(h["autor"], h["acao"], h["alvo"]) for h in hist])
+        trio = [(h["autor"], h["acao"], h["alvo"]) for h in hist]
+        self.assertIn(("vendedor@mdtech.com.br", "desativou", "novo@mdtech.com.br"), trio)
+        self.assertIn(("vendedor@mdtech.com.br", "enviou link de nova senha para", "novo@mdtech.com.br"), trio)
+        self.assertIn(("novo@mdtech.com.br", "criou a senha pelo link", "novo@mdtech.com.br"), trio)
+
+    def test_convite_expirado_e_falso(self):
+        self._admin_pronto()
+        conv = self.c.req("POST", "/admin/adicionar", {"email": "x@mdtech.com.br"})[1]["convite"]
+        db = B.Banco(self.banco)
+        db.con.execute("UPDATE convites SET expira = 1")          # simula 7 dias depois
+        db.fechar()
+        self.assertEqual(Cliente(self.app).req("POST", "/convite/ver", {"convite": conv})[0], 400)
+        self.assertEqual(Cliente(self.app).req("POST", "/convite/usar", {"convite": conv, "nova": "senha-boa-2026"})[0], 400)
+        lista = {v["email"]: v for v in self.c.req("GET", "/admin/vendedores")[1]["vendedores"]}
+        self.assertIsNone(lista["x@mdtech.com.br"]["convite_expira"])
+        # chutar códigos bloqueia o IP
+        cli = Cliente(self.app)
+        for i in range(B.MAX_POR_IP):
+            cli.req("POST", "/convite/ver", {"convite": f"falso{i}"}, ip="7.7.7.7")
+        self.assertEqual(cli.req("POST", "/convite/ver", {"convite": "qualquer"}, ip="7.7.7.7")[0], 429)
 
     def test_banco_antigo_ganha_coluna_admin(self):
         import sqlite3
