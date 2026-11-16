@@ -64,7 +64,7 @@ window.MD = (function () {
   // Com sessão de vendedor, troca o preço de cada produto pelo preço real. Sem sessão (ou fora do servidor), não mexe em nada.
   async function aplicarPrecosVendedor(prod) {
     if (!contaAtiva()) return;
-    if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaRodape(); return; }
+    if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaTopo(); return; }
     const r = await contaReq("/precos");
     if (r.status === 401) esquecerVendedor();          // sessão expirou ou foi encerrada
     _estadoConta = { status: r.status, email: r.dados.email || "" };
@@ -72,25 +72,46 @@ window.MD = (function () {
       (prod || []).forEach(p => { const v = r.dados.precos[p.codigo];
         if (v) { p.preco = v; p.preco_ficticio = false; } });
     }
-    montarContaRodape();
+    montarContaTopo();
   }
-  // Rodapé: "Acesso de vendedores" para quem não entrou; "Conectado como ... · Sair" para o vendedor.
-  function montarContaRodape() {
-    const rod = document.querySelector(".rodape");
-    if (!rod || !contaAtiva()) return;
-    let box = rod.querySelector(".conta-rodape");
-    if (!box) { box = document.createElement("div"); box.className = "conta-rodape"; rod.appendChild(box); }
+  // Topo (ao lado de "Catálogos e propostas"): "Entrar" para quem não entrou; para o vendedor, ícone de conectado com menu
+  // (e-mail, preços de tabela, trocar a senha, sair). Criado via JS: não depende de markup fixo nas páginas.
+  function montarContaTopo() {
+    const ref = document.getElementById("btn-catalogos");
+    if (!ref || !contaAtiva()) return;
+    document.querySelectorAll(".conta-topo, .conta-menu").forEach(e => e.remove());
     const volta = encodeURIComponent(location.pathname.split("/").pop() + location.search);
+    const icone = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="18" height="18" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>';
     const st = _estadoConta.status;
-    if (st === 200) {
-      box.innerHTML = `<span>Conectado como <b>${esc(_estadoConta.email)}</b> · preços de tabela visíveis</span>
-        <a href="entrar.html">Minha conta</a><button type="button" class="conta-sair">Sair</button>`;
-      box.querySelector(".conta-sair").onclick = async () => { await contaReq("/sair", {}); location.reload(); };
-    } else if (st === 403) {
-      box.innerHTML = `<a href="entrar.html?volta=${volta}">Troque a senha inicial para ver os preços</a>`;
-    } else if (st === 401) {
-      box.innerHTML = `<a href="entrar.html?volta=${volta}">Acesso de vendedores</a>`;
-    } else box.remove();
+    if (st !== 200) {
+      const a = document.createElement("a");
+      a.className = "conta-topo"; a.href = "entrar.html?volta=" + volta;
+      a.innerHTML = icone + '<span>Entrar</span>';
+      a.setAttribute("aria-label", "Entrar (acesso de vendedores)");
+      ref.after(a); return;
+    }
+    const email = _estadoConta.email || "";
+    const bt = document.createElement("button");
+    bt.type = "button"; bt.className = "conta-topo on";
+    bt.setAttribute("aria-haspopup", "true"); bt.setAttribute("aria-expanded", "false");
+    bt.setAttribute("aria-label", "Minha conta: conectado como " + email);
+    bt.innerHTML = icone + '<span class="l-conta">Conectado</span><i class="conta-ponto" aria-hidden="true"></i>';
+    const menu = document.createElement("div");
+    menu.className = "conta-menu"; menu.hidden = true;
+    menu.innerHTML = `<p class="conta-menu-quem">Conectado como<b>${esc(email)}</b></p>
+      <p class="conta-menu-info">Preços de tabela visíveis no catálogo.</p>
+      <a href="entrar.html#trocar">Trocar a senha</a><button type="button" class="conta-sair">Sair</button>`;
+    ref.after(bt); document.body.appendChild(menu);
+    const abrir = () => { const r = bt.getBoundingClientRect();
+      menu.style.top = Math.round(r.bottom + 8) + "px";
+      menu.style.right = Math.max(10, Math.round(window.innerWidth - r.right)) + "px";
+      menu.hidden = false; bt.setAttribute("aria-expanded", "true"); };
+    const fechar = (foco) => { if (menu.hidden) return; menu.hidden = true; bt.setAttribute("aria-expanded", "false"); if (foco) bt.focus(); };
+    bt.addEventListener("click", e => { e.stopPropagation(); menu.hidden ? abrir() : fechar(); });
+    document.addEventListener("click", e => { if (!menu.contains(e.target)) fechar(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(true); });
+    window.addEventListener("resize", () => fechar());
+    menu.querySelector(".conta-sair").onclick = async () => { await contaReq("/sair", {}); location.reload(); };
   }
 
   // ---- ícone de ângulo ----

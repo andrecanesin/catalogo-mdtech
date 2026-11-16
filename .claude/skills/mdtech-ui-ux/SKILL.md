@@ -56,6 +56,10 @@ Técnico sem ser inacessível, direto sem ser frio, seguro sem ser arrogante. Ev
   (a lateral já mostra os dois: nunca repetir a mesma escolha em dois lugares da tela). **Nomes iguais em todo lugar:** títulos de
   grupo no plural ("Especialidades", "Propostas básicas", "Famílias"); "Linha" não é usado. Topo compacto no celular (logo + botão
   "PDFs" na mesma linha, busca fixa). **Compartilhar** no produto e na proposta (menu nativo no celular; no computador copia o link).
+- **Conta do vendedor no topo** (16/11), ao lado de "Catálogos e propostas" (`MD` → `montarContaTopo` em `dados.js`, criado via JS):
+  sem login, botão "Entrar" (leva a `entrar.html?volta=`); com login, ícone de pessoa com ponto verde ("Conectado" no desktop) e menu
+  com e-mail, "Preços de tabela visíveis", "Trocar a senha" e "Sair". Não repetir no rodapé. Só aparece nos `hosts` de `config.js` → `conta`
+  (no GitHub Pages não há login). Tela `entrar.html`: mobile first, uma caixa central, campo de 16 px (sem zoom no iPhone), "Mostrar" na senha.
 - **Trilha (breadcrumb) no desktop** (`MD.trilha`): produto = Catálogo › Especialidade › Família › Produto (links levam à grade já
   filtrada, `?esp=&fam=`); grade = conforme o filtro (some na página inicial sem filtro). No celular fica o "← Voltar ao catálogo".
   Hierarquia, não histórico (Nielsen); último passo sem link, com `aria-current="page"`.
