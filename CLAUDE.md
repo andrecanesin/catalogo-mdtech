@@ -167,6 +167,14 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   por WhatsApp/e-mail para criar a senha (1º acesso e "esqueci a senha"). Tabela `convites` (só hash).
 - **SSO com a GEWEB** só se ela
   oferecer OIDC/OAuth/SAML ou API para validar usuário (o André vai perguntar à GEWEB).
+- **App para os vendedores: PWA** (decidido em 16/11; fazer depois das pendências da Fase 1). O próprio site vira app instalável (Android e iPhone),
+  sem loja: funciona **sem internet** (service worker com `produtos.json`, fotos e busca; ~5 MB) e **atualiza sozinho** quando conecta (baixa só o que mudou;
+  aviso "Sem internet: catálogo de dd/mm" / "Catálogo atualizado"). Preços offline só para quem entrou, com validade (ex.: 15 dias sem conectar) e apagados no "Sair".
+  Lista de orçamento guardada e enviada quando a conexão voltar. **Aviso de instalação:** só para vendedores conectados (e logo depois de criar a senha pelo
+  convite); Android com botão "Instalar" (evento `beforeinstallprompt`), iPhone com o passo a passo (Compartilhar → "Adicionar à Tela de Início");
+  "Agora não" esconde por 30 dias; some quando já instalado. Depois de usar algumas semanas: avaliar Google Play (TWA, US$ 25) e, se preciso,
+  App Store (distribuição privada, US$ 99/ano; a Apple recusa app que é só site). App nativo: não compensa agora.
+  **A decidir:** fichas e catálogos em PDF guardados no celular (download inicial maior) ou baixados só quando tocados.
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
   Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,
   PostgreSQL (recomendado), disco e monitoramento. Aguardando o André falar com ele.
