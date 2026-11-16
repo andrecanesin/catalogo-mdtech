@@ -161,6 +161,8 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - **Fase 1 em construção (16/11):** confirmado login por e-mail e recuperação de senha manual (admin `redefinir`). Código em `servidor/`
   (`servidor/LEIA-ME.md`), tela `site/entrar.html`, preços via `/conta.py/precos` juntados pelo `dados.js`; o `deploy.sh` envia tudo. Falta: instalar no servidor,
   cadastrar os vendedores e, testado, desligar o `/interno` (Basic Auth).
+- **Gestão dos vendedores pela tela** (16/11, pedido do André): `site/vendedores.html`, só administradores (coluna `admin`), com histórico
+  (tabela `eventos`). Lógica em `servidor/mdtech_conta/gestao.py`, usada pela tela e pelo `admin.py`. 8 vendedores cadastrados em 16/11.
 - **SSO com a GEWEB** só se ela
   oferecer OIDC/OAuth/SAML ou API para validar usuário (o André vai perguntar à GEWEB).
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).

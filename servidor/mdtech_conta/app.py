@@ -7,6 +7,9 @@ Endereços (PATH_INFO, porque o servidor não tem mod_rewrite):
   POST /conta.py/trocar-senha   {senha_atual, nova}          200 | 400 | 401
   POST /conta.py/sair                                        200
   GET  /conta.py/precos         preços reais (só com sessão) 200 | 401 | 403 (falta trocar a senha inicial)
+  Gestão dos vendedores (só administrador, já com a senha própria; ver gestao.py):
+  GET  /conta.py/admin/vendedores · GET /conta.py/admin/historico
+  POST /conta.py/admin/{adicionar, redefinir, desativar, reativar, desbloquear, admin, nome}   {email, ...}
 Todo POST exige corpo JSON (application/json): um formulário de outro site não consegue enviar isso sem permissão (CSRF).
 """
 import json
@@ -15,6 +18,7 @@ from http.cookies import SimpleCookie
 from pathlib import Path
 
 from . import banco as B
+from . import gestao as G
 from . import senhas as S
 
 COOKIE = "mdtech_sessao"
@@ -22,6 +26,10 @@ MARCA = "mdtech_vendedor"     # sem segredo, legível pelo JS: só diz ao site "
 _STATUS = {200: "200 OK", 400: "400 Bad Request", 401: "401 Unauthorized", 403: "403 Forbidden",
            404: "404 Not Found", 405: "405 Method Not Allowed", 413: "413 Payload Too Large",
            415: "415 Unsupported Media Type", 429: "429 Too Many Requests", 500: "500 Internal Server Error"}
+
+
+_OPERACOES = {"adicionar": None, "redefinir": G.redefinir, "desativar": G.desativar, "reativar": G.reativar,
+              "desbloquear": G.desbloquear, "admin": None, "nome": None}
 
 
 class Resposta:
@@ -96,7 +104,9 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
         metodo = environ.get("REQUEST_METHOD", "GET")
         rota = environ.get("PATH_INFO", "").rstrip("/") or "/"
         rotas = {"/eu": ("GET", _eu), "/precos": ("GET", _precos), "/entrar": ("POST", _entrar),
-                 "/trocar-senha": ("POST", _trocar), "/sair": ("POST", _sair)}
+                 "/trocar-senha": ("POST", _trocar), "/sair": ("POST", _sair),
+                 "/admin/vendedores": ("GET", _adm_lista), "/admin/historico": ("GET", _adm_historico)}
+        rotas.update({"/admin/" + op: ("POST", _adm_op) for op in _OPERACOES})
         if rota not in rotas:
             return Resposta(404, {"erro": "Endereço não encontrado."})
         esperado, func = rotas[rota]
@@ -118,7 +128,8 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
         u = db.sessao(_token(environ))
         if not u:
             return Resposta(401, {"erro": "Não conectado."})
-        return Resposta(200, {"email": u["email"], "nome": u["nome"], "trocar_senha": bool(u["trocar_senha"])})
+        return Resposta(200, {"email": u["email"], "nome": u["nome"], "trocar_senha": bool(u["trocar_senha"]),
+                              "admin": bool(u["admin"])})
 
     def _entrar(db, environ, dados):
         email = B.normalizar_email(str(dados.get("email", "")))[:200]
@@ -182,7 +193,53 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
             dados = json.loads(caminho_precos.read_text(encoding="utf-8"))
         except FileNotFoundError:
             dados = {"precos": {}, "atualizado": None}
-        return Resposta(200, {**dados, "email": u["email"]})
+        return Resposta(200, {**dados, "email": u["email"], "admin": bool(u["admin"])})
+
+    # ---------- gestão dos vendedores (tela vendedores.html) ----------
+    def _admin(db, environ):
+        u = db.sessao(_token(environ))
+        if not u:
+            return Resposta(401, {"erro": "Sua sessão expirou. Entre de novo."})
+        if not u["admin"]:
+            return Resposta(403, {"erro": "Só administradores acessam a gestão dos vendedores."})
+        if u["trocar_senha"]:
+            return Resposta(403, {"erro": "Troque a senha inicial antes de gerenciar os vendedores."})
+        return u
+
+    def _adm_lista(db, environ, _):
+        u = _admin(db, environ)
+        if isinstance(u, Resposta):
+            return u
+        return Resposta(200, {"vendedores": G.listar(db), "eu": u["email"]})
+
+    def _adm_historico(db, environ, _):
+        u = _admin(db, environ)
+        if isinstance(u, Resposta):
+            return u
+        return Resposta(200, {"historico": G.historico(db)})
+
+    def _adm_op(db, environ, dados):
+        u = _admin(db, environ)
+        if isinstance(u, Resposta):
+            return u
+        op = environ.get("PATH_INFO", "").rstrip("/").rsplit("/", 1)[-1]
+        email = str(dados.get("email", ""))[:200]
+        autor = u["email"]
+        try:
+            if op == "adicionar":
+                senha = G.adicionar(db, email, str(dados.get("nome", "")), autor)
+            elif op == "admin":
+                G.definir_admin(db, email, bool(dados.get("admin")), autor); senha = None
+            elif op == "nome":
+                G.definir_nome(db, email, str(dados.get("nome", "")), autor); senha = None
+            else:
+                senha = _OPERACOES[op](db, email, autor=autor)
+        except G.GestaoErro as e:
+            return Resposta(400, {"erro": str(e)})
+        corpo = {"ok": True, "email": B.normalizar_email(email)}
+        if senha:
+            corpo["senha"] = senha            # mostrada UMA vez na tela; no banco só existe o hash
+        return Resposta(200, corpo)
 
     return app
 

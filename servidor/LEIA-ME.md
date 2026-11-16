@@ -22,7 +22,12 @@ ssh -t catalogo_mdtech@173.214.164.179 'sudo install -d -o www-data -g catalogo_
 ```
 Para desfazer: `sudo rm -rf /var/lib/mdtech` (apaga vendedores e sessões). Incluir `/var/lib/mdtech` no backup do servidor.
 
-## Vendedores (um comando por vez, no Git Bash)
+## Gestão pela tela (dia a dia)
+`vendedores.html` (menu da conta → "Gerenciar vendedores"), só para administradores: adicionar, nova senha (esqueceu), desativar/reativar,
+desbloquear, tornar administrador, nome e histórico de quem fez o quê. A senha inicial aparece uma vez, com botões para enviar por WhatsApp,
+e-mail ou copiar a mensagem pronta. O 1º administrador é feito pelo terminal: `admin.py tornar-admin email`.
+
+## Pelo terminal (1º administrador e emergências)
 ```bash
 ssh catalogo_mdtech@173.214.164.179 python3 mdtech_app/admin.py adicionar fulano@empresa.com.br
 ```

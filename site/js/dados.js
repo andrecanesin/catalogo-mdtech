@@ -67,7 +67,7 @@ window.MD = (function () {
     if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaTopo(); return; }
     const r = await contaReq("/precos");
     if (r.status === 401) esquecerVendedor();          // sessão expirou ou foi encerrada
-    _estadoConta = { status: r.status, email: r.dados.email || "" };
+    _estadoConta = { status: r.status, email: r.dados.email || "", admin: !!r.dados.admin };
     if (r.status === 200 && r.dados.precos) {
       (prod || []).forEach(p => { const v = r.dados.precos[p.codigo];
         if (v) { p.preco = v; p.preco_ficticio = false; } });
@@ -100,7 +100,7 @@ window.MD = (function () {
     menu.className = "conta-menu"; menu.hidden = true;
     menu.innerHTML = `<p class="conta-menu-quem">Conectado como<b>${esc(email)}</b></p>
       <p class="conta-menu-info">Preços de tabela visíveis no catálogo.</p>
-      <a href="entrar.html#trocar">Trocar a senha</a><button type="button" class="conta-sair">Sair</button>`;
+      ${_estadoConta.admin ? '<a href="vendedores.html">Gerenciar vendedores</a>' : ""}<a href="entrar.html#trocar">Trocar a senha</a><button type="button" class="conta-sair">Sair</button>`;
     ref.after(bt); document.body.appendChild(menu);
     const abrir = () => { const r = bt.getBoundingClientRect();
       menu.style.top = Math.round(r.bottom + 8) + "px";

@@ -1,67 +1,59 @@
 #!/usr/bin/python3
-"""Cadastro dos vendedores (roda NO SERVIDOR, por SSH). A senha inicial aparece uma única vez: envie ao vendedor.
-No 1º acesso o site obriga a trocar por uma senha dele.
+"""Gestão dos vendedores pelo terminal (roda NO SERVIDOR, por SSH). O dia a dia é pela tela "Vendedores" do site
+(menu da conta, só para administradores); este script serve para o 1º administrador e para emergências.
 
   python3 ~/mdtech_app/admin.py adicionar email@empresa.com.br [email2 ...]   cria e mostra a senha inicial
   python3 ~/mdtech_app/admin.py redefinir email@empresa.com.br                nova senha inicial (esqueceu a senha)
   python3 ~/mdtech_app/admin.py desativar email@empresa.com.br                saiu da empresa: bloqueia e desconecta
   python3 ~/mdtech_app/admin.py reativar email@empresa.com.br                 volta a valer (com senha nova)
   python3 ~/mdtech_app/admin.py desbloquear email@empresa.com.br              zera as tentativas erradas
+  python3 ~/mdtech_app/admin.py tornar-admin email@empresa.com.br             dá acesso à tela "Vendedores"
   python3 ~/mdtech_app/admin.py listar
 """
-import re
 import sys
 import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from mdtech_conta import banco as B, senhas as S      # noqa: E402
+from mdtech_conta import banco as B, gestao as G      # noqa: E402
 
-EMAIL_OK = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+COMANDOS = {"adicionar", "redefinir", "desativar", "reativar", "desbloquear", "tornar-admin", "listar"}
 
 
 def main(argv, caminho=None):
-    if len(argv) < 1 or argv[0] not in {"adicionar", "redefinir", "desativar", "reativar", "desbloquear", "listar"}:
+    if len(argv) < 1 or argv[0] not in COMANDOS:
         print(__doc__)
         return 1
-    cmd, emails = argv[0], [B.normalizar_email(e) for e in argv[1:]]
+    cmd, emails = argv[0], [B.normalizar_email(e) for e in argv[1:] if e.strip()]
     if cmd != "listar" and not emails:
         print("Informe o e-mail."); return 1
     db = B.Banco(caminho or Path("/var/lib/mdtech") / "usuarios.sqlite")
     erro = 0
     try:
         if cmd == "listar":
-            for u in db.listar():
+            for u in G.listar(db):
                 ult = time.strftime("%d/%m/%Y %H:%M", time.localtime(u["ultimo_login"])) if u["ultimo_login"] else "nunca entrou"
                 est = "ATIVO" if u["ativo"] else "desativado"
-                pend = " · falta trocar a senha inicial" if u["trocar_senha"] else ""
-                print(f"{u['email']:<40} {est:<11} último acesso: {ult}{pend}")
+                extra = (" · admin" if u["admin"] else "") + (" · falta trocar a senha inicial" if u["trocar_senha"] else "") \
+                    + (" · BLOQUEADO" if u["bloqueado"] else "")
+                print(f"{u['email']:<40} {est:<11} último acesso: {ult}{extra}")
             return 0
         for email in emails:
-            u = db.usuario(email)
-            if cmd == "adicionar":
-                if not EMAIL_OK.match(email):
-                    print(f"{email}: e-mail inválido"); erro = 1; continue
-                if u:
-                    print(f"{email}: já existe (use 'redefinir' para nova senha)"); erro = 1; continue
-                senha = S.senha_inicial()
-                db.criar_usuario(email, S.gerar_hash(senha))
-                print(f"{email}\tsenha inicial: {senha}")
-            elif not u:
-                print(f"{email}: não cadastrado"); erro = 1
-            elif cmd in ("redefinir", "reativar"):
-                senha = S.senha_inicial()
-                db.definir_senha(u["id"], S.gerar_hash(senha), trocar_senha=True)
-                db.encerrar_sessoes(u["id"])
-                db.definir_ativo(u["id"], True)
-                db.limpar_falhas("email:" + email)
-                print(f"{email}\tnova senha inicial: {senha}")
-            elif cmd == "desativar":
-                db.definir_ativo(u["id"], False)
-                print(f"{email}: desativado e desconectado de todos os aparelhos")
-            elif cmd == "desbloquear":
-                db.limpar_falhas("email:" + email)
-                print(f"{email}: tentativas zeradas")
+            try:
+                if cmd == "adicionar":
+                    print(f"{email}\tsenha inicial: {G.adicionar(db, email)}")
+                elif cmd == "redefinir":
+                    print(f"{email}\tnova senha inicial: {G.redefinir(db, email)}")
+                elif cmd == "reativar":
+                    print(f"{email}\tnova senha inicial: {G.reativar(db, email)}")
+                elif cmd == "desativar":
+                    G.desativar(db, email); print(f"{email}: desativado e desconectado de todos os aparelhos")
+                elif cmd == "desbloquear":
+                    G.desbloquear(db, email); print(f"{email}: tentativas zeradas")
+                elif cmd == "tornar-admin":
+                    G.definir_admin(db, email, True); print(f"{email}: agora é administrador (tela Vendedores)")
+            except G.GestaoErro as e:
+                print(f"{email}: {e}"); erro = 1
     finally:
         db.fechar()
     return erro
