@@ -84,9 +84,9 @@ def _produto(it):
                         else (it.get("autoclavavel") or "").strip(),
         "anvisa": (it.get("anvisa") or "").strip(),
         "ncm": (it.get("ncm") or "").strip(),
-        "preco": T.preco_num(it),              # R$ da coluna "Preço (R$)" da base (hoje FICTÍCIO), ou None
-        "preco_fmt": T.brl(T.preco_num(it)) or None,
-        "preco_ficticio": bool(config.PRECOS_FICTICIOS and T.preco_num(it)),
+        "preco": None,                         # o site de clientes NUNCA tem preço; o build interno preenche (_aplicar_precos)
+        "preco_fmt": None,
+        "preco_ficticio": False,
         "foto": None,                          # preenchido se a foto for exportada (1600 px)
         "foto_thumb": None,                    # miniatura (600 px) usada na grade
         "ficha_pdf": None,                     # preenchido se a ficha técnica for copiada
@@ -313,7 +313,36 @@ def _copiar_propostas(outdir, porcod):
     return len(lista)
 
 
-def gerar():
+def _aplicar_precos(produtos, precos):
+    """Build interno: preenche preço (Valor Total IPI) a partir de dados/precos_reais.xlsx. Devolve os códigos sem preço."""
+    sem = []
+    for p in produtos:
+        v = precos.get(p["codigo"])
+        if v:
+            p["preco"], p["preco_fmt"] = v, T.brl(v)
+        else:
+            sem.append(p["codigo"])
+    return sem
+
+
+def _montar_servidor(produtos_internos, meta):
+    """Monta saida/servidor/ = o que vai por SSH ao servidor: raiz = clientes (sem preço) e interno/ = vendedores (com preço,
+    atrás de login no Apache). Mesmo HTML/JS/fotos nos dois; só produtos.json/meta.json mudam."""
+    dest = config.SAIDA / "servidor"
+    if dest.exists():
+        shutil.rmtree(dest)
+    shutil.copytree(config.SITE, dest)
+    interno = dest / "interno"
+    shutil.copytree(config.SITE, interno)
+    (interno / "produtos.json").write_text(json.dumps(produtos_internos, ensure_ascii=False, indent=2), encoding="utf-8")
+    (interno / "meta.json").write_text(json.dumps({**meta, "precos": True}, ensure_ascii=False, indent=2), encoding="utf-8")
+    return dest
+
+
+def gerar(interno=False):
+    """interno=False: site de clientes em site/ (sem preço). interno=True: além disso monta saida/servidor/ com /interno (preço real)."""
+    if interno and os.environ.get("SITE_PUBLICO") == "1":
+        raise SystemExit("ERRO: build interno (com preço real) não pode rodar em destino público (SITE_PUBLICO=1).")
     itens = B.carregar()
 
     # dedup por código; cross-listing acumula especialidade/família em lista
@@ -338,11 +367,6 @@ def gerar():
                 p["familias"].append(f)
 
     produtos = [porcod[k] for k in ordem]
-
-    # TRAVA: preço REAL não vai ao site público. O workflow define SITE_PUBLICO=1 (GitHub Pages é público).
-    if os.environ.get("SITE_PUBLICO") == "1" and not config.PRECOS_FICTICIOS and any(p["preco"] for p in produtos):
-        raise SystemExit("ERRO: há preços reais na base e o destino é público (GitHub Pages). Publique no servidor com acesso "
-                         "controlado, ou volte PRECOS_FICTICIOS = True (mdtech/config.py) com valores ilustrativos.")
 
     # exporta as fotos casadas p/ site/fotos/ (pasta gerada: recriada do zero a cada execução)
     outdir = config.SITE
@@ -386,6 +410,7 @@ def gerar():
         "especialidades": _facet("especialidades"),
         "familias": _facet("familias"),
         "fornecedores": _facet("fornecedor"),
+        "precos": False,          # site de clientes: sem preço (o front esconde cartão/total/aviso)
     }
 
     for p in produtos:
@@ -395,6 +420,16 @@ def gerar():
         json.dumps(produtos, ensure_ascii=False, indent=2), encoding="utf-8")
     (outdir / "meta.json").write_text(
         json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if interno:
+        import copy
+        precos = B.carregar_precos()
+        internos = copy.deepcopy(produtos)
+        sem = _aplicar_precos(internos, precos)
+        dest = _montar_servidor(internos, meta)
+        print(f"Servidor: {dest} (raiz = clientes sem preço · interno/ = com preço real: {len(internos)-len(sem)}/{len(internos)} preços)")
+        if sem:
+            print(f"[aviso] sem preço no interno: {', '.join(sem)}")
 
     print(f"Site: {len(produtos)} produtos -> {outdir/'produtos.json'}")
     print(f"Fotos copiadas: {copiadas}/{len(produtos)} "
