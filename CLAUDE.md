@@ -134,6 +134,13 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - Particularidades do servidor: `.htaccess` não aceita `Options` nem `Header` (dá erro 500), então o do `/interno` só tem diretivas de autenticação. A raiz tem um
   `.htaccess` com `DirectoryIndex index.html`, criado à mão (o deploy não o recria; sem ele o Apache lista as pastas). O `index.py` antigo, que só embutia o Pages num
   iframe, foi removido (cópia em `~/backup_antigo` no servidor).
+- **O CGI roda como `www-data`** (não como `catalogo_mdtech`): o código em `~/mdtech_app` é legível por todos e `~/mdtech_dados` fica 700 com ACL só
+  para o `www-data` (`setfacl`, pacote `acl` instalado em 16/11). O `deploy.sh` aplica isso.
+- **`sudo` liberado em 16/11** (`(ALL : ALL) ALL`). Regras: **nunca mexer em `/root`** (o administrador configura o sistema dele lá); fora de
+  `/home/catalogo_mdtech`, só com o ok do André e explicando antes o que o comando faz e como desfazer; nunca reiniciar o servidor (é do administrador;
+  em 16/11 havia um reinício de kernel pendente). A senha do `sudo` só no terminal do André (`ssh -t`).
+- **Bancos:** PostgreSQL já instalado pelo administrador; **Fase 1 segue em SQLite** e migra para o PostgreSQL no início da Fase 2, com usuário e banco
+  próprios (`mdtech`), de preferência com autenticação "peer" (sem senha em arquivo); não usar o superusuário `postgres`. **MariaDB: não usar.**
 - Login dos vendedores **provisório**: Basic Auth do Apache, 1 login por e-mail (`deploy/logins.py`; lista e senhas só locais, fora do git). Planejado: tela de login própria,
   mobile first, com troca da senha inicial no 1º acesso; SSO com o sistema GEWEB só se ele oferecer OIDC/OAuth/SAML ou API para validar usuário.
 - Preços: só no site interno (decisão de 09/11 mantida: catálogos, fichas e propostas saem SEM preço). Reais, em `dados/precos_reais.xlsx` (local, fora do git);
