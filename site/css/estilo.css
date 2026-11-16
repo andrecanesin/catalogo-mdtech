@@ -70,8 +70,7 @@ img{display:block;max-width:100%;}
 
 /* ---------- layout catálogo ---------- */
 .layout{display:grid;grid-template-columns:250px 1fr;gap:26px;padding:16px 0 calc(var(--h-bandeja,0px) + 40px);}
-.side{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 120px);
-  overflow:auto;padding-right:4px;}
+.side{align-self:start;padding-right:4px;}   /* desktop: sem rolagem própria, rola com a página (16/11) */
 .side h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);
   margin:18px 0 8px;font-weight:600;}
 .side h3:first-child{margin-top:0;}
@@ -261,7 +260,7 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .b-ficha{background:#fff;color:var(--navy);border:1px solid var(--line)!important;}
 .b-ficha:hover{background:var(--panel);}
 .b-ficha svg{stroke:var(--navy);width:16px;height:16px;}
-.desc-g{margin-top:26px;padding-top:20px;border-top:1px solid var(--line);}
+.desc-g{margin:-8px 0 22px;}   /* logo abaixo do título e do código (16/11) */
 .desc-g .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);
   margin-bottom:6px;}
 .desc-g .t{font-size:13px;color:#4a5568;line-height:1.6;}
