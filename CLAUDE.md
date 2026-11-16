@@ -141,8 +141,7 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   O `deploy.sh` também remove o `\r` ao enviar o `conta.py`. O log do Apache em 16/11 mostra **mod_python 3.5 com Python 3.14** carregado: opção a avaliar na
   Fase 2 para servir o app WSGI sem CGI (alternativa ao mod_wsgi).
 - **`sudo` liberado em 16/11** (`(ALL : ALL) ALL`). Regras: **nunca mexer em `/root`** (o administrador configura o sistema dele lá); fora de
-  `/home/catalogo_mdtech`, só com o ok do André e explicando antes o que o comando faz e como desfazer; nunca reiniciar o servidor (é do administrador;
-  em 16/11 havia um reinício de kernel pendente). A senha do `sudo` só no terminal do André (`ssh -t`).
+  `/home/catalogo_mdtech`, só com o ok do André e explicando antes o que o comando faz e como desfazer; nunca reiniciar o servidor (é do administrador). A senha do `sudo` só no terminal do André (`ssh -t`).
 - **Bancos:** PostgreSQL já instalado pelo administrador; **Fase 1 segue em SQLite** e migra para o PostgreSQL no início da Fase 2, com usuário e banco
   próprios (`mdtech`), de preferência com autenticação "peer" (sem senha em arquivo); não usar o superusuário `postgres`. **MariaDB: não usar.**
 - Login dos vendedores **provisório**: Basic Auth do Apache, 1 login por e-mail (`deploy/logins.py`; lista e senhas só locais, fora do git). Planejado: tela de login própria,
@@ -181,7 +180,27 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - **Institucional:** páginas estáticas no repositório, editadas pelo André (marketing). Aguardando o conteúdo.
 - **Orçamento (ferramenta + campanha):** conversar depois do login. Perguntas: quem usa (vendedor, cliente ou os dois), saída (PDF com preço, WhatsApp), desconto, registro das
   propostas, objetivo e canais da campanha.
-- **Pendências de segurança do André:** trocar a senha do usuário do servidor (apareceu no chat); enviar os convites aos vendedores pela tela e apagar `deploy/senhas_vendedores.txt` (as senhas dele não são mais usadas).
+- **Pendências do André:** enviar os convites aos vendedores pela tela e apagar `deploy/senhas_vendedores.txt` e `deploy/.htpasswd` (não são mais usados).
+
+## Próxima sessão (combinado em 16/11): revisão do projeto
+Revisão completa feita em 16/11 por dois modelos, às cegas (Opus 5.5 e Fable 5.2; o Fable foi mais completo: 58 itens). **Começar estimando, item a item,
+o modelo (Opus/Sonnet/Haiku) e o gasto de tokens, e atacar primeiro os mais críticos.** Decisões do André (16/11): repositório **continua público**
+(por isso, nada sensível do servidor neste arquivo); senha do servidor **já trocada**; botão **Suporte só para vendedores conectados**; grafias dos
+produtos: **adotar o termo de mercado** (pesquisar antes, ex.: trocarte/trocater/trocarter).
+1. **Segurança rápida:** tirar o campo `fornecedor` do `produtos.json`/`meta.json` públicos (`geradores/site.py`; o site não usa); bloqueio de login
+   por e-mail vira atraso progressivo (hoje qualquer um bloqueia um vendedor errando 5 vezes); política de senha com lista de senhas comuns.
+2. **Rede de proteção:** testes + ruff em cada PR (workflow `pull_request`) e no `deploy.sh` (subir só a `main` limpa); backup diário do SQLite
+   (`sqlite3 .backup`, 14 cópias, cron do usuário + cópia fora do servidor); deploy que apaga arquivos velhos, atômico e com rollback; transações no
+   banco (`adicionar`, `usar_convite`); desligar o `/interno` (Fase 1).
+3. **O que o cliente vê errado:** selo de ângulo em não-óticas (usar `MD.ehOtica`, ex.: 1.3-DS-24, A4001); nome dos endoscópios ("AV=30°,") e cards
+   idênticos (A275/A276, A189-x: `mdtech/textos.py::nome_produto`); busca aceitando as grafias; NCM num formato só (88 com ponto, 64 sem);
+   "Autoclavável" de uso único como "não se aplica"; medidas com vírgula.
+4. **Celular e acessibilidade:** versão nos CSS/JS (`?v=`); Suporte só para vendedores; ação do produto perto do topo; Voltar desfaz o filtro
+   (`pushState`); foco preso nos painéis; bandeja vazia fora do teclado; `role="menu"` errado; paginação com rótulos; botão "Ver resultados" (2,65:1);
+   faixa de ajuda que some; textos de 9–11 px; grade sem esperar o `/precos`.
+5. **Privacidade e dados:** aviso de LGPD (formulários → Web3Forms) e anti-spam (honeypot); fontes locais (`assets/fontes`); retenção de eventos/IPs;
+   grafias e acentos da base e nomes de família (com o André); PDFs nos testes do núcleo (`nome_produto`, `diametro_fmt`, fotos, colunas obrigatórias).
+6. Depois: **app offline (PWA)**; Open Graph por produto; deploy pelo Actions (sem a máquina do André); repositório pesado (Git LFS).
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).
