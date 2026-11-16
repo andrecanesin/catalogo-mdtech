@@ -102,6 +102,12 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   assim por enquanto).
 - Ao implementar, registrar as regras numa skill do projeto (`.claude/skills/mdtech-impresso/`) para os próximos trabalhos seguirem igual.
 
+## Duas versões do site (decidido em 16/11)
+- **Clientes** (raiz do domínio, aberto): `produtos.json` sem preço; o front esconde preço, total e aviso sozinho. É o que o Actions gera.
+- **Interno** (`/interno`, 1 login por vendedor, Apache): igual, mas com o preço de `dados/precos_reais.xlsx`. Só se gera na máquina do André:
+  `python gerar.py site --interno` → `saida/servidor/` (raiz = clientes, `interno/` = vendedores). O build interno recusa rodar com `SITE_PUBLICO=1`.
+- Falta fazer: script de deploy por SSH/rsync, `.htaccess`/`.htpasswd` do `/interno` (Apache), HTTPS. Aguardando dados do servidor.
+
 ## Antes do deploy em servidor (lembrete)
 O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o deploy:
 - **Preços:** a coluna `Preço (R$)` da base hoje traz valores **FICTÍCIOS** (`PRECOS_FICTICIOS = True` em `mdtech/config.py`); site e orçamento
@@ -111,15 +117,15 @@ O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o
 - **Catálogos digitais:** hoje vão no artefato do site; no servidor, gerados e enviados junto. Os impressos continuam só locais.
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
-- ANVISA: aguardando novos registros do regulatório. Vazio em 49 linhas (40 SKUs): 30 "em processo" (processo_Anvisa.xlsx de 23/09, pode estar velho) e 17 linhas /
-  14 códigos sem registro e sem processo: A0320, A0322, A0323, A0210.1, A0211.1, A0222, A1101.1–A1104.1, A1105.1,
-  A1106.1, A1106.2, F1104.
+- ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).
+  Ainda vazio em 18 SKUs: 814, A108, A151, A189(-1/-2/-3), A201(-1/-2), A204, A207(-2/-3/-4/-4-1), A215-2.C, A310.C.
 - A219 = 82568290004 (arquivo ANVISA de 27/10 prevalece). A2101 = 82568290002 (o arquivo lista 2 números; decidido em 09/11 manter o da base).
 - A215-2.C e A310.C sem registro (o nº 82568290004 só existia na aba antiga, removida).
 - Comprimento vazio em 48 SKUs, diâmetro vazio em 35 SKUs: sobra só o que o fornecedor não informou nos catálogos
   TONGLU, TIAN SONG e ASAP.
 - A108: Ø = 4 mm, conforme o catálogo TONGLU (Φ4×3000mm), decidido em 09/11; a descrição também foi ajustada para "D=4MM".
-- Preço: coluna `Preço (R$)` na base (152 SKUs) com valores fictícios por faixa de família; trocar pelos reais quando a tabela comercial chegar.
+- Preço: **real** (16/11), coluna "Valor Total IPI" (= valor unitário + IPI de 5,2% ou 0%), 152 SKUs, em `dados/precos_reais.xlsx` (LOCAL, no `.gitignore`, nunca no git).
+  A coluna `Preço (R$)` fictícia que ainda está na base do repositório é ignorada pelo site.
 - `dashboard` mostra o mapa atualizado.
 
 ## Histórico resumido

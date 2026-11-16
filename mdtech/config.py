@@ -22,7 +22,10 @@ BASE_ABA  = "BASE DE PRODUTOS"   # nome da aba de produtos (ajuste se necessári
 # Preços da coluna "Preço (R$)" da base: hoje FICTÍCIOS (ilustrativos). Enquanto True, o site, as propostas e o orçamento
 # avisam "valores ilustrativos". Com a tabela comercial real: preencher a coluna e mudar para False. Preço REAL não pode ir
 # ao site público (GitHub Pages): o workflow trava a publicação nesse caso; use o servidor com acesso controlado.
-PRECOS_FICTICIOS = True
+PRECOS_FICTICIOS = False   # a coluna "Preço (R$)" da base é IGNORADA pelo site; o preço real vem de PRECOS_XLSX (abaixo)
+# Preços REAIS (Valor Total IPI) só no build interno (/interno, com login). Planilha LOCAL, fora do git (repositório público):
+# colunas Código | Valor Unitário | IPI | Valor Total IPI. O build de clientes nunca lê este arquivo.
+PRECOS_XLSX = DADOS / "precos_reais.xlsx"
 KITS_ABA  = "KITS"               # aba com os kits das propostas básicas (mesma planilha)
 
 # Logos oficiais

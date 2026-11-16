@@ -67,7 +67,9 @@ def main():
 
     sub.add_parser("dashboard")
     sub.add_parser("checklist")
-    sub.add_parser("site", help="exporta a base -> site/produtos.json (catálogo digital)")
+    p = sub.add_parser("site", help="exporta a base -> site/produtos.json (catálogo digital de clientes, SEM preço)")
+    p.add_argument("--interno", action="store_true",
+                   help="também monta saida/servidor/ (raiz = clientes sem preço, interno/ = vendedores com preço real de dados/precos_reais.xlsx). Só local.")
 
     p = sub.add_parser("tudo", help="roda checklist + dashboard + catálogos + fichas de uma vez")
     p.add_argument("--perfil", choices=["impressao", "digital"], default="digital",
@@ -127,7 +129,7 @@ def main():
 
     elif a.cmd == "site":
         from geradores import site
-        site.gerar()
+        site.gerar(interno=a.interno)
 
     elif a.cmd == "checklist":
         _checklist()

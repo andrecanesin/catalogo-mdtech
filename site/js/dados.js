@@ -40,6 +40,7 @@ window.MD = (function () {
       fetch("produtos.json").then(r => r.json()),
       fetch("meta.json").then(r => r.json()).catch(() => null)
     ]);
+    detectarPrecos(prod);
     return { produtos: prod, meta };
   }
 
@@ -114,7 +115,10 @@ window.MD = (function () {
 
   // ---- preços (coluna "Preço (R$)" da base; hoje fictícios) ----
   const _pc = cfg.precos || {};
-  const mostrarPreco = () => _pc.mostrar !== false;
+  // o site de clientes não tem preço nenhum no produtos.json: então não mostra cartão, "sob consulta", total nem aviso
+  let _temPrecos = true;
+  const detectarPrecos = prod => { _temPrecos = (prod || []).some(p => p.preco); };
+  const mostrarPreco = () => _pc.mostrar !== false && _temPrecos;
   // preço com destaque tipográfico: "R$" pequeno, reais em negrito, centavos menores (card e página do produto)
   const precoHTML = v => { const [r, c] = Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).split(",");
     return `<span class="pz-m">R$</span><span class="pz-v">${r}</span><span class="pz-c">,${c}</span>`; };
@@ -382,7 +386,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { brl, precoHTML, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

@@ -63,6 +63,24 @@ def carregar(caminho=None, aba=None):
         itens.append(reg)
     return itens
 
+def carregar_precos(caminho=None):
+    """Preços reais do build interno: {código: Valor Total IPI (float)}. Arquivo local, fora do git."""
+    from pathlib import Path
+    caminho = Path(caminho or config.PRECOS_XLSX)
+    if not caminho.exists():
+        raise SystemExit(f"ERRO: {caminho} não existe. O build interno precisa da planilha de preços reais "
+                         "(colunas Código | Valor Unitário | IPI | Valor Total IPI).")
+    ws = load_workbook(caminho, data_only=True).worksheets[0]
+    hdr = [str(c.value or "").strip() for c in ws[1]]
+    ic, iv = hdr.index("Código"), hdr.index("Valor Total IPI")
+    precos = {}
+    for lin in ws.iter_rows(min_row=2, values_only=True):
+        if lin[ic] is None or lin[iv] in (None, ""):
+            continue
+        precos[str(lin[ic]).strip()] = float(lin[iv])
+    return precos
+
+
 # ---- KITS (propostas básicas): contrato de colunas da aba KITS ----
 COLUNAS_KITS = {
     "kit":    "Kit",

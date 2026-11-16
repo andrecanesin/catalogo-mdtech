@@ -61,6 +61,7 @@
       $("#alvo").innerHTML = `<div class="vazio"><b>Não consegui carregar o produto</b>
         Sirva a pasta por um servidor local.</div>`; return;
     }
+    MD.detectarPrecos(produtos);
     const p = produtos.find(x => x.codigo === cod) || produtos.find(x => normEq(x.codigo, cod));
     if (!p) {
       $("#alvo").innerHTML = `<div class="vazio"><b>Produto não encontrado</b>

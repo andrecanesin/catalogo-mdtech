@@ -48,8 +48,8 @@ window.MDTECH = {
   // Quantidade de produtos por página na grade (mobile-friendly).
   produtosPorPagina: 20,
 
-  // Preços: vêm da coluna "Preço (R$)" da base (produtos.json). Hoje são FICTÍCIOS: o site avisa "valores ilustrativos"
-  // (flag preco_ficticio de cada produto, definida por PRECOS_FICTICIOS em mdtech/config.py). mostrar:false esconde tudo.
+  // Preços: só existem no build interno (/interno, com login), vindos de dados/precos_reais.xlsx. No site de clientes o
+  // produtos.json não tem preço e o front esconde tudo sozinho. mostrar:false esconde mesmo no interno.
   precos: { mostrar: true, aviso: "Valores ilustrativos, sujeitos à tabela comercial vigente." },
 
   // Botão "Suporte" (canto da tela): menu guiado ANTES do WhatsApp. É suporte interno do catálogo
