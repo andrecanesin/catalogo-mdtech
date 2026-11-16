@@ -266,6 +266,20 @@ class TesteConta(unittest.TestCase):
         self.assertEqual(db.usuario("a@b.com")["admin"], 0)
         db.fechar()
 
+    def test_nomes_do_vendedores_txt(self):
+        self.assertEqual(admin.ler_nomes("# lista\r\nVendedor@MDTech.com.br  Antônio Silva\r\nx@y.com;Maria Souza\nsem@nome.com\n\ufeffz@w.com\tJosé\n"),
+                         {"vendedor@mdtech.com.br": "Antônio Silva", "x@y.com": "Maria Souza", "z@w.com": "José"})
+        out = io.StringIO(); sys.stdout, velho = out, sys.stdout
+        try:
+            admin.nomes("vendedor@mdtech.com.br Antônio Silva\nninguem@x.com Fulano\n", self.banco)
+            admin.nomes("vendedor@mdtech.com.br Outro Nome\n", self.banco)          # não sobrescreve
+        finally:
+            sys.stdout = velho
+        db = B.Banco(self.banco)
+        self.assertEqual(db.usuario("vendedor@mdtech.com.br")["nome"], "Antônio Silva")
+        db.fechar()
+        self.assertIn("não cadastrado", out.getvalue())
+
     def test_permissao_do_banco(self):
         self.assertEqual(self.banco.stat().st_mode & 0o777, 0o660)   # www-data + grupo catalogo_mdtech (pasta 2770), ver deploy.sh
 
