@@ -106,16 +106,19 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 - **Clientes** (raiz do domínio, aberto): `produtos.json` sem preço; o front esconde preço, total e aviso sozinho. É o que o Actions gera.
 - **Interno** (`/interno`, 1 login por vendedor, Apache): igual, mas com o preço de `dados/precos_reais.xlsx`. Só se gera na máquina do André:
   `python gerar.py site --interno` → `saida/servidor/` (raiz = clientes, `interno/` = vendedores). O build interno recusa rodar com `SITE_PUBLICO=1`.
-- Deploy (`deploy/`, ver `deploy/LEIA-ME.md`): `deploy/deploy.sh` gera tudo e envia por rsync/SSH para `catalogo.mdtechsm.com.br`; `deploy/logins.py` cria 1 login
-  por vendedor (e-mail). Roda na máquina do André: a sessão na nuvem não alcança o SSH do servidor (só HTTPS). Credenciais, lista e senhas ficam fora do git.
-
-## Antes do deploy em servidor (lembrete)
-O projeto vai para um servidor próprio, não para o GitHub Pages. Ao planejar o deploy:
-- **Preços:** a coluna `Preço (R$)` da base hoje traz valores **FICTÍCIOS** (`PRECOS_FICTICIOS = True` em `mdtech/config.py`); site e orçamento
-  mostram "valores ilustrativos". **Preço só no site:** catálogos, fichas e propostas (kits) saem SEM preço (decisão do André, 09/11). O repositório e o Pages são **públicos**: com preço REAL, **o workflow trava** (`SITE_PUBLICO=1` no
-  passo do site) e a publicação não vai ao ar. Para preço real: tirar os valores do repositório e servi-los só por onde houver controle de acesso.
-- **Publicação:** `.github/workflows/publicar.yml` hoje publica no Pages; trocar pelo envio ao servidor.
-- **Catálogos digitais:** hoje vão no artefato do site; no servidor, gerados e enviados junto. Os impressos continuam só locais.
+## Servidor (no ar desde 16/11)
+- `https://catalogo.mdtechsm.com.br/` = clientes (aberto, sem preço); `/interno/` = vendedores (com preço). Apache 2.4 (Ubuntu), usuário `catalogo_mdtech`,
+  pasta `~/public_html`, acesso por **chave SSH** (nunca senha no repositório nem no chat). A sessão na nuvem não alcança o SSH (só HTTPS): o deploy roda na máquina do André.
+- Deploy: `bash deploy/deploy.sh` (ver `deploy/LEIA-ME.md`). No Git Bash do Windows não há `rsync`: o script envia com `tar` por SSH (sobrescreve, não apaga).
+  Ele gera fichas, catálogos, propostas e `python gerar.py site --interno`, e no fim confere que `/interno` responde 401 e que a raiz não tem preço.
+  O Actions só publica a versão de clientes no GitHub Pages (sem preço); o `/interno` só existe no servidor.
+- Particularidades do servidor: `.htaccess` não aceita `Options` nem `Header` (dá erro 500), então o do `/interno` só tem diretivas de autenticação. A raiz tem um
+  `.htaccess` com `DirectoryIndex index.html`, criado à mão (o deploy não o recria; sem ele o Apache lista as pastas). O `index.py` antigo, que só embutia o Pages num
+  iframe, foi removido (cópia em `~/backup_antigo` no servidor).
+- Login dos vendedores **provisório**: Basic Auth do Apache, 1 login por e-mail (`deploy/logins.py`; lista e senhas só locais, fora do git). Planejado: tela de login própria,
+  mobile first, com troca da senha inicial no 1º acesso; SSO com o sistema GEWEB só se ele oferecer OIDC/OAuth/SAML ou API para validar usuário.
+- Preços: só no site interno (decisão de 09/11 mantida: catálogos, fichas e propostas saem SEM preço). Reais, em `dados/precos_reais.xlsx` (local, fora do git);
+  o repositório e o Pages são públicos, então o build interno recusa rodar com `SITE_PUBLICO=1`.
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).
