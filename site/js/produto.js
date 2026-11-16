@@ -101,6 +101,8 @@
           ${esps}
           <h1>${esc(p.nome || p.codigo)}</h1>
           <div class="cod-g mono" style="color:${cor}">${esc(p.codigo)}</div>
+          <div class="desc-g"><div class="k">Descrição (padrão de cadastro)</div>
+            <div class="t">${p.descricao ? esc(p.descricao) : miss}</div></div>
           <table class="tabela">
             <tr><td class="k">Família</td><td class="v">${v(p.familia)}</td></tr>
             <tr><td class="k">Diâmetro (Ø)</td><td class="v">${diametroTxt ? esc(diametroTxt) : miss}</td></tr>
@@ -118,8 +120,6 @@
             <b${p.preco ? ` aria-label="${esc(MD.brl(p.preco))}"` : ""}>${p.preco ? MD.precoHTML(p.preco) : "Sob consulta"}</b>
             ${p.preco && p.preco_ficticio ? `<small>${esc((MD.cfg.precos || {}).aviso || "Valores ilustrativos.")}</small>` : ""}</div>` : ""}
           <div class="acoes" id="acoes"></div>
-          <div class="desc-g"><div class="k">Descrição (padrão de cadastro)</div>
-            <div class="t">${p.descricao ? esc(p.descricao) : miss}</div></div>
         </div>
       </div>`;
 
