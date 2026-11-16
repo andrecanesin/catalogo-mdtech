@@ -22,9 +22,28 @@ o GitHub Actions os recria a cada publicação.
 ## Como publicar
 1. Editar a planilha e/ou o HTML/CSS/JS do `site/`.
 2. (Opcional) conferir local: `python gerar.py fichas --separados && python gerar.py site`, depois `python -m http.server` dentro de `site/`.
-3. `git add`, `git commit`, `git push origin main`. O workflow **Publicar site** roda sozinho (aba Actions); em ~minutos o Pages atualiza.
+3. PR → ok → merge na `main`. O workflow **Publicar site** roda sozinho (aba Actions) e atualiza a **homologação** (Pages) em ~minutos.
+4. Com o ok do André para a produção: `bash deploy/deploy.sh` na máquina dele (ver "Ambientes e nomes").
 - Catálogos **digitais** (foto reduzida, ~6 MB no total) são gerados pelo Actions e vão junto com o site. Catálogos **impressos** (foto original)
   são só locais (`saida/impresso/`) e nunca passam pelo Actions nem pelo git (ver `site/PRODUCAO.md`).
+
+## Ambientes e nomes (combinado em 16/11)
+| Nome | Onde | Para quê |
+|---|---|---|
+| **Desenvolvimento** (local) | máquina do André ou sessão do Claude | alterar e testar |
+| **PR** | GitHub | proposta de mudança; o André revisa e dá o "ok" |
+| **Merge** | GitHub (`main`) | o "ok" aplicado: entra na versão oficial do código |
+| **Homologação** | GitHub Pages (`andrecanesin.github.io/catalogo-mdtech`) | conferência e aprovação antes de subir; atualiza sozinha a cada merge |
+| **Produção** ("no ar") | `catalogo.mdtechsm.com.br` | o que clientes e vendedores usam |
+| **Deploy** ("subir para produção") | `bash deploy/deploy.sh`, só na máquina do André | leva a `main` para a produção |
+| **Rollback** | | voltar à versão anterior se algo der errado |
+
+Fluxo: alteração → **PR** → ok → **merge** → **homologação** (Actions, ~2 min) → André confere → **"ok para produção"** → **deploy** → **produção**.
+- Usar "em homologação" e "em produção", nunca "publicado" (ambíguo).
+- O deploy só acontece depois do ok explícito do André para a produção; é ele quem roda o comando (a sessão não alcança o SSH).
+- **Login e preços não passam pela homologação:** o Pages é estático e público (não executa o app e nunca tem preço real). Eles estreiam em
+  produção de forma **controlada**: só o André tem conta até aprovar, o `/interno` antigo segue no ar e só então os vendedores são cadastrados.
+  Uma homologação dentro do servidor (ex.: `/homologacao/` com banco separado) fica para quando a intranet (Fase 2) crescer.
 
 ## Fluxo por tipo de alteração
 | Alteração | Quem faz / valida | Publicação |
