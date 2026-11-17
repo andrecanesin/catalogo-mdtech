@@ -186,6 +186,12 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   "Conectado · catálogo atualizado" em `#1874A1`. Prévia do convite no WhatsApp: `site/img/app/compartilhar-app.jpg` (1200×630, Open Graph do `entrar.html`) — **conteúdo no quadrado central e celulares nas laterais**, porque o WhatsApp mostra ora o cartão largo, ora uma miniatura quadrada cortada no centro. O link do convite leva `?app=2` para driblar a prévia antiga que o WhatsApp guarda por endereço (se trocar a imagem de novo, subir o número em `entrar.html` e em `vendedores.js`).
   **Android sem o aviso de instalação do navegador** (ex.: **Samsung Internet**, navegador padrão dos Samsung): depois de 8 s o convite mostra o passo a passo
   pelo menu (Samsung: ☰ → Adicionar página a → Tela inicial; outros: ⋮ → Instalar app). Com o aviso (Chrome), aparece o botão "Instalar o app".
+  **App DESLIGADO em 17/11 (decisão do André): o Play Protect do Android mostrou "App de risco bloqueado" ("criado para uma versão mais antiga do Android")
+  ao instalar o PWA em um Samsung (Android 16) e não em outro igual; o pacote (WebAPK) é gerado pelo navegador/Google, não por nós.** Hoje: `config.js` → `app.convite: false`
+  (sem tela de convite), `<link rel="manifest">` removido dos HTML (o Android não oferece "Instalar app" e não gera o pacote), texto do convite sem a linha do app, prévia do WhatsApp
+  neutra (`site/img/app/compartilhar-acesso.jpg`, link com `?acesso=1`). Continua valendo: service worker (catálogo sem internet), faixa de conexão, fila de pedidos,
+  preços guardados 15 dias, fotos. `site/manifest.json`, os ícones, `compartilhar-app.jpg` e o convite em `app.js` ficam no repositório para religar (ver o comentário em `config.js`).
+  Antes de religar: descobrir se o aviso vem do navegador (Samsung Internet x Chrome), da versão do Chrome ou do Play Protect de cada aparelho.
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
   Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,
   PostgreSQL (recomendado), disco e monitoramento. Aguardando o André falar com ele.

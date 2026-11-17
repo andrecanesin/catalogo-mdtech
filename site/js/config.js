@@ -65,6 +65,11 @@ window.MDTECH = {
   // Botão "Suporte" (canto da tela): menu guiado ANTES do WhatsApp. É suporte interno do catálogo
   // (problema técnico, dúvida de uso, dado do produto, sugestão), não venda. Usa o mesmo WhatsApp do
   // contato; sem WhatsApp configurado, o botão some. Mude textos, categorias e respostas só aqui.
+  // App instalável (PWA): DESLIGADO em 17/11 (o Play Protect do Android mostrou "App de risco bloqueado" em alguns celulares).
+  // O catálogo segue funcionando sem internet (service worker), mas não é oferecido como app. Para religar: convite: true e
+  // devolver <link rel="manifest" href="manifest.json"> nos HTML (index, produto, entrar, vendedores, privacidade).
+  app: { convite: false },
+
   suporte: {
     ativo: true,
     // Chave do Web3Forms (web3forms.com): o e-mail dos chamados é o cadastrado lá (mkt@triomed.com.br). Não é segredo

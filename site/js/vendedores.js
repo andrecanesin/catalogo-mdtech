@@ -20,11 +20,10 @@
     if (tipo === "nova senha")
       return `${ola} Aqui está o link para criar uma nova senha no catálogo MDTech:\n${link}\n\nO link vale por ${dias} dias e funciona uma vez só.`;
     return `${ola} Seu acesso de vendedor ao catálogo MDTech está pronto. Toque no link para criar a sua senha:\n${link}\n\n` +
-      `O link vale por ${dias} dias. Depois, é só entrar com o seu e-mail (${v.email}) e a senha que você criou: os preços de tabela aparecem no catálogo.\n\n` +
-      `Depois de entrar, instale o app no celular: o catálogo funciona até sem internet.`;
+      `O link vale por ${dias} dias. Depois, é só entrar com o seu e-mail (${v.email}) e a senha que você criou: os preços de tabela aparecem no catálogo.`;
   }
   function mostrarConvite(v, codigo, tipo, dias) {
-    const link = linkEntrar() + "?app=2#convite=" + codigo;   // ?app=2: o WhatsApp não reaproveita a prévia antiga guardada para o endereço sem parâmetro
+    const link = linkEntrar() + "?acesso=1#convite=" + codigo;   // ?acesso=1: o WhatsApp não reaproveita a prévia antiga guardada para o endereço sem parâmetro
     ultimaMensagem = mensagem(v, link, tipo, dias);
     $("senha-titulo").textContent = tipo === "nova senha" ? "Link de nova senha pronto" : "Convite pronto";
     $("senha-para").innerHTML = `Para <b>${esc(v.nome ? v.nome + " · " + v.email : v.email)}</b>`;
