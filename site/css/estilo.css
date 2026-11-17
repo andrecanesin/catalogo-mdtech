@@ -1,3 +1,10 @@
+/* Fontes locais (sem Google Fonts: o visitante não envia o IP a terceiros). Subconjunto latino, woff2. O peso 800 usa o Bold. */
+@font-face{font-family:'Poppins';font-weight:400;font-style:normal;font-display:swap;src:url(../fonts/Poppins-Regular.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-weight:500;font-style:normal;font-display:swap;src:url(../fonts/Poppins-Medium.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-weight:600;font-style:normal;font-display:swap;src:url(../fonts/Poppins-SemiBold.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-weight:700 800;font-style:normal;font-display:swap;src:url(../fonts/Poppins-Bold.woff2) format('woff2');}
+@font-face{font-family:'IBM Plex Mono';font-weight:400;font-style:normal;font-display:swap;src:url(../fonts/IBMPlexMono-Regular.woff2) format('woff2');}
+@font-face{font-family:'IBM Plex Mono';font-weight:500 700;font-style:normal;font-display:swap;src:url(../fonts/IBMPlexMono-Medium.woff2) format('woff2');}
 /* MDTech — Catálogo digital. Identidade irmã dos catálogos PDF. */
 :root{
   --navy:#193C6C; --navy-2:#1f487c; --ciano:#36A9E1;
@@ -370,6 +377,13 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .sup-head{display:flex;align-items:center;justify-content:space-between;color:var(--navy);font-size:17px;}
 .sup-x{border:0;background:none;font-size:28px;line-height:1;color:var(--mut);cursor:pointer;min-width:44px;min-height:44px;}
 .sup-sub{font-size:13px;color:var(--mut);margin:2px 0 12px;}
+.sup-lgpd{font-size:12.5px;line-height:1.45;color:var(--mut);margin:8px 0 4px;}.sup-lgpd a{color:var(--navy);font-weight:600;}
+.sup-isca{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}   /* armadilha anti-robô: fora da tela, sem display:none */
+.rodape a{color:var(--navy);font-weight:600;}
+.pg-privacidade main{max-width:760px;margin:24px auto 0;padding:0 20px;}
+.pg-privacidade h1{font-size:26px;color:var(--navy);margin:8px 0 4px;}.pg-privacidade h2{font-size:17px;color:var(--navy);margin:26px 0 6px;}
+.pg-privacidade p,.pg-privacidade li{font-size:15px;line-height:1.6;color:#33404f;}.pg-privacidade li{margin:4px 0;}
+.pg-privacidade .ver{font-size:13px;color:var(--mut);}
 .sup-cats{border:0;display:grid;gap:8px;margin-bottom:10px;}
 .sup-cats legend{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600;margin-bottom:6px;}
 .sup-cat{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;

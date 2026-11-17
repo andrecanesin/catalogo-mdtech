@@ -45,6 +45,8 @@
         <label class="sup-campo">Seu nome <input id="sup-nome" type="text" autocomplete="name" placeholder="Como posso te chamar?"></label>
         <label class="sup-campo" id="sup-ret-l">Como te respondo? <input id="sup-ret" type="text" autocomplete="email" placeholder="E-mail ou telefone (opcional)"></label>
         <label class="sup-campo">Descreva <textarea id="sup-msg" rows="4" placeholder="Conte o que aconteceu ou o que você sugere"></textarea></label>
+        <label class="sup-isca" aria-hidden="true">Não preencha este campo <input id="sup-isca" type="text" tabindex="-1" autocomplete="off"></label>
+        <p class="sup-lgpd">Usamos o que você informa só para responder a esta mensagem. O envio passa pelo serviço Web3Forms (EUA) e chega por e-mail à equipe da MDTech; nada fica salvo neste aparelho. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></p>
         <p class="sup-ctx" id="sup-ctx"></p>
         <p class="sup-st" id="sup-st" role="status" aria-live="polite"></p>
         <button class="sup-go sup-mail" id="sup-send" type="button" aria-disabled="true">Enviar mensagem</button>
@@ -61,7 +63,7 @@
     return {
       fab: raiz.querySelector("#sup-fab"), bg: raiz.querySelector("#sup-bg"), painel: raiz.querySelector("#sup-panel"),
       x: raiz.querySelector("#sup-x"), faq: raiz.querySelector("#sup-faq"), nome: raiz.querySelector("#sup-nome"),
-      msg: raiz.querySelector("#sup-msg"), ctx: raiz.querySelector("#sup-ctx"), go: raiz.querySelector("#sup-go"),
+      msg: raiz.querySelector("#sup-msg"), isca: raiz.querySelector("#sup-isca"), ctx: raiz.querySelector("#sup-ctx"), go: raiz.querySelector("#sup-go"),
       ret: raiz.querySelector("#sup-ret"), retL: raiz.querySelector("#sup-ret-l"), st: raiz.querySelector("#sup-st"), send: raiz.querySelector("#sup-send"),
       form: raiz.querySelector("#sup-form"), feito: raiz.querySelector("#sup-feito"), feitoT: raiz.querySelector("#sup-feito-t"),
       outra: raiz.querySelector("#sup-outra"), fechar2: raiz.querySelector("#sup-fechar")
@@ -99,7 +101,7 @@
     let enviando = false;
     function zerar() {
       e.painel.querySelectorAll('input[name="sup-cat"]').forEach(r => { r.checked = false; });
-      e.nome.value = ""; e.ret.value = ""; e.msg.value = ""; e.st.textContent = ""; e.st.className = "sup-st";
+      e.nome.value = ""; e.ret.value = ""; e.msg.value = ""; e.isca.value = ""; e.st.textContent = ""; e.st.className = "sup-st";
       e.form.hidden = false; e.feito.hidden = true;
     }
     async function enviar() {
@@ -110,7 +112,7 @@
         "Página: " + x.pagina, "Aparelho: " + x.aparelho].filter(l => l !== null).join("\n");
       enviando = true; e.st.className = "sup-st"; e.st.textContent = "Enviando…"; atualizar();
       try {
-        await MD.enviarEmail({ assunto: "Suporte catálogo MDTech · " + c.nome, nome, contato: ret, corpo });
+        await MD.enviarEmail({ assunto: "Suporte catálogo MDTech · " + c.nome, nome, contato: ret, corpo, armadilha: e.isca.value });
         e.feitoT.textContent = ret ? "Recebemos e vamos responder pelo contato informado."
           : "Recebemos. Como você não informou um contato de retorno, não conseguiremos responder.";
         zerar(); e.form.hidden = true; e.feito.hidden = false; e.outra.focus();

@@ -292,8 +292,11 @@ window.MD = (function () {
   const _chaveEmail = ((cfg.suporte && cfg.suporte.chaveEmail) || "").trim();
   const emailAtivo = () => !!_chaveEmail;
   const emailValido = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v || "");
-  async function enviarEmail({ assunto, nome, contato, corpo }) {
-    const dados = { access_key: _chaveEmail, subject: assunto, from_name: "Catálogo MDTech", name: nome || "(sem nome)", message: corpo };
+  // armadilha = campo escondido que gente não vê e robô preenche: se vier preenchido, finge que enviou e não manda nada.
+  async function enviarEmail({ assunto, nome, contato, corpo, armadilha }) {
+    if (armadilha) return;
+    const dados = { access_key: _chaveEmail, subject: String(assunto).slice(0, 200), from_name: "Catálogo MDTech",
+      name: String(nome || "(sem nome)").slice(0, 120), message: String(corpo).slice(0, 8000) };
     if (emailValido(contato)) dados.email = contato;            // vira o "responder para" do e-mail
     const r = await fetch("https://api.web3forms.com/submit", { method: "POST",
       headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(dados) });
@@ -331,6 +334,8 @@ window.MD = (function () {
             <label class="sup-campo">Hospital, clínica ou empresa <input id="orc-emp" type="text" autocomplete="organization" placeholder="Opcional"></label>
             <label class="sup-campo">Como te respondo? <input id="orc-ret" type="text" autocomplete="email" placeholder="E-mail ou telefone"></label>
             <label class="sup-campo">Observação <textarea id="orc-obs" rows="3" placeholder="Opcional: prazo, cidade, dúvidas"></textarea></label>
+            <label class="sup-isca" aria-hidden="true">Não preencha este campo <input id="orc-isca" type="text" tabindex="-1" autocomplete="off"></label>
+            <p class="sup-lgpd">Usamos o que você informa só para responder a esta mensagem. O envio passa pelo serviço Web3Forms (EUA) e chega por e-mail à equipe da MDTech; nada fica salvo neste aparelho. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></p>
             <p class="sup-st" id="orc-st" role="status" aria-live="polite"></p>
             <button class="sup-go sup-mail" id="orc-send" type="button" aria-disabled="true">Enviar pedido</button>
           </div>
@@ -343,7 +348,7 @@ window.MD = (function () {
       document.body.appendChild(raiz);
       const q = id => raiz.querySelector("#" + id);
       const o = { bg: q("orc-bg"), painel: q("orc-panel"), x: q("orc-x"), form: q("orc-form"), feito: q("orc-feito"), res: q("orc-res"),
-        nome: q("orc-nome"), emp: q("orc-emp"), ret: q("orc-ret"), obs: q("orc-obs"), st: q("orc-st"), send: q("orc-send"), fechar: q("orc-fechar") };
+        nome: q("orc-nome"), isca: q("orc-isca"), emp: q("orc-emp"), ret: q("orc-ret"), obs: q("orc-obs"), st: q("orc-st"), send: q("orc-send"), fechar: q("orc-fechar") };
       let enviando = false;
       const pronto = () => o.nome.value.trim() && o.ret.value.trim() && lista().length > 0 && !enviando;
       const checar = () => { const ok = !!pronto(); o.send.setAttribute("aria-disabled", ok ? "false" : "true"); o.send.classList.toggle("off", !ok); };
@@ -359,8 +364,8 @@ window.MD = (function () {
         enviando = true; o.st.className = "sup-st"; o.st.textContent = "Enviando…"; checar();
         try {
           await enviarEmail({ assunto: "Orçamento catálogo MDTech · " + lista().length + " ite" + (lista().length === 1 ? "m" : "ns") + " · " + nome,
-            nome, contato: ret, corpo });
-          [o.nome, o.emp, o.ret, o.obs].forEach(i => i.value = ""); o.st.textContent = "";
+            nome, contato: ret, corpo, armadilha: o.isca.value });
+          [o.nome, o.emp, o.ret, o.obs, o.isca].forEach(i => i.value = ""); o.st.textContent = "";
           o.form.hidden = true; o.feito.hidden = false; o.fechar.focus();
           limpar();                                  // pedido enviado: esvazia a lista
         } catch (err) {

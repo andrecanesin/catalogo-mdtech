@@ -43,7 +43,19 @@ def copiar(origem, pasta_destino, agora=None):
     return destino
 
 
+def manutencao(origem):
+    """Retenção diária (antes da cópia): apaga sessões e convites vencidos, erros de senha antigos (com IP) e histórico com mais de 1 ano."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from mdtech_conta import banco
+    db = banco.Banco(origem)
+    try:
+        db.limpar_antigos()
+    finally:
+        db.fechar()
+
+
 if __name__ == "__main__":
     origem = sys.argv[1] if len(sys.argv) > 1 else "/var/lib/mdtech/usuarios.sqlite"
     pasta = sys.argv[2] if len(sys.argv) > 2 else Path.home() / "backups_mdtech"
+    manutencao(origem)
     print("backup:", copiar(origem, pasta))
