@@ -24,7 +24,7 @@
       `Depois de entrar, instale o app no celular: o catálogo funciona até sem internet.`;
   }
   function mostrarConvite(v, codigo, tipo, dias) {
-    const link = linkEntrar() + "#convite=" + codigo;
+    const link = linkEntrar() + "?app=2#convite=" + codigo;   // ?app=2: o WhatsApp não reaproveita a prévia antiga guardada para o endereço sem parâmetro
     ultimaMensagem = mensagem(v, link, tipo, dias);
     $("senha-titulo").textContent = tipo === "nova senha" ? "Link de nova senha pronto" : "Convite pronto";
     $("senha-para").innerHTML = `Para <b>${esc(v.nome ? v.nome + " · " + v.email : v.email)}</b>`;
