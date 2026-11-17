@@ -16,6 +16,18 @@ class TesteTextos(unittest.TestCase):
     def test_nome_produto_mdtech_no_meio_nao_engole_o_resto(self):
         self.assertEqual(T.nome_produto("CAMISA MDTECH PARA CISTOURETROSCOPIA D=16,5FR"), "Camisa para Cistouretroscopia")
 
+    def test_nome_endoscopio_sem_spec(self):
+        self.assertEqual(T.nome_produto("ENDOSCÓPIO RÍGIDO MDTECH AV=30°, D=4MM, C=302MM, AUTOCLAVÁVEL (134°). TECNOLOGIA AVANÇADA"),
+                         "Endoscópio Rígido")
+        self.assertEqual(T.nome_produto("ENDOSCÓPIO RÍGIDO 4K HIGH DEFINITION MDTECH AV=12°, D=4MM"), "Endoscópio Rígido 4K High Definition")
+
+    def test_nome_mantem_a_medida_que_diferencia_o_item(self):
+        self.assertEqual(T.nome_produto("CLAMP TIPO BULLDOG 25MM CURVO MDTECH AUTOCLAVAVEL (134°)"), "Clamp tipo Bulldog 25 mm Curvo")
+        self.assertEqual(T.nome_produto("AGULHA DE PUNÇAO 1.8MM MDTECH D=5 C=330MM"), "Agulha de Punçao 1,8 mm")
+
+    def test_nome_com_parenteses_de_spec(self):
+        self.assertEqual(T.nome_produto("CONJUNTO DE TUBOS MDTECH VÁLVULA TIPO PISTÃO (D=10MM) E (D=5MM)"), "Conjunto de Tubos Válvula tipo Pistão")
+
     def test_nome_produto_vazio(self):
         self.assertEqual(T.nome_produto(""), "")
         self.assertEqual(T.nome_produto(None), "")
@@ -25,6 +37,20 @@ class TesteTextos(unittest.TestCase):
         self.assertEqual(T.diametro_fmt({"diametro_fr": "16,5"}), "16,5 Fr")
         self.assertEqual(T.diametro_fmt({"diametro": "5", "diametro_fr": "16"}), "5 mm")   # mm tem prioridade
         self.assertEqual(T.diametro_fmt({}), "")
+        self.assertEqual(T.diametro_fmt({"diametro": "2.9"}), "2,9 mm")                    # vírgula brasileira
+        self.assertEqual(T.diametro_fmt({"diametro_fr": "16.5"}), "16,5 Fr")
+
+    def test_ncm_num_formato_so(self):
+        self.assertEqual(T.ncm_fmt("90183999"), "9018.39.99")
+        self.assertEqual(T.ncm_fmt("9018.90.99"), "9018.90.99")
+        self.assertEqual(T.ncm_fmt(""), "")
+
+    def test_otica_e_uso_unico(self):
+        self.assertTrue(T.eh_otica({"descricao": "ENDOSCÓPIO RÍGIDO MDTECH AV=30°"}))
+        self.assertFalse(T.eh_otica({"descricao": "CABO DE FIBRA ÓTICA COM CONECTOR"}))
+        self.assertFalse(T.eh_otica({"descricao": "ELETRODO MONOPOLAR TIPO LOOP 30° MDTECH"}))
+        self.assertTrue(T.uso_unico({"descricao": "CLIPS DE TITANIO TAMANHO S COR BRANCO MDTECH"}))
+        self.assertFalse(T.uso_unico({"descricao": "PINÇA DE APREENSÃO MDTECH"}))
 
     def test_preco(self):
         self.assertEqual(T.preco_num({"preco": "1.250,50"}), 1250.5)
@@ -64,6 +90,20 @@ class TesteBase(unittest.TestCase):
     def test_especialidades_conhecidas(self):
         esp = {i["especialidade"] for i in base.carregar()}
         self.assertEqual(esp, {"Laparoscopia", "Urologia", "Histeroscopia"})
+
+    def test_nenhum_card_identico_na_base(self):
+        """Dois produtos da mesma especialidade com nome e medidas iguais seriam cards indistinguíveis."""
+        vistos = {}
+        for i in base.carregar():
+            chave = (i["especialidade"], T.nome_produto(i["descricao"]), T.diametro_fmt(i), i["comprimento"], i["angulo"])
+            if chave in vistos and vistos[chave] != i["codigo"]:
+                self.fail(f"cards idênticos: {vistos[chave]} e {i['codigo']} ({chave[1]})")
+            vistos[chave] = i["codigo"]
+
+    def test_ncm_da_base_vira_formato_unico(self):
+        for i in base.carregar():
+            if i["ncm"]:
+                self.assertRegex(T.ncm_fmt(i["ncm"]), r"^\d{4}\.\d{2}\.\d{2}$", i["codigo"])
 
     def test_cabecalho_sem_codigo_da_erro_claro(self):
         with tempfile.TemporaryDirectory() as tmp:

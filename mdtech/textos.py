@@ -31,10 +31,12 @@ def slug_arquivo(texto):
 _STOP = {"de", "da", "do", "das", "dos", "e", "com", "para", "em",
          "a", "o", "ao", "à", "no", "na", "tipo", "por", "um", "uma", "uns", "umas"}
 
-# marcadores onde o NOME termina e começam specs (Ø, D=, C=, mm, autoclavável, ano de registro).
+# marcadores onde o NOME termina e começam specs (Ø, D=, C=, CM=, AV= do endoscópio, autoclavável)
+# ou o ano de registro. Medidas soltas ("BULLDOG 25MM CURVO", "AGULHA 1.8MM") ficam no nome:
+# são o que diferencia um item do outro (a spec de diâmetro e comprimento vem de D= e C=).
 # MDTECH é removido à parte (pode aparecer no meio da frase, ex. "CAMISA MDTECH PARA X" — não é
 # fim de nome, é a marca inserida ali; cortar nela perderia "PARA X").
-_CORTE = re.compile(r"\s+(D\s*=|Ø|C\s*=|\d+[.,]?\d*\s*MM|AUTOCLAV|\(1\d{2})", re.IGNORECASE)
+_CORTE = re.compile(r"[\s,;-]+\(?(D\s*=|Ø|C\s*=|CM\s*=|AV\s*=|AUTOCLAV|\(1\d{2})", re.IGNORECASE)
 _MDTECH = re.compile(r"\bMDTECH\b", re.IGNORECASE)
 
 
@@ -52,7 +54,9 @@ def nome_produto(descricao: str) -> str:
     s = re.sub(r"\s+", " ", s).strip(" -–—")
     # remove preposição/conectivo pendurado no final (corte pode deixar "... Rigido de")
     s = re.sub(r"\s+(de|da|do|das|dos|com|para|em|e|a|o|tipo|por)$", "", s, flags=re.IGNORECASE)
-    return title_case_pt(s)
+    s = title_case_pt(s)
+    s = re.sub(r"(\d+)\.(\d+)\s*MM\b", r"\1,\2 mm", s, flags=re.IGNORECASE)   # 1.8MM -> 1,8 mm
+    return re.sub(r"(\d)\s*MM\b", r"\1 mm", s, flags=re.IGNORECASE)             # 25MM -> 25 mm
 
 
 def title_case_pt(s: str) -> str:
@@ -75,18 +79,46 @@ def eh_sim(v) -> bool:
     return str(v).strip().lower() in ("sim", "s", "x", "true", "1", "yes")
 
 
+def _virgula(v):
+    """Decimal brasileiro nas medidas: '2.9' -> '2,9'."""
+    return str(v).strip().replace(".", ",")
+
+
 def diametro_fmt(item: dict) -> str:
-    """Formata o diâmetro pro campo canônico certo: 'X mm' ou 'X Fr'.
+    """Formata o diâmetro pro campo canônico certo: 'X mm' ou 'X Fr' (decimal com vírgula).
     Prioriza Ø (mm) se preenchido; senão usa Ø (Fr); senão vazio.
     Uso: fichas/catálogo/site chamam isso em vez de ler 'diametro' direto,
     pra não tratar Fr como se fosse mm (bainhas/pinças de Urologia são Fr)."""
     mm = (item.get("diametro") or "").strip()
     if mm:
-        return f"{mm} mm"
+        return f"{_virgula(mm)} mm"
     fr = (item.get("diametro_fr") or "").strip()
     if fr:
-        return f"{fr} Fr"
+        return f"{_virgula(fr)} Fr"
     return ""
+
+
+_OTICA = re.compile(r"^(endosc[oó]pio|[oó]tica|telesc)", re.IGNORECASE)
+_USO_UNICO = re.compile(r"^clips?\b", re.IGNORECASE)
+
+
+def eh_otica(item_ou_nome) -> bool:
+    """Endoscópio/ótica/telescópio: só neles o 'ângulo' é o de visão da lente (selo com ícone, dado pendente).
+    Espelha MD.ehOtica do site."""
+    nome = item_ou_nome if isinstance(item_ou_nome, str) else nome_produto((item_ou_nome or {}).get("descricao", ""))
+    return bool(_OTICA.match(nome or ""))
+
+
+def uso_unico(item_ou_nome) -> bool:
+    """Item de uso único (clips): 'Autoclavável' não se aplica. Espelha MD.usoUnico do site."""
+    nome = item_ou_nome if isinstance(item_ou_nome, str) else nome_produto((item_ou_nome or {}).get("descricao", ""))
+    return bool(_USO_UNICO.match(nome or ""))
+
+
+def ncm_fmt(ncm) -> str:
+    """NCM sempre no formato 9018.90.99 (a base mistura com e sem ponto)."""
+    d = re.sub(r"\D", "", str(ncm or ""))
+    return f"{d[:4]}.{d[4:6]}.{d[6:]}" if len(d) == 8 else str(ncm or "").strip()
 
 
 def icone_angulo_b64(angulo):

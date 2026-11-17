@@ -70,7 +70,7 @@ def _produto(it):
         "autoclavavel": "Sim" if T.eh_sim(it.get("autoclavavel"))
                         else (it.get("autoclavavel") or "").strip(),
         "anvisa": (it.get("anvisa") or "").strip(),
-        "ncm": (it.get("ncm") or "").strip(),
+        "ncm": T.ncm_fmt(it.get("ncm")),
         "preco": None,                         # o site de clientes NUNCA tem preço; o build interno preenche (_aplicar_precos)
         "preco_fmt": None,
         "preco_ficticio": False,

@@ -78,25 +78,19 @@ def val(x): return esc(x) if x not in (None,"") else FALTA
 def dims(i):
     p=[]
     if i.get("Ø (mm)") not in (None,""):
-        p.append(f'Ø {esc(i["Ø (mm)"])} mm')
+        p.append(f'Ø {esc(T._virgula(i["Ø (mm)"]))} mm')
     elif i.get("Ø (Fr)") not in (None,""):
-        p.append(f'Ø {esc(i["Ø (Fr)"])} Fr')
+        p.append(f'Ø {esc(T._virgula(i["Ø (Fr)"]))} Fr')
     if i["Comp. (mm)"] not in (None,""): p.append(f'C {esc(i["Comp. (mm)"])} mm')
     if i["Ângulo"] not in (None,""):   p.append(esc(i["Ângulo"]))
     return " · ".join(p) if p else FALTA
 
-import re as _re
-
-def _eh_pinca(familia):
-    return bool(_re.search(r"pin[cç]a", familia or "", _re.IGNORECASE))
-
-def selo_angulo_html(angulo, familia):
-    """Selo com o ícone de ângulo sobre a foto do card. Aparece em qualquer
-    ótica/endoscópio (Uro, Histero e as óticas HD-4K — todos usam 'ângulo' como
-    ângulo de visão da lente); a única exceção é a pinça Mixter 90°
-    (Laparoscopia), onde 'ângulo' é geometria da ponta, não vista de lente.
+def selo_angulo_html(angulo, descricao):
+    """Selo com o ícone de ângulo sobre a foto do card. Só em ótica/endoscópio (Uro, Histero, Lap e as
+    óticas HD-4K), onde 'ângulo' é o ângulo de visão da lente. Nos demais itens (pinça Mixter 90°, eletrodos 30°,
+    pinça de litotripsia para ótica de 70°) o ângulo é da ponta ou de outro item: sem selo.
     Sem ícone correspondente ao valor = sem selo."""
-    if _eh_pinca(familia):
+    if not T.eh_otica(descricao or ""):
         return ""
     ic = T.icone_angulo_b64(angulo)
     if not ic:
@@ -114,7 +108,7 @@ def _foto_uri(img):
 
 def card(i,accent,selo_auto=False):
     img=find_img(i["Código"])
-    selo = selo_angulo_html(i.get("Ângulo"), i.get("Família"))
+    selo = selo_angulo_html(i.get("Ângulo"), i.get("Descrição (PT)"))
     if img:
         photo=f'<div class="cphoto"><img src="{_foto_uri(img)}">{selo}</div>'
     else:
@@ -128,7 +122,7 @@ def card(i,accent,selo_auto=False):
             f'<div class="cname">{esc(nome_curto(i["Descrição (PT)"]))}</div>'
             f'<div class="cdims">{dims(i)}</div>'
             + ('<div class="cauto">Autoclavável 134°</div>' if selo_auto else '') +
-            f'<div class="cncm">NCM {val(i["NCM"])}</div>'
+            f'<div class="cncm">NCM {val(T.ncm_fmt(i["NCM"]))}</div>'
             f'<div class="canv">{anv}</div></div>')
 
 def _curto(nome, n=26):
