@@ -198,12 +198,19 @@ produtos: **adotar o termo de mercado** (decidido em 17/11: **trocarte**, como M
    idênticos (A275/A276, A189-x: `mdtech/textos.py::nome_produto`); busca aceitando as grafias; NCM num formato só (88 com ponto, 64 sem);
    "Autoclavável" de uso único como "não se aplica"; medidas com vírgula. Pendente: eletrodos, evacuadores e A3104 seguem sem
    "Autoclavável" (o catálogo TIAN SONG urologia 2025 só marca autoclave nos endoscópios; perguntar a instrução de uso à TIAN SONG).
-4. **Celular e acessibilidade:** versão nos CSS/JS (`?v=`); Suporte só para vendedores; ação do produto perto do topo; Voltar desfaz o filtro
+4. ✅ **(17/11, em produção) Celular e acessibilidade:** versão nos CSS/JS (`?v=`); Suporte só para vendedores; ação do produto perto do topo; Voltar desfaz o filtro
    (`pushState`); foco preso nos painéis; bandeja vazia fora do teclado; `role="menu"` errado; paginação com rótulos; botão "Ver resultados" (2,65:1);
    faixa de ajuda que some; textos de 9–11 px; grade sem esperar o `/precos`.
-5. **Privacidade e dados:** aviso de LGPD (formulários → Web3Forms) e anti-spam (honeypot); fontes locais (`assets/fontes`); retenção de eventos/IPs;
-   grafias e acentos da base e nomes de família (com o André).
+5. ✅ **(17/11; falta só "grafias e acentos", com o André) Privacidade e dados:** aviso de LGPD (formulários → Web3Forms) e anti-spam (honeypot); fontes locais (`assets/fontes`); retenção de eventos/IPs;
+   grafias e acentos da base e nomes de família (com o André). Feito: aviso de LGPD nos dois formulários + `site/privacidade.html` (rascunho: o André
+   confere o texto), campo-isca anti-robô, fontes locais em `site/fonts/` (woff2 subconjunto latino, a partir de `assets/fontes/`; sem Google Fonts),
+   retenção no banco do login (`Banco.limpar_antigos`: sessões/convites vencidos, erros de senha com IP após 15 min, histórico após 1 ano; roda no login e todo dia no backup).
 6. Depois: **app offline (PWA)**; Open Graph por produto; deploy pelo Actions (sem a máquina do André); repositório pesado (Git LFS).
+
+## Estado da v1 (17/11)
+Itens 1 a 5 da revisão feitos. **Para fechar a v1:** o André envia os convites aos vendedores e confirma que todos entram; então se desliga o `/interno`
+(Basic Auth) e se apagam `deploy/senhas_vendedores.txt` e `deploy/.htpasswd`. Autoclavável de eletrodos, evacuadores e A3104: **fica como está**
+(decidido em 17/11). Depois da v1: PWA, Open Graph por produto, deploy pelo Actions, Git LFS, cópia do backup fora do servidor, Fase 2 (intranet).
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).

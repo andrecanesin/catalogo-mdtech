@@ -19,6 +19,10 @@ entra no lugar da atual de uma vez (`deploy/remoto.sh`, dois `mv`). Com isso:
 - `bash deploy/deploy.sh --simular` gera e envia, mostra o que a troca faria e não troca nada. **Use na primeira vez.**
 - O app do login (`~/mdtech_app`) troca junto com o site; os dados (`/var/lib/mdtech`) e os preços não voltam no rollback.
 
+## Cópia do backup fora do servidor
+O servidor guarda 14 cópias diárias do banco do login (`~/backups_mdtech`). Para ter uma cópia **fora** dele: `bash deploy/baixar_backup.sh`
+(baixa para `~/backups_mdtech_servidor`; rodar de vez em quando, ex.: toda semana). Guarde fora do repositório: tem e-mails e hashes de senha.
+
 - Vendedor novo/saiu: editar `vendedores.txt`, rodar `logins.py` e `deploy.sh --so-enviar`. Nova senha de alguém: `logins.py --resetar email`.
 - Exige no Apache: `AllowOverride AuthConfig` na pasta do domínio. O `.htaccess` do `/interno` só tem diretivas de login (com `Options`/`Header` o servidor dava erro 500). Se `/interno` não responder 401, o script avisa.
 - Nada daqui (`.env`, `.htpasswd`, lista e senhas) vai ao git: o repositório é público.

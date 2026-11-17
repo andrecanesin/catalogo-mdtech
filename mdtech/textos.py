@@ -38,6 +38,12 @@ _STOP = {"de", "da", "do", "das", "dos", "e", "com", "para", "em",
 # fim de nome, é a marca inserida ali; cortar nela perderia "PARA X").
 _CORTE = re.compile(r"[\s,;-]+\(?(D\s*=|Ø|C\s*=|CM\s*=|AV\s*=|AUTOCLAV|\(1\d{2})", re.IGNORECASE)
 _MDTECH = re.compile(r"\bMDTECH\b", re.IGNORECASE)
+# Acentos que o cadastro (descrição em caixa alta, "padrão de cadastro" do sistema) não traz. Só na EXIBIÇÃO do nome: a planilha não muda.
+_ACENTOS = {"atraumatica": "atraumática", "biopsia": "biópsia", "canula": "cânula", "constituido": "constituído",
+            "desmontavel": "desmontável", "diagnostica": "diagnóstica", "endoscopio": "endoscópio", "frequencia": "frequência",
+            "mandibula": "mandíbula", "pediatrica": "pediátrica", "punçao": "punção", "rapido": "rápido", "rigida": "rígida",
+            "rigido": "rígido", "rotatorio": "rotatório", "titanio": "titânio", "valvula": "válvula", "ressectoscopia": "ressectoscopia"}
+_PALAVRA = re.compile(r"[A-Za-zÀ-ÿ]+")
 _TROCARTE = re.compile(r"\bTROC(?:ATER|ARTER)(ES|S)?\b", re.IGNORECASE)   # trocater/trocarter -> trocarte
 
 
@@ -57,6 +63,8 @@ def nome_produto(descricao: str) -> str:
     # remove preposição/conectivo pendurado no final (corte pode deixar "... Rigido de")
     s = re.sub(r"\s+(de|da|do|das|dos|com|para|em|e|a|o|tipo|por)$", "", s, flags=re.IGNORECASE)
     s = title_case_pt(s)
+    s = _PALAVRA.sub(lambda m: (lambda novo: novo[:1].upper() + novo[1:] if m.group(0)[:1].isupper() else novo)(_ACENTOS[m.group(0).lower()])
+                     if m.group(0).lower() in _ACENTOS else m.group(0), s)
     s = re.sub(r"(\d+)\.(\d+)\s*MM\b", r"\1,\2 mm", s, flags=re.IGNORECASE)   # 1.8MM -> 1,8 mm
     return re.sub(r"(\d)\s*MM\b", r"\1 mm", s, flags=re.IGNORECASE)             # 25MM -> 25 mm
 

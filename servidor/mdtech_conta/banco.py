@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 CONVITE_DIAS = 7                   # link de convite / nova senha: vale 7 dias e uma vez só
+EVENTOS_DIAS = 365                 # histórico de quem fez o quê (tela de vendedores): guardado por 1 ano
 SESSAO_DIAS = 30                   # o vendedor fica conectado no celular por até 30 dias
 JANELA = 15 * 60                   # janela das tentativas erradas (s)
 ATRASO_BASE = 5                    # s de espera após o primeiro erro além do limite; dobra a cada novo erro (máx. JANELA)
@@ -141,8 +142,17 @@ class Banco:
         agora = int(time.time())
         self.con.execute("INSERT INTO sessoes (token_hash, usuario_id, criada, expira, ultimo_uso) VALUES (?, ?, ?, ?, ?)",
                          (_hash_token(token), uid, agora, agora + SESSAO_DIAS * 86400, agora))
-        self.con.execute("DELETE FROM sessoes WHERE expira < ?", (agora,))
+        self.limpar_antigos()
         return token
+
+    def limpar_antigos(self):
+        """Retenção: apaga o que já não serve (sessões e convites vencidos, erros de senha fora da janela, histórico com mais de
+        EVENTOS_DIAS). Roda a cada login e todo dia no backup. Os erros de senha guardam o IP: não ficam além dos 15 minutos."""
+        agora = int(time.time())
+        self.con.execute("DELETE FROM sessoes WHERE expira < ?", (agora,))
+        self.con.execute("DELETE FROM convites WHERE expira < ?", (agora,))
+        self.con.execute("DELETE FROM falhas WHERE quando < ?", (agora - JANELA,))
+        self.con.execute("DELETE FROM eventos WHERE quando < ?", (agora - EVENTOS_DIAS * 86400,))
 
     def sessao(self, token):
         """Devolve o usuário (ativo) dono da sessão, ou None."""

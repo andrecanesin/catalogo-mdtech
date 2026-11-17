@@ -354,6 +354,35 @@ class TesteTransacoes(unittest.TestCase):
             G.adicionar(self.db, "NOVO@mdtech.com.br")
 
 
+class TesteRetencao(unittest.TestCase):
+    def test_apaga_o_que_venceu_e_guarda_o_resto(self):
+        import time
+        import backup
+        with tempfile.TemporaryDirectory() as tmp:
+            caminho = Path(tmp) / "u.sqlite"
+            db = B.Banco(caminho)
+            agora = int(time.time())
+            db.criar_usuario("a@mdtech.com.br", "x")
+            uid = db.usuario("a@mdtech.com.br")["id"]
+            db.con.execute("INSERT INTO sessoes VALUES ('velha', ?, 1, ?, 1)", (uid, agora - 10))
+            db.con.execute("INSERT INTO sessoes VALUES ('nova', ?, 1, ?, 1)", (uid, agora + 1000))
+            db.con.execute("INSERT INTO convites VALUES ('c-velho', ?, 1, ?)", (uid, agora - 10))
+            db.con.execute("INSERT INTO convites VALUES ('c-novo', ?, 1, ?)", (uid, agora + 1000))
+            db.con.execute("INSERT INTO falhas VALUES ('ip:1.2.3.4', ?)", (agora - B.JANELA - 5,))
+            db.con.execute("INSERT INTO falhas VALUES ('ip:5.6.7.8', ?)", (agora - 5,))
+            db.con.execute("INSERT INTO eventos VALUES (?, 'x', 'antigo', '')", (agora - (B.EVENTOS_DIAS + 1) * 86400,))
+            db.con.execute("INSERT INTO eventos VALUES (?, 'x', 'recente', '')", (agora - 86400,))
+            db.fechar()
+            backup.manutencao(caminho)                 # é o que roda todo dia no cron do backup
+            db = B.Banco(caminho)
+            try:
+                conta = lambda t: db.con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
+                self.assertEqual((conta("sessoes"), conta("convites"), conta("falhas")), (1, 1, 1))
+                self.assertEqual([r["acao"] for r in db.con.execute("SELECT acao FROM eventos")], ["recente"])
+            finally:
+                db.fechar()
+
+
 class TesteBackup(unittest.TestCase):
     def test_copia_integra_e_mantem_so_as_ultimas(self):
         import backup

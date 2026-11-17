@@ -6,7 +6,7 @@ window.MDTECH = {
     // WhatsApp: só dígitos, com DDI+DDD. Ex.: "5511999998888". Deixe "" para ocultar o botão.
     whatsapp: "5516997726466",
     // E-mail que recebe os pedidos de orçamento. Deixe "" para ocultar o botão.
-    email: "contato@mdtechsm.com.br"
+    email: "mkt@triomed.com.br"
   },
   // cor de destaque por especialidade — ESPELHO MANUAL de mdtech/marca.py::ACCENT
   // (fonte única da verdade). JS não importa Python, então mudou lá, muda aqui também à mão.
