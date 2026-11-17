@@ -182,7 +182,7 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   (página fixa com a prévia Open Graph, gerada pelo `gerar.py site`, que leva ao `produto.html`).
   **Visual (17/11, pedido do André):** ícone do app com **fundo branco e o símbolo no azul claro da logo (`#38AAE1`)**; convite para instalar em
   **tela cheia**, fundo azul claro, ícone, título "Leve o catálogo no seu celular", 3 benefícios e, no iPhone, o passo a passo antes dos benefícios;
-  botões sempre à vista no rodapé. "Agora não", "Entendi", × e Esc adiam por 30 dias.
+  botões sempre à vista no rodapé. "Agora não", "Entendi", × e Esc adiam por 30 dias. O convite aparece **só em celular e tablet**; no computador fica só o botão de instalar do próprio navegador (decidido em 17/11).
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
   Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,
   PostgreSQL (recomendado), disco e monitoramento. Aguardando o André falar com ele.
