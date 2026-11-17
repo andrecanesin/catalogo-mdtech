@@ -227,7 +227,19 @@ produtos: **adotar o termo de mercado** (decidido em 17/11: **trocarte**, como M
 ## Estado da v1 (17/11)
 Itens 1 a 6 da revisão feitos (PWA incluído). **Para fechar a v1:** o André envia os convites aos vendedores e confirma que todos entram; então se desliga o `/interno`
 (Basic Auth) e se apagam `deploy/senhas_vendedores.txt` e `deploy/.htpasswd`. Autoclavável de eletrodos, evacuadores e A3104: **fica como está**
-(decidido em 17/11). Cópia do backup fora do servidor: `bash deploy/baixar_backup.sh` (André, de vez em quando). Depois da v1: deploy pelo Actions, Git LFS, Fase 2 (intranet).
+(decidido em 17/11). **App instalável: desligado, ver "Pendência pós-v1" abaixo.** Cópia do backup fora do servidor: `bash deploy/baixar_backup.sh` (André, de vez em quando). Depois da v1: deploy pelo Actions, Git LFS, Fase 2 (intranet).
+
+## Pendência pós-v1: app instalável SEM erro nem alerta (pedido do André, 17/11)
+Hoje o app está desligado (ver "App DESLIGADO" acima). Objetivo: o vendedor instalar sem ver nenhum aviso do Android. **Plano, em ordem:**
+1. **Descobrir a causa** do "App de risco bloqueado" (só um de dois Samsung iguais, Android 16): comparar nos dois celulares o navegador que abriu o link (Chrome x Samsung Internet; o link do
+   WhatsApp abre no navegador padrão), a versão do Chrome (⋮ → Configurações → Sobre o Chrome) e o Play Protect (Play Store → perfil → Play Protect → ⚙️ → "Analisar apps").
+   Teste decisivo: copiar o link, abrir no Chrome atualizado e instalar de lá. Se o aviso sumir, a solução é só orientar ("abra no Chrome") ou detectar o Samsung Internet no convite.
+2. **Se o aviso vier do pacote gerado pelo Chrome/Google (WebAPK), que não controlamos:** o caminho limpo é um **app Android próprio (TWA, Trusted Web Activity)**: o mesmo site dentro de um
+   app com `targetSdk` atual, **publicado na Play Store** (conta de desenvolvedor, US$ 25 única vez; dá para usar a **faixa de teste interno/fechado**, só para os e-mails dos vendedores, sem
+   ficar público). Instalado pela Play Store, sem aviso do Play Protect. Ferramenta: Bubblewrap/PWABuilder. Exige `assetlinks.json` em `/.well-known/` do servidor (o deploy mantém `.well-known`)
+   e assinatura do app (chave guardada pelo André, fora do repositório). **Não distribuir APK solto por link** (gera outros avisos).
+3. **iPhone:** o "Adicionar à Tela de Início" do Safari não tem esse problema; o convite do iPhone pode voltar antes do Android (ver `app.convite` em `config.js`).
+4. Só religar o convite (`app.convite: true` e o `<link rel="manifest">`) depois de passar sem aviso em pelo menos 3 celulares de marcas diferentes.
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).
