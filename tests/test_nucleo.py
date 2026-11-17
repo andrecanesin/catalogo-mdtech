@@ -23,14 +23,20 @@ class TesteTextos(unittest.TestCase):
 
     def test_nome_mantem_a_medida_que_diferencia_o_item(self):
         self.assertEqual(T.nome_produto("CLAMP TIPO BULLDOG 25MM CURVO MDTECH AUTOCLAVAVEL (134°)"), "Clamp tipo Bulldog 25 mm Curvo")
-        self.assertEqual(T.nome_produto("AGULHA DE PUNÇAO 1.8MM MDTECH D=5 C=330MM"), "Agulha de Punçao 1,8 mm")
+        self.assertEqual(T.nome_produto("AGULHA DE PUNÇAO 1.8MM MDTECH D=5 C=330MM"), "Agulha de Punção 1,8 mm")
 
     def test_nome_com_parenteses_de_spec(self):
         self.assertEqual(T.nome_produto("CONJUNTO DE TUBOS MDTECH VÁLVULA TIPO PISTÃO (D=10MM) E (D=5MM)"), "Conjunto de Tubos Válvula tipo Pistão")
 
     def test_grafia_unica_trocarte(self):
-        self.assertEqual(T.nome_produto("TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=5.5MM"), "Trocarte com Valvula Multifuncional")
+        self.assertEqual(T.nome_produto("TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=5.5MM"), "Trocarte com Válvula Multifuncional")
         self.assertEqual(T.nome_produto("TROCATER DE PONTA PROTEGIDA MDTECH D=5MM"), "Trocarte de Ponta Protegida")
+
+    def test_acentos_na_exibicao_do_nome(self):
+        self.assertEqual(T.nome_produto("AGULHA DE PUNÇAO 1.8MM MDTECH D=5"), "Agulha de Punção 1,8 mm")
+        self.assertEqual(T.nome_produto("TROCARTE COM VALVULA MULTIFUNCIONAL MDTECH D=5.5MM"), "Trocarte com Válvula Multifuncional")
+        self.assertEqual(T.nome_produto("PINÇA PARA BIOPSIA FLEXÍVEL MDTECH D=7FR"), "Pinça para Biópsia Flexível")
+        self.assertEqual(T.nome_produto("CAMISA PEDIATRICA RIGIDA MDTECH D=11FR"), "Camisa Pediátrica Rígida")
 
     def test_nome_produto_vazio(self):
         self.assertEqual(T.nome_produto(""), "")
