@@ -106,6 +106,12 @@ class TesteBase(unittest.TestCase):
             for campo in ("descricao", "familia"):
                 self.assertNotRegex(i[campo], r"(?i)troc(ater|arter)", f"{i['codigo']}: {campo}")
 
+    def test_base_sem_erros_de_grafia_corrigidos(self):
+        for i in base.carregar():
+            for campo in ("descricao", "familia"):
+                self.assertNotRegex(i[campo], r"(?i)\b(verres|metzembaum|aligator)\b", f"{i['codigo']}: {campo}")
+            self.assertNotRegex(i["familia"], r"\d(mm)\b|Ev\.", f"{i['codigo']}: família fora do padrão")
+
     def test_nenhum_card_identico_na_base(self):
         """Dois produtos da mesma especialidade com nome e medidas iguais seriam cards indistinguíveis."""
         vistos = {}

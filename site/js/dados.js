@@ -154,6 +154,9 @@ window.MD = (function () {
   const GRAFIAS = [
     [/\btroc(?:arte|ater|arter)s?\b/, "trocarte trocater trocarter"],
     [/\bres?sectosc[oó]pi\w*/, "ressectoscopio resectoscopio ressectoscopia resectoscopia"],
+    [/\bveress?\b/, "veress verres"],                      // agulha de Veress (grafia antiga: Verres)
+    [/\bmetzenbaum\b/, "metzenbaum metzembaum"],
+    [/\ba?l+igator\b/, "alligator aligator"],
   ];
   // texto de busca de um produto: o normal + todas as grafias dos termos que ele tem
   function textoBusca(s) {
