@@ -37,6 +37,12 @@ window.MD = (function () {
       c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
+  // ---- app (PWA): o service worker guarda o catálogo para abrir sem internet (site/sw.js). Não no /interno antigo. ----
+  if ("serviceWorker" in navigator && !/\/interno\//.test(location.pathname)
+      && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => { /* sem app: o site segue normal */ }));
+  }
+
   // ---- dados ----
   // esperarPrecos=false (grade): devolve na hora, sem esperar o /conta.py/precos (CGI pode ser lento); "precos" é uma
   // promessa que resolve quando os preços do vendedor chegarem (true = algum preço mudou: vale redesenhar).
@@ -47,6 +53,8 @@ window.MD = (function () {
       fetch("meta.json").then(r => r.json()).catch(() => null)
     ]);
     detectarPrecos(prod);
+    // data do catálogo guardado no aparelho (mostrada no aviso "Sem internet: catálogo de dd/mm", em app.js)
+    if (navigator.onLine) { try { localStorage.setItem("mdtech_catalogo_em", String(Date.now())); } catch (e) { /* ok */ } }
     const precos = aplicarPrecosVendedor(prod).then(mudou => { detectarPrecos(prod); return mudou; }).catch(() => false);
     if (esperar) await precos;
     return { produtos: prod, meta, precos };
@@ -85,20 +93,52 @@ window.MD = (function () {
     } catch (e) { return { status: 0, dados: { erro: "Sem conexão com o servidor. Confira a internet e tente de novo." } }; }
   }
   // Com sessão de vendedor, troca o preço de cada produto pelo preço real. Sem sessão (ou fora do servidor), não mexe em nada.
+  // ---- preços sem internet (app): só para quem entrou; valem PRECOS_DIAS sem conectar; "Sair" apaga ----
+  const PRECOS_OFF = "mdtech_precos_off", PRECOS_DIAS = 15;
+  function precosGuardar(d) {
+    try { localStorage.setItem(PRECOS_OFF, JSON.stringify({ precos: d.precos, email: d.email || "", admin: !!d.admin, salvo: Date.now() })); }
+    catch (e) { /* sem armazenamento: só não funciona sem internet */ }
+  }
+  function precosApagar() { try { localStorage.removeItem(PRECOS_OFF); } catch (e) { /* ok */ } }
+  function precosGuardados() {
+    try {
+      const g = JSON.parse(localStorage.getItem(PRECOS_OFF) || "null");
+      if (!g || !g.precos) return null;
+      if (Date.now() - (g.salvo || 0) > PRECOS_DIAS * 864e5) { precosApagar(); return null; }   // venceu: apaga
+      return g;
+    } catch (e) { return null; }
+  }
+  // "Sair" (topo e entrar.html): encerra a sessão no servidor e apaga deste aparelho os preços e a marca de vendedor
+  async function sair() {
+    precosApagar();
+    await contaReq("/sair", {});
+    esquecerVendedor();
+  }
+  function estadoConta() { return Object.assign({}, _estadoConta); }
+
   async function aplicarPrecosVendedor(prod) {
     if (!contaAtiva()) return false;
-    if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaTopo(); return false; }
+    if (!ehVendedor()) { precosApagar(); _estadoConta = { status: 401 }; montarContaTopo(); avisarConta(); return false; }
     const r = await contaReq("/precos");
-    if (r.status === 401) esquecerVendedor();          // sessão expirou ou foi encerrada
-    _estadoConta = { status: r.status, email: r.dados.email || "", admin: !!r.dados.admin };
+    let fonte = r.dados, status = r.status, offline = false;
+    if (status === 200 && r.dados.precos) precosGuardar(r.dados);
+    else if (status === 401 || status === 403) { if (status === 401) esquecerVendedor(); precosApagar(); }   // sessão encerrada
+    else if (status === 0) {                            // sem internet: usa os preços guardados (se ainda valem)
+      const g = precosGuardados();
+      if (g) { fonte = g; status = 200; offline = true; }
+    }
+    _estadoConta = { status, email: fonte.email || "", admin: !!fonte.admin, offline };
     let mudou = false;
-    if (r.status === 200 && r.dados.precos) {
-      (prod || []).forEach(p => { const v = r.dados.precos[p.codigo];
+    if (status === 200 && fonte.precos) {
+      (prod || []).forEach(p => { const v = fonte.precos[p.codigo];
         if (v) { p.preco = v; p.preco_ficticio = false; mudou = true; } });
     }
     montarContaTopo();
+    avisarConta();
     return mudou;
   }
+  // avisa quem precisa saber se é vendedor conectado (ex.: o convite para instalar o app, em app.js)
+  function avisarConta() { document.dispatchEvent(new CustomEvent("conta:pronta", { detail: estadoConta() })); }
   // Topo (ao lado de "Catálogos e propostas"): "Entrar" para quem não entrou; para o vendedor, ícone de conectado com menu
   // (e-mail, preços de tabela, trocar a senha, sair). Criado via JS: não depende de markup fixo nas páginas.
   function montarContaTopo() {
@@ -136,7 +176,7 @@ window.MD = (function () {
     document.addEventListener("click", e => { if (!menu.contains(e.target)) fechar(); });
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(true); });
     window.addEventListener("resize", () => fechar());
-    menu.querySelector(".conta-sair").onclick = async () => { await contaReq("/sair", {}); location.reload(); };
+    menu.querySelector(".conta-sair").onclick = async () => { await sair(); location.reload(); };
   }
 
   // ---- ícone de ângulo ----
@@ -296,16 +336,41 @@ window.MD = (function () {
   const emailAtivo = () => !!_chaveEmail;
   const emailValido = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v || "");
   // armadilha = campo escondido que gente não vê e robô preenche: se vier preenchido, finge que enviou e não manda nada.
+  // Sem internet, o envio fica numa fila neste aparelho e sai sozinho quando a conexão voltar (devolve {pendente: true}).
   async function enviarEmail({ assunto, nome, contato, corpo, armadilha }) {
-    if (armadilha) return;
+    if (armadilha) return {};
     const dados = { access_key: _chaveEmail, subject: String(assunto).slice(0, 200), from_name: "Catálogo MDTech",
       name: String(nome || "(sem nome)").slice(0, 120), message: String(corpo).slice(0, 8000) };
     if (emailValido(contato)) dados.email = contato;            // vira o "responder para" do e-mail
+    if (!navigator.onLine) { enfileirar(dados); return { pendente: true }; }
+    try { await postarEmail(dados); return {}; }
+    catch (e) { if (e instanceof TypeError) { enfileirar(dados); return { pendente: true }; } throw e; }   // TypeError = sem rede
+  }
+  async function postarEmail(dados) {
     const r = await fetch("https://api.web3forms.com/submit", { method: "POST",
       headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(dados) });
     const j = await r.json().catch(() => ({}));
     if (!r.ok || j.success === false) throw new Error(j.message || r.status);
   }
+  const FILA = "mdtech_fila_envios";
+  function lerFila() { try { return JSON.parse(localStorage.getItem(FILA) || "[]"); } catch (e) { return []; } }
+  function gravarFila(f) { try { f.length ? localStorage.setItem(FILA, JSON.stringify(f)) : localStorage.removeItem(FILA); } catch (e) { /* ok */ } }
+  function enfileirar(dados) { const f = lerFila(); f.push(dados); gravarFila(f.slice(-20)); }
+  let _enviandoFila = false;
+  async function enviarFila() {
+    if (_enviandoFila || !navigator.onLine) return;
+    _enviandoFila = true;
+    try {
+      let f = lerFila(), enviados = 0;
+      while (f.length) {
+        try { await postarEmail(f[0]); enviados++; } catch (e) { if (e instanceof TypeError) break; }   // sem rede: tenta depois
+        f = f.slice(1); gravarFila(f);                  // enviado (ou recusado pelo serviço): sai da fila
+      }
+      if (enviados) document.dispatchEvent(new CustomEvent("envios:enviados", { detail: { n: enviados } }));
+    } finally { _enviandoFila = false; }
+  }
+  window.addEventListener("online", enviarFila);
+  document.addEventListener("DOMContentLoaded", () => setTimeout(enviarFila, 1500));
 
   // ---- bandeja de orçamento (grade e página de produto usam a mesma) ----
   // Markup esperado: #bandeja com #qt, #bt-lista, #bt-limpar, #bt-mail, #bt-wpp.
@@ -338,13 +403,13 @@ window.MD = (function () {
             <label class="sup-campo">Como te respondo? <input id="orc-ret" type="text" autocomplete="email" placeholder="E-mail ou telefone"></label>
             <label class="sup-campo">Observação <textarea id="orc-obs" rows="3" placeholder="Opcional: prazo, cidade, dúvidas"></textarea></label>
             <label class="sup-isca" aria-hidden="true">Não preencha este campo <input id="orc-isca" type="text" tabindex="-1" autocomplete="off"></label>
-            <p class="sup-lgpd">Usamos o que você informa só para responder a esta mensagem. O envio passa pelo serviço Web3Forms (EUA) e chega por e-mail à equipe da MDTech; nada fica salvo neste aparelho. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></p>
+            <p class="sup-lgpd">Usamos o que você informa só para responder a esta mensagem. O envio passa pelo serviço Web3Forms (EUA) e chega por e-mail à equipe da MDTech; sem internet, a mensagem espera neste aparelho até poder ser enviada. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></p>
             <p class="sup-st" id="orc-st" role="status" aria-live="polite"></p>
             <button class="sup-go sup-mail" id="orc-send" type="button" aria-disabled="true">Enviar pedido</button>
           </div>
           <div id="orc-feito" class="sup-feito" hidden>
-            <p class="sup-ok-t">✓ Pedido enviado</p>
-            <p>Recebemos a sua lista e vamos responder pelo contato informado.</p>
+            <p class="sup-ok-t" id="orc-ok-t">✓ Pedido enviado</p>
+            <p id="orc-ok-p">Recebemos a sua lista e vamos responder pelo contato informado.</p>
             <button class="sup-go sup-mail" id="orc-fechar" type="button">Fechar</button>
           </div>
         </div>`;
@@ -366,9 +431,13 @@ window.MD = (function () {
           obs ? "Observação: " + obs : null, "", texto(produtos)].filter(l => l !== null).join("\n");
         enviando = true; o.st.className = "sup-st"; o.st.textContent = "Enviando…"; checar();
         try {
-          await enviarEmail({ assunto: "Orçamento catálogo MDTech · " + lista().length + " ite" + (lista().length === 1 ? "m" : "ns") + " · " + nome,
+          const res = await enviarEmail({ assunto: "Orçamento catálogo MDTech · " + lista().length + " ite" + (lista().length === 1 ? "m" : "ns") + " · " + nome,
             nome, contato: ret, corpo, armadilha: o.isca.value });
           [o.nome, o.emp, o.ret, o.obs, o.isca].forEach(i => i.value = ""); o.st.textContent = "";
+          raiz.querySelector("#orc-ok-t").textContent = res.pendente ? "✓ Pedido guardado" : "✓ Pedido enviado";
+          raiz.querySelector("#orc-ok-p").textContent = res.pendente
+            ? "Sem internet agora: o pedido fica neste aparelho e é enviado sozinho quando a conexão voltar."
+            : "Recebemos a sua lista e vamos responder pelo contato informado.";
           o.form.hidden = true; o.feito.hidden = false; o.fechar.focus();
           limpar();                                  // pedido enviado: esvazia a lista
         } catch (err) {
@@ -513,7 +582,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, prenderFoco, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, prenderFoco, sair, estadoConta, precosApagar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

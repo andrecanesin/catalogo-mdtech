@@ -16,6 +16,7 @@ site/fichas/
 site/catalogos/
 site/propostas/
 site/propostas.json
+site/p/
 
 .DS_Store
 Thumbs.db

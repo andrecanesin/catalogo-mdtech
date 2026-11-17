@@ -380,6 +380,23 @@ body.com-bandeja .rodape{padding-bottom:calc(var(--h-bandeja,0px) + 40px);}
 .sup-lgpd{font-size:12.5px;line-height:1.45;color:var(--mut);margin:8px 0 4px;}.sup-lgpd a{color:var(--navy);font-weight:600;}
 .sup-isca{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}   /* armadilha anti-robô: fora da tela, sem display:none */
 .rodape a{color:var(--navy);font-weight:600;}
+/* ---------- app (PWA): aviso de conexão e convite para instalar ---------- */
+.app-faixa{position:fixed;left:50%;transform:translateX(-50%);top:12px;z-index:70;max-width:min(560px,calc(100vw - 24px));
+  padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:var(--sombra);text-align:center;}
+.app-faixa[data-tipo="off"]{background:#3b2a0b;color:#fff;}
+.app-faixa[data-tipo="on"]{background:#1d6b3a;color:#fff;}
+.app-faixa[hidden]{display:none;}
+.app-convite{position:fixed;left:12px;right:12px;bottom:calc(var(--h-bandeja,0px) + 76px);z-index:65;max-width:460px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 10px 30px rgba(25,60,108,.18);padding:14px;}
+.app-convite img{border-radius:10px;flex:none;}
+.app-conv-txt{flex:1 1 200px;font-size:13.5px;color:#33404f;line-height:1.45;}
+.app-conv-txt b{color:var(--navy);}.app-conv-txt>b{display:block;font-size:15px;margin-bottom:2px;}
+.app-conv-txt svg{vertical-align:-3px;}
+.app-conv-bt{display:flex;gap:8px;flex:1 1 100%;justify-content:flex-end;}
+.app-conv-bt button{min-height:44px;padding:0 16px;border-radius:9px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;}
+.app-instalar{border:0;background:var(--navy);color:#fff;}
+.app-depois{border:1px solid var(--line);background:#fff;color:var(--navy);}
 .pg-privacidade main{max-width:760px;margin:24px auto 0;padding:0 20px;}
 .pg-privacidade h1{font-size:26px;color:var(--navy);margin:8px 0 4px;}.pg-privacidade h2{font-size:17px;color:var(--navy);margin:26px 0 6px;}
 .pg-privacidade p,.pg-privacidade li{font-size:15px;line-height:1.6;color:#33404f;}.pg-privacidade li{margin:4px 0;}

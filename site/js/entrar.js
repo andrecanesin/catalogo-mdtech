@@ -134,7 +134,7 @@
   $("bt-trocar").addEventListener("click", () => { aviso(""); telaTrocar(false); });
   $("bt-cancelar-troca").addEventListener("click", async () => { aviso(""); iniciar(); });
   $("bt-sair").addEventListener("click", async () => {
-    await MD.contaReq("/sair", {});
+    await MD.sair();
     $("email").value = ""; telaEntrar("Você saiu. Até a próxima.");
   });
 

@@ -174,7 +174,12 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   convite); Android com botão "Instalar" (evento `beforeinstallprompt`), iPhone com o passo a passo (Compartilhar → "Adicionar à Tela de Início");
   "Agora não" esconde por 30 dias; some quando já instalado. Depois de usar algumas semanas: avaliar Google Play (TWA, US$ 25) e, se preciso,
   App Store (distribuição privada, US$ 99/ano; a Apple recusa app que é só site). App nativo: não compensa agora.
-  **A decidir:** fichas e catálogos em PDF guardados no celular (download inicial maior) ou baixados só quando tocados.
+  **Feito em 17/11 (PWA):** `site/sw.js` (service worker; nunca guarda `/conta.py` nem `/interno/`), `site/manifest.json`, ícones em `site/img/app/`,
+  `site/js/app.js` (aviso de conexão, convite para instalar, fotos para usar sem internet). Fotos com `?v=<hash>` no `produtos.json` (só o que mudou é
+  baixado de novo); todas as fotos (~5 MB) só para vendedor ou app instalado. Preços sem internet em `localStorage` (`mdtech_precos_off`, 15 dias,
+  apagados no "Sair" e quando a sessão cai). Pedidos/Suporte sem internet entram numa fila (`mdtech_fila_envios`) e saem sozinhos na volta.
+  **PDFs: baixados só quando tocados** (depois ficam guardados para abrir sem internet). Compartilhar um produto usa `p/<codigo>.html`
+  (página fixa com a prévia Open Graph, gerada pelo `gerar.py site`, que leva ao `produto.html`).
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
   Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,
   PostgreSQL (recomendado), disco e monitoramento. Aguardando o André falar com ele.
@@ -205,12 +210,12 @@ produtos: **adotar o termo de mercado** (decidido em 17/11: **trocarte**, como M
    grafias e acentos da base e nomes de família (com o André). Feito: aviso de LGPD nos dois formulários + `site/privacidade.html` (rascunho: o André
    confere o texto), campo-isca anti-robô, fontes locais em `site/fonts/` (woff2 subconjunto latino, a partir de `assets/fontes/`; sem Google Fonts),
    retenção no banco do login (`Banco.limpar_antigos`: sessões/convites vencidos, erros de senha com IP após 15 min, histórico após 1 ano; roda no login e todo dia no backup).
-6. Depois: **app offline (PWA)**; Open Graph por produto; deploy pelo Actions (sem a máquina do André); repositório pesado (Git LFS).
+6. ✅ **(17/11) App offline (PWA) e Open Graph por produto.** Fora da v1 (decidido em 17/11): deploy pelo Actions (precisaria da chave SSH como segredo do GitHub) e Git LFS (exigiria reescrever o histórico).
 
 ## Estado da v1 (17/11)
-Itens 1 a 5 da revisão feitos. **Para fechar a v1:** o André envia os convites aos vendedores e confirma que todos entram; então se desliga o `/interno`
+Itens 1 a 6 da revisão feitos (PWA incluído). **Para fechar a v1:** o André envia os convites aos vendedores e confirma que todos entram; então se desliga o `/interno`
 (Basic Auth) e se apagam `deploy/senhas_vendedores.txt` e `deploy/.htpasswd`. Autoclavável de eletrodos, evacuadores e A3104: **fica como está**
-(decidido em 17/11). Depois da v1: PWA, Open Graph por produto, deploy pelo Actions, Git LFS, cópia do backup fora do servidor, Fase 2 (intranet).
+(decidido em 17/11). Cópia do backup fora do servidor: `bash deploy/baixar_backup.sh` (André, de vez em quando). Depois da v1: deploy pelo Actions, Git LFS, Fase 2 (intranet).
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).

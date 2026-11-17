@@ -312,6 +312,50 @@ def _aplicar_precos(produtos, precos):
     return sem
 
 
+def _hash_arquivo(caminho):
+    return hashlib.sha1(Path(caminho).read_bytes()).hexdigest()[:10]
+
+
+def _paginas_compartilhar(produtos, outdir):
+    """site/p/<codigo>.html: uma página fixa por produto só com a prévia de compartilhamento (Open Graph: nome, especificação e
+    foto) e que leva na hora para produto.html. O WhatsApp e as redes não rodam o JavaScript do produto.html, então sem isto a
+    prévia de um link de produto seria a genérica do catálogo. Endereços absolutos (exigidos pelo Open Graph) = produção."""
+    import html as H
+    from urllib.parse import quote
+    pdir = outdir / "p"
+    if pdir.exists():
+        shutil.rmtree(pdir)
+    pdir.mkdir(parents=True)
+    base = config.SITE_URL.rstrip("/") + "/"
+    for p in produtos:
+        arq = _slug(p["codigo"]) + ".html"
+        p["pagina"] = "p/" + arq
+        destino = "../produto.html?codigo=" + quote(p["codigo"])
+        specs = " · ".join(x for x in [p.get("especialidade"), p.get("diametro_fmt") and "Ø " + p["diametro_fmt"],
+                                       p.get("comprimento") and p["comprimento"] + " mm", p.get("angulo")] if x)
+        titulo = f"{p['nome'] or p['codigo']} · {p['codigo']} · MDTech"
+        desc = (specs + ". " if specs else "") + "Instrumental MDTech: veja a ficha técnica e peça orçamento."
+        img = f'<meta property="og:image" content="{H.escape(base + p["foto"])}">\n' if p.get("foto") else ""
+        (pdir / arq).write_text(f"""<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{H.escape(titulo)}</title>
+<meta name="description" content="{H.escape(desc)}">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="MDTech">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="{H.escape(titulo)}">
+<meta property="og:description" content="{H.escape(desc)}">
+<meta property="og:url" content="{H.escape(base + p['pagina'])}">
+{img}<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{H.escape(base + 'produto.html?codigo=' + quote(p['codigo']))}">
+<meta http-equiv="refresh" content="0; url={H.escape(destino)}">
+<script>location.replace({json.dumps(destino)} + location.hash);</script>
+</head><body><p><a href="{H.escape(destino)}">Abrir {H.escape(p['nome'] or p['codigo'])}</a></p></body></html>
+""", encoding="utf-8")
+    return len(produtos)
+
+
 _REF_ASSET = re.compile(r'((?:href|src)=")((?:css|js)/[^"?#]+\.(?:css|js))(?:\?v=[^"]*)?(")')
 
 
@@ -402,13 +446,15 @@ def gerar(interno=False):
         if src:
             try:
                 _exportar_foto(src, p["codigo"], fotodir, thumbdir)
-                p["foto"] = f"fotos/{p['codigo']}.jpg"
-                p["foto_thumb"] = f"fotos/thumbs/{p['codigo']}.jpg"
+                # ?v=<hash do arquivo>: foto que mudou vira outro endereço, e o app (PWA) baixa só ela de novo
+                p["foto"] = f"fotos/{p['codigo']}.jpg?v={_hash_arquivo(fotodir / (p['codigo'] + '.jpg'))}"
+                p["foto_thumb"] = f"fotos/thumbs/{p['codigo']}.jpg?v={_hash_arquivo(thumbdir / (p['codigo'] + '.jpg'))}"
                 copiadas += 1
             except Exception as e:
                 print(f"[aviso] falha exportando foto {p['codigo']}: {e}")
 
     fichas_copiadas = _copiar_fichas(produtos, outdir)
+    paginas = _paginas_compartilhar(produtos, outdir)
     catalogos_copiados = _copiar_catalogos(outdir)
     propostas_copiadas = _copiar_propostas(outdir, porcod)
 
@@ -461,6 +507,7 @@ def gerar(interno=False):
           f"(rode 'python gerar.py catalogo' antes, se faltando)")
     print(f"Propostas básicas copiadas: {propostas_copiadas} "
           f"(rode 'python gerar.py kits' antes, se faltando)")
+    print(f"Páginas de compartilhamento: {paginas} (site/p/)")
     print(f"Facetas: {len(meta['especialidades'])} especialidades · "
           f"{len(meta['familias'])} famílias")
     return outdir
