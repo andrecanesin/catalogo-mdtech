@@ -76,6 +76,7 @@
   const movel = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches || ios
     || !!(navigator.userAgentData && navigator.userAgentData.mobile) || /Android|Mobi|iPhone|iPad|iPod/i.test(navigator.userAgent);
   function convidar() {
+    if (!(window.MDTECH && MDTECH.app && MDTECH.app.convite)) return;       // app desligado em config.js (app.convite)
     if (!vendedor || !movel() || instalado() || document.querySelector(".app-convite")) return;
     if (Date.now() < Number(ls.get("mdtech_instalar_depois") || 0)) return;
     const tipo = pedido ? "android" : ios ? "ios" : "";
