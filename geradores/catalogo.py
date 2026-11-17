@@ -11,7 +11,7 @@ Perfis (pós-processo, NÃO alteram o layout):
   --perfil impressao  -> paridade p/ encaixe frente-e-verso (páginas em branco no fim)
        --paridade par | impar | mult4
 """
-import os, re, base64, html, unicodedata, math
+import os, base64, html, unicodedata
 from collections import defaultdict, OrderedDict
 from weasyprint import HTML
 
@@ -127,7 +127,7 @@ def card(i,accent,selo_auto=False):
             f'<span class="ccod">{esc(i["Código"])}</span>'
             f'<div class="cname">{esc(nome_curto(i["Descrição (PT)"]))}</div>'
             f'<div class="cdims">{dims(i)}</div>'
-            + (f'<div class="cauto">Autoclavável 134°</div>' if selo_auto else '') +
+            + ('<div class="cauto">Autoclavável 134°</div>' if selo_auto else '') +
             f'<div class="cncm">NCM {val(i["NCM"])}</div>'
             f'<div class="canv">{anv}</div></div>')
 

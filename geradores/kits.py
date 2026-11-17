@@ -14,7 +14,6 @@ Perfis (como no catálogo):
   --perfil impressao foto ORIGINAL (alta resolução) e páginas casadas (--paridade par|impar|mult4) para a gráfica;
                      sai em saida/impresso/, só local, nunca publicado.
 """
-import re, unicodedata
 from datetime import date
 from weasyprint import HTML
 

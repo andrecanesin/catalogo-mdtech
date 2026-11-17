@@ -7,6 +7,17 @@ cd "$(dirname "$0")/.."
 [ -f deploy/.env ] || { echo "Falta deploy/.env (copie deploy/env.exemplo e preencha)."; exit 1; }
 set -a; . deploy/.env; set +a
 : "${DEPLOY_HOST:?}" "${DEPLOY_USER:?}" "${DEPLOY_PATH:?}" "${SITE_URL:?}"
+
+# 0) só sobe a main limpa, igual à do GitHub, e com os testes passando (DEPLOY_FORCAR=1 ignora, só em emergência)
+if [ "${DEPLOY_FORCAR:-0}" != "1" ]; then
+  [ "$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "ERRO: o deploy sai só da main (você está em '$(git rev-parse --abbrev-ref HEAD)'). Rode: git checkout main"; exit 1; }
+  [ -z "$(git status --porcelain --untracked-files=no)" ] || { echo "ERRO: há alterações não commitadas. Commite ou descarte antes do deploy."; exit 1; }
+  git fetch -q origin main
+  [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] || { echo "ERRO: a main local difere da do GitHub. Rode: git pull"; exit 1; }
+  python -m unittest discover -s tests -t . || { echo "ERRO: testes do núcleo falharam."; exit 1; }
+  python -m unittest discover -s servidor/testes || { echo "ERRO: testes do login falharam."; exit 1; }
+  if command -v ruff >/dev/null 2>&1; then ruff check . || { echo "ERRO: ruff encontrou problemas."; exit 1; }; fi
+fi
 PORTA="${DEPLOY_PORT:-22}"
 ALVO="$DEPLOY_USER@$DEPLOY_HOST"
 SSH=(ssh -p "$PORTA")
@@ -46,7 +57,7 @@ fi
 #     criada uma vez com sudo (www-data:catalogo_mdtech, 2770; ver servidor/LEIA-ME.md). O código (público no GitHub) fica legível.
 DADOS=/var/lib/mdtech
 "${SSH[@]}" "$ALVO" "test -w $DADOS" || { echo "ERRO: $DADOS não existe ou não é gravável. Crie uma vez (servidor/LEIA-ME.md, 'Instalação'); o login novo não foi atualizado."; exit 1; }
-tar -C servidor -czf - --exclude=__pycache__ mdtech_conta admin.py \
+tar -C servidor -czf - --exclude=__pycache__ mdtech_conta admin.py backup.py \
   | "${SSH[@]}" "$ALVO" "mkdir -p ~/mdtech_app && tar -C ~/mdtech_app -xzf - && chmod -R a+rX ~/mdtech_app"
 "${SSH[@]}" "$ALVO" "cat > $DADOS/precos.json.novo && chmod 660 $DADOS/precos.json.novo && mv -f $DADOS/precos.json.novo $DADOS/precos.json" < saida/app_dados/precos.json
 # tr -d '\r': no Windows o git pode trazer o arquivo com CRLF, e aí a 1ª linha (#!/usr/bin/python3) quebra o CGI (erro 500)
