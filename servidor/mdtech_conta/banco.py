@@ -1,4 +1,5 @@
 """Usuários, sessões e tentativas de login em SQLite (arquivo FORA da pasta pública)."""
+import contextlib
 import hashlib
 import os
 import secrets
@@ -82,6 +83,23 @@ class Banco:
 
     def fechar(self):
         self.con.close()
+
+    @contextlib.contextmanager
+    def transacao(self):
+        """Tudo ou nada: as gravações do bloco só valem se o bloco terminar sem erro (senão voltam atrás).
+        BEGIN IMMEDIATE pega a trava de escrita já no início, então dois pedidos ao mesmo tempo (ex.: o mesmo link de convite
+        usado em dois aparelhos) rodam um depois do outro e o segundo enxerga o que o primeiro gravou. Pode ser aninhada."""
+        if self.con.in_transaction:
+            yield
+            return
+        self.con.execute("BEGIN IMMEDIATE")
+        try:
+            yield
+        except BaseException:
+            self.con.execute("ROLLBACK")
+            raise
+        else:
+            self.con.execute("COMMIT")
 
     # ---------- usuários ----------
     def usuario(self, email):

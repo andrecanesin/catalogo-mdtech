@@ -1,6 +1,8 @@
 """Gestão dos vendedores: usada pela tela de administração (app.py, /conta.py/admin/...) e pelo admin.py (terminal).
 Cada operação grava no histórico (tabela eventos) quem fez o quê. Erros de uso viram GestaoErro com texto para a tela."""
+import functools
 import re
+import sqlite3
 
 from . import banco as B
 from . import senhas as S
@@ -12,6 +14,15 @@ class GestaoErro(ValueError):
     pass
 
 
+def _atomico(funcao):
+    """A operação inteira (várias gravações + histórico) vale ou desfaz junto."""
+    @functools.wraps(funcao)
+    def interna(db, *args, **kw):
+        with db.transacao():
+            return funcao(db, *args, **kw)
+    return interna
+
+
 def _usuario(db, email):
     u = db.usuario(email)
     if not u:
@@ -19,6 +30,7 @@ def _usuario(db, email):
     return u
 
 
+@_atomico
 def adicionar(db, email, nome="", autor="terminal", convite=False):
     """convite=True (tela): devolve o código do link para o vendedor criar a senha; a senha sorteada nunca é mostrada.
     convite=False (terminal): devolve uma senha inicial."""
@@ -28,13 +40,17 @@ def adicionar(db, email, nome="", autor="terminal", convite=False):
     if db.usuario(email):
         raise GestaoErro(f"{email} já está cadastrado. Use \"Enviar convite\" ou \"Enviar link de nova senha\".")
     senha = S.senha_inicial()
-    db.criar_usuario(email, S.gerar_hash(senha), (nome or "").strip()[:100])
+    try:
+        db.criar_usuario(email, S.gerar_hash(senha), (nome or "").strip()[:100])
+    except sqlite3.IntegrityError:                     # dois cadastros do mesmo e-mail ao mesmo tempo
+        raise GestaoErro(f"{email} já está cadastrado.") from None
     db.registrar_evento(autor, "cadastrou", email)
     if convite:
         return convidar(db, email, autor)[0]
     return senha
 
 
+@_atomico
 def convidar(db, email, autor="terminal"):
     """Link de uso único (7 dias) para criar a senha: 'convite' para quem nunca criou, 'nova senha' para quem esqueceu.
     A senha atual continua valendo até o link ser usado. Devolve (código, tipo)."""
@@ -56,21 +72,28 @@ def ver_convite(db, token):
 
 
 def usar_convite(db, token, nova):
-    """O vendedor cria a senha pelo link: grava, apaga o link, desconecta os outros aparelhos e zera o bloqueio."""
+    """O vendedor cria a senha pelo link: grava, apaga o link, desconecta os outros aparelhos e zera o bloqueio.
+    Tudo ou nada; e o link é conferido de novo já dentro da transação, então só um dos aparelhos que o abriram ao mesmo tempo consegue usá-lo."""
     u = db.convite(token)
     if not u:
         raise GestaoErro("Este link expirou ou já foi usado. Peça um novo ao marketing.")
     problema = S.problema_nova_senha(nova, u["email"])
     if problema:
         raise GestaoErro(problema)
-    db.definir_senha(u["id"], S.gerar_hash(nova), trocar_senha=False)
-    db.apagar_convites(u["id"])
-    db.encerrar_sessoes(u["id"])
-    db.limpar_falhas_email(u["email"])
-    db.registrar_evento(u["email"], "criou a senha pelo link", u["email"])
+    hash_novo = S.gerar_hash(nova)                     # lento (scrypt): feito antes de pegar a trava de escrita
+    with db.transacao():
+        u = db.convite(token)
+        if not u:
+            raise GestaoErro("Este link expirou ou já foi usado. Peça um novo ao marketing.")
+        db.definir_senha(u["id"], hash_novo, trocar_senha=False)
+        db.apagar_convites(u["id"])
+        db.encerrar_sessoes(u["id"])
+        db.limpar_falhas_email(u["email"])
+        db.registrar_evento(u["email"], "criou a senha pelo link", u["email"])
     return u
 
 
+@_atomico
 def redefinir(db, email, autor="terminal"):
     """Nova senha inicial (esqueceu a senha): desconecta os aparelhos, zera o bloqueio e obriga a trocar no próximo acesso."""
     u = _usuario(db, email)
@@ -82,6 +105,7 @@ def redefinir(db, email, autor="terminal"):
     return senha
 
 
+@_atomico
 def desativar(db, email, autor="terminal"):
     u = _usuario(db, email)
     if B.normalizar_email(autor) == u["email"]:
@@ -90,6 +114,7 @@ def desativar(db, email, autor="terminal"):
     db.registrar_evento(autor, "desativou", u["email"])
 
 
+@_atomico
 def reativar(db, email, autor="terminal", convite=False):
     """Volta a valer com senha nova (a antiga pode ter ficado com quem saiu). convite=True devolve o código do link."""
     u = _usuario(db, email)
@@ -103,12 +128,14 @@ def reativar(db, email, autor="terminal", convite=False):
     return senha
 
 
+@_atomico
 def desbloquear(db, email, autor="terminal"):
     u = _usuario(db, email)
     db.limpar_falhas_email(u["email"])
     db.registrar_evento(autor, "desbloqueou", u["email"])
 
 
+@_atomico
 def definir_admin(db, email, admin, autor="terminal"):
     u = _usuario(db, email)
     if not admin and B.normalizar_email(autor) == u["email"]:
@@ -117,6 +144,7 @@ def definir_admin(db, email, admin, autor="terminal"):
     db.registrar_evento(autor, "tornou administrador" if admin else "tirou o acesso de administrador de", u["email"])
 
 
+@_atomico
 def definir_nome(db, email, nome, autor="terminal"):
     u = _usuario(db, email)
     db.definir_nome(u["id"], (nome or "").strip()[:100])
