@@ -310,7 +310,11 @@ class TesteBackup(unittest.TestCase):
             if os.name != "nt":                      # no Windows o chmod não tem efeito
                 self.assertEqual(oct(feito.stat().st_mode & 0o777), "0o600")
             import sqlite3
-            n = sqlite3.connect(feito).execute("SELECT COUNT(*) FROM usuarios").fetchone()[0]
+            con = sqlite3.connect(feito)
+            try:
+                n = con.execute("SELECT COUNT(*) FROM usuarios").fetchone()[0]
+            finally:
+                con.close()                          # no Windows, arquivo aberto não pode ser apagado
             self.assertEqual(n, 1)
 
 
