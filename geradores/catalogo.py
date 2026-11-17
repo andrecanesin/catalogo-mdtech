@@ -37,13 +37,13 @@ ESPECS = {
     "Urologia":{"marca":"TIAN SONG","linha":"MDTech Urologia",
         "ordem":["Endoscópios autoclaváveis","Endoscópios","Conjunto de camisas para cistoscopia",
                  "Pinças endoscópicas flexíveis","Conjunto para uretrotomia",
-                 "Ressectoscópio monopolar 4mm","Ressectoscópio bipolar 4mm",
+                 "Ressectoscópio monopolar 4 mm","Ressectoscópio bipolar 4 mm",
                  "Cistoscopia pediátrica","Litotripsia para cálculo de bexiga",
                  "Trocarte de cistostomia","Evacuador de Hoffman","Evacuador de Ellik",
-                 "Adaptador de Ev. Ellik","Acessórios"]},
+                 "Adaptador de evacuador Ellik","Acessórios"]},
     "Histeroscopia":{"marca":"TIAN SONG","linha":"MDTech Ginecologia",
-                 "ordem":["Endoscópios autoclaváveis","Endoscópios","Histeroscopia 2.9mm",
-                 "Ressectoscópio monopolar 4mm","Ressectoscópio bipolar 4mm","Acessórios"]},
+                 "ordem":["Endoscópios autoclaváveis","Endoscópios","Histeroscopia 2,9 mm",
+                 "Ressectoscópio monopolar 4 mm","Ressectoscópio bipolar 4 mm","Acessórios"]},
 }
 
 def hex2rgb(h): h=h.lstrip("#"); return tuple(int(h[i:i+2],16) for i in (0,2,4))
