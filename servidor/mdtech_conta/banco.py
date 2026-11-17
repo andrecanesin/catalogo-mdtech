@@ -9,7 +9,9 @@ from pathlib import Path
 CONVITE_DIAS = 7                   # link de convite / nova senha: vale 7 dias e uma vez só
 SESSAO_DIAS = 30                   # o vendedor fica conectado no celular por até 30 dias
 JANELA = 15 * 60                   # janela das tentativas erradas (s)
-MAX_POR_EMAIL = 5                  # erros seguidos por e-mail na janela -> bloqueio
+ATRASO_BASE = 5                    # s de espera após o primeiro erro além do limite; dobra a cada novo erro (máx. JANELA)
+INICIO_PAR = 3                     # erros do mesmo e-mail vindos do mesmo IP até começar a esperar
+INICIO_EMAIL = 10                  # erros do e-mail somando todos os IPs (ataque distribuído) até começar a esperar
 MAX_POR_IP = 30                    # erros por endereço IP na janela -> bloqueio
 
 _ESQUEMA = """
@@ -187,8 +189,26 @@ class Banco:
         n = lin["n"] or 0
         return n, (lin["primeira"] + JANELA - agora) if n else 0
 
+    def espera(self, chave, inicio):
+        """Atraso progressivo: segundos que faltam para aceitar nova tentativa (0 = liberado).
+        Depois de `inicio` erros espera ATRASO_BASE s, e dobra a cada erro novo (limite: JANELA)."""
+        agora = int(time.time())
+        lin = self.con.execute("SELECT COUNT(*) AS n, MAX(quando) AS ultima FROM falhas WHERE chave = ? AND quando >= ?",
+                               (chave, agora - JANELA)).fetchone()
+        n = lin["n"] or 0
+        if n < inicio:
+            return 0
+        atraso = min(ATRASO_BASE * 2 ** (n - inicio), JANELA)
+        return max(0, lin["ultima"] + atraso - agora)
+
     def limpar_falhas(self, chave):
         self.con.execute("DELETE FROM falhas WHERE chave = ?", (chave,))
+
+    def limpar_falhas_email(self, email):
+        """Zera os erros do e-mail: o total e os de cada IP (chaves "par:<email>|<ip>")."""
+        prefixo = "par:" + email + "|"
+        self.con.execute("DELETE FROM falhas WHERE chave = ? OR substr(chave, 1, ?) = ?",
+                         ("email:" + email, len(prefixo), prefixo))
 
     # ---------- histórico (quem fez o quê) ----------
     def registrar_evento(self, autor, acao, alvo=""):

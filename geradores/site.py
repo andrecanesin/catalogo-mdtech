@@ -8,7 +8,7 @@ Lê a base (fonte da verdade) e escreve DIRETO dentro de config.SITE (o
 repositório git do catálogo digital — HTML/CSS/JS/fotos já vivem lá,
 escritos à mão e versionados; este script só atualiza os dados):
   - produtos.json : lista de SKUs que o front consome (busca/filtro no navegador)
-  - meta.json     : facetas (especialidades, famílias, fornecedores) + contadores
+  - meta.json     : facetas (especialidades, famílias; fornecedor não vai para o site público) + contadores
   - fotos/        : fotos casadas copiadas por código (faltantes = placeholder no front)
   - fichas/       : ficha técnica em PDF por código (se já gerada em saida/)
   - catalogos/     : catálogos por especialidade + catálogo completo (merge)
@@ -50,18 +50,6 @@ def _slug(s):
             .replace(" ", "_").replace("/", "-"))
 
 
-def _fornecedor(it):
-    m = (it.get("marca") or "").upper()
-    e = (it.get("especialidade") or "").strip()
-    if "ASAP" in m:                       # óticas HD-4K: fornecedor ASAP, mesmo dentro de Uro/Histero/Lap
-        return "ASAP"
-    if "TONGLU" in m or e == "Laparoscopia":
-        return "TONGLU"
-    if "TIAN" in m or e in ("Urologia", "Histeroscopia", "Ginecologia"):
-        return "TIAN SONG"
-    return "ASAP"
-
-
 def _produto(it):
     cod = (it.get("codigo") or "").strip()
     esp = (it.get("especialidade") or "").strip()
@@ -74,7 +62,6 @@ def _produto(it):
         "especialidades": [esp] if esp else [],  # p/ filtro (cross-listing)
         "familia": fam,
         "familias": [fam] if fam else [],
-        "fornecedor": _fornecedor(it),
         "diametro": (it.get("diametro") or "").strip(),
         "diametro_fr": (it.get("diametro_fr") or "").strip(),
         "diametro_fmt": T.diametro_fmt(it),
@@ -422,7 +409,6 @@ def gerar(interno=False):
         "com_ficha_pdf": fichas_copiadas,
         "especialidades": _facet("especialidades"),
         "familias": _facet("familias"),
-        "fornecedores": _facet("fornecedor"),
         "precos": False,          # site de clientes: sem preço (o front esconde cartão/total/aviso)
     }
 
@@ -455,7 +441,7 @@ def gerar(interno=False):
     print(f"Propostas básicas copiadas: {propostas_copiadas} "
           f"(rode 'python gerar.py kits' antes, se faltando)")
     print(f"Facetas: {len(meta['especialidades'])} especialidades · "
-          f"{len(meta['familias'])} famílias · {len(meta['fornecedores'])} fornecedores")
+          f"{len(meta['familias'])} famílias")
     return outdir
 
 
