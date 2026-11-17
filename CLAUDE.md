@@ -186,7 +186,7 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 Revisão completa feita em 16/11 por dois modelos, às cegas (Opus 5.5 e Fable 5.2; o Fable foi mais completo: 58 itens). **Começar estimando, item a item,
 o modelo (Opus/Sonnet/Haiku) e o gasto de tokens, e atacar primeiro os mais críticos.** Decisões do André (16/11): repositório **continua público**
 (por isso, nada sensível do servidor neste arquivo); senha do servidor **já trocada**; botão **Suporte só para vendedores conectados**; grafias dos
-produtos: **adotar o termo de mercado** (pesquisar antes, ex.: trocarte/trocater/trocarter).
+produtos: **adotar o termo de mercado** (decidido em 17/11: **trocarte**, como Medtronic/Aesculap e a literatura médica; planilha, nomes, família "Trocartes" e busca já ajustados; a busca ainda aceita trocater/trocarter).
 1. **Segurança rápida:** tirar o campo `fornecedor` do `produtos.json`/`meta.json` públicos (`geradores/site.py`; o site não usa); bloqueio de login
    por e-mail vira atraso progressivo (hoje qualquer um bloqueia um vendedor errando 5 vezes); política de senha com lista de senhas comuns.
 2. **Rede de proteção:** testes + ruff em cada PR (workflow `pull_request`) e no `deploy.sh` (subir só a `main` limpa); backup diário do SQLite

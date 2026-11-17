@@ -28,6 +28,10 @@ class TesteTextos(unittest.TestCase):
     def test_nome_com_parenteses_de_spec(self):
         self.assertEqual(T.nome_produto("CONJUNTO DE TUBOS MDTECH VÁLVULA TIPO PISTÃO (D=10MM) E (D=5MM)"), "Conjunto de Tubos Válvula tipo Pistão")
 
+    def test_grafia_unica_trocarte(self):
+        self.assertEqual(T.nome_produto("TROCARTER COM VALVULA MULTIFUNCIONAL MDTECH D=5.5MM"), "Trocarte com Valvula Multifuncional")
+        self.assertEqual(T.nome_produto("TROCATER DE PONTA PROTEGIDA MDTECH D=5MM"), "Trocarte de Ponta Protegida")
+
     def test_nome_produto_vazio(self):
         self.assertEqual(T.nome_produto(""), "")
         self.assertEqual(T.nome_produto(None), "")
@@ -90,6 +94,11 @@ class TesteBase(unittest.TestCase):
     def test_especialidades_conhecidas(self):
         esp = {i["especialidade"] for i in base.carregar()}
         self.assertEqual(esp, {"Laparoscopia", "Urologia", "Histeroscopia"})
+
+    def test_base_sem_grafias_antigas_de_trocarte(self):
+        for i in base.carregar():
+            for campo in ("descricao", "familia"):
+                self.assertNotRegex(i[campo], r"(?i)troc(ater|arter)", f"{i['codigo']}: {campo}")
 
     def test_nenhum_card_identico_na_base(self):
         """Dois produtos da mesma especialidade com nome e medidas iguais seriam cards indistinguíveis."""

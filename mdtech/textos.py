@@ -38,6 +38,7 @@ _STOP = {"de", "da", "do", "das", "dos", "e", "com", "para", "em",
 # fim de nome, é a marca inserida ali; cortar nela perderia "PARA X").
 _CORTE = re.compile(r"[\s,;-]+\(?(D\s*=|Ø|C\s*=|CM\s*=|AV\s*=|AUTOCLAV|\(1\d{2})", re.IGNORECASE)
 _MDTECH = re.compile(r"\bMDTECH\b", re.IGNORECASE)
+_TROCARTE = re.compile(r"\bTROC(?:ATER|ARTER)(ES|S)?\b", re.IGNORECASE)   # trocater/trocarter -> trocarte
 
 
 def nome_produto(descricao: str) -> str:
@@ -47,6 +48,7 @@ def nome_produto(descricao: str) -> str:
        pra não engolir descrição real que vem depois dele nos itens de Urologia/Histero)."""
     s = (descricao or "").strip()
     s = _MDTECH.sub("", s)
+    s = _TROCARTE.sub(lambda m: "TROCARTE" + ("S" if m.group(1) else ""), s)       # grafia única (decidido em 17/11)
     s = re.sub(r"\s+", " ", s).strip()
     m = _CORTE.search(s)
     if m:
