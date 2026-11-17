@@ -1,6 +1,7 @@
 """Testes do login dos vendedores. Rodar: python -m unittest discover -s servidor/testes"""
 import io
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -285,6 +286,7 @@ class TesteConta(unittest.TestCase):
         db.fechar()
         self.assertIn("não cadastrado", out.getvalue())
 
+    @unittest.skipIf(os.name == "nt", "o Windows não tem permissão de arquivo estilo Linux (vale no servidor e no GitHub)")
     def test_permissao_do_banco(self):
         self.assertEqual(self.banco.stat().st_mode & 0o777, 0o660)   # www-data + grupo catalogo_mdtech (pasta 2770), ver deploy.sh
 
@@ -305,7 +307,8 @@ class TesteBackup(unittest.TestCase):
                 feito = backup.copiar(banco, d / "bk", agora=1_700_000_000 + dia * 86400)
             copias = sorted((d / "bk").glob("usuarios-*.sqlite"))
             self.assertEqual(len(copias), backup.MANTER)
-            self.assertEqual(oct(feito.stat().st_mode & 0o777), "0o600")
+            if os.name != "nt":                      # no Windows o chmod não tem efeito
+                self.assertEqual(oct(feito.stat().st_mode & 0o777), "0o600")
             import sqlite3
             n = sqlite3.connect(feito).execute("SELECT COUNT(*) FROM usuarios").fetchone()[0]
             self.assertEqual(n, 1)
