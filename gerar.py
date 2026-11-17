@@ -70,6 +70,8 @@ def main():
     p = sub.add_parser("site", help="exporta a base -> site/produtos.json (catálogo digital de clientes, SEM preço)")
     p.add_argument("--interno", action="store_true",
                    help="também monta saida/servidor/ (raiz = clientes sem preço, interno/ = vendedores com preço real de dados/precos_reais.xlsx). Só local.")
+    p.add_argument("--versionar", action="store_true",
+                   help="põe ?v=<hash> nos css/js dos HTML de site/ (usado no Actions; localmente sujaria os HTML do repositório)")
 
     p = sub.add_parser("tudo", help="roda checklist + dashboard + catálogos + fichas de uma vez")
     p.add_argument("--perfil", choices=["impressao", "digital"], default="digital",
@@ -130,6 +132,9 @@ def main():
     elif a.cmd == "site":
         from geradores import site
         site.gerar(interno=a.interno)
+        if a.versionar:
+            from mdtech import config as _cfg
+            site.versionar_html(_cfg.SITE)
 
     elif a.cmd == "checklist":
         _checklist()

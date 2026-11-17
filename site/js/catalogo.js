@@ -324,7 +324,9 @@
 
     const irPara = n => { estado.pagina = n; render(); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
+    box.setAttribute("role", "navigation"); box.setAttribute("aria-label", "Páginas de resultados");
     const ant = el("button", null, "‹");
+    ant.setAttribute("aria-label", "Página anterior");
     ant.disabled = estado.pagina === 1;
     ant.addEventListener("click", () => irPara(estado.pagina - 1));
     box.appendChild(ant);
@@ -335,11 +337,14 @@
     ini = Math.max(1, fim - 4);
     for (let n = ini; n <= fim; n++) {
       const b = el("button", n === estado.pagina ? "ativo" : "", String(n));
+      b.setAttribute("aria-label", `Página ${n}`);
+      if (n === estado.pagina) b.setAttribute("aria-current", "page");
       b.addEventListener("click", () => irPara(n));
       box.appendChild(b);
     }
 
     const prox = el("button", null, "›");
+    prox.setAttribute("aria-label", "Próxima página");
     prox.disabled = estado.pagina === totalPag;
     prox.addEventListener("click", () => irPara(estado.pagina + 1));
     box.appendChild(prox);
@@ -391,8 +396,26 @@
     estado.familias.forEach(v => u.append("fam", v));
     if (estado.proposta) u.set("prop", estado.proposta);
     if (estado.pagina > 1) u.set("p", estado.pagina);
-    const s = u.toString();
-    try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "")); } catch (e) { /* file:// */ }
+    const s = u.toString(), url = location.pathname + (s ? "?" + s : "");
+    if (url === location.pathname + location.search) { digitando = false; return; }
+    // cada filtro, proposta ou página vira um passo do histórico: o "Voltar" do celular desfaz o último em vez de sair do catálogo.
+    // Digitar na busca só substitui (senão cada letra seria um passo).
+    try { (digitando ? history.replaceState : history.pushState).call(history, null, "", url); } catch (e) { /* file:// */ }
+    digitando = false;
+  }
+  let digitando = false;
+  window.addEventListener("popstate", () => {
+    estado.especialidades.clear(); estado.familias.clear(); estado.proposta = ""; estado.termo = ""; $("#busca").value = "";
+    lerURL(); fecharGaveta(); montarFiltros(); render();
+  });
+
+  // ---- faixa de ajuda: só enquanto a lista está vazia; "Entendi" esconde de vez neste aparelho ----
+  function faixaAjuda() {
+    const f = $("#faixa-ajuda"); if (!f) return;
+    let vista = false; try { vista = localStorage.getItem("mdtech_ajuda_vista") === "1"; } catch (e) { /* sem armazenamento */ }
+    f.hidden = vista || MD.lista().length > 0;
+    const b = f.querySelector(".faixa-x");
+    if (b && !b.onclick) b.onclick = () => { try { localStorage.setItem("mdtech_ajuda_vista", "1"); } catch (e) { /* ok */ } f.hidden = true; };
   }
 
   // ---- gaveta mobile (filtros) ----
@@ -400,10 +423,14 @@
     $("#filtros").classList.add("aberto"); $("#backdrop").classList.add("on");
     $("#btn-filtrar").setAttribute("aria-expanded", "true");
     const x = document.querySelector("#filtros .drawer-x"); if (x) x.focus();
+    if (soltarGaveta) soltarGaveta();
+    soltarGaveta = MD.prenderFoco($("#filtros"));
   }
+  let soltarGaveta = null;
   function fecharGaveta() {
     if (!$("#filtros").classList.contains("aberto")) return;
     $("#filtros").classList.remove("aberto"); $("#backdrop").classList.remove("on");
+    if (soltarGaveta) { soltarGaveta(); soltarGaveta = null; }
     $("#btn-filtrar").setAttribute("aria-expanded", "false");
     $("#btn-filtrar").focus();
   }
@@ -412,14 +439,15 @@
 
   async function iniciar() {
     try {
-      const d = await MD.carregar();
+      const d = await MD.carregar({ esperarPrecos: false });   // a grade aparece já; os preços do vendedor chegam depois
       PRODUTOS = d.produtos; META = d.meta;
+      d.precos.then(mudou => { if (mudou) { render(); document.dispatchEvent(new Event("orcamento:mudou")); } });
     } catch (e) {
       $("#grade").innerHTML = `<div class="vazio"><b>Não consegui carregar os produtos</b>
         Rode <code>python gerar.py site</code> e sirva a pasta por um servidor (ex.: <code>python -m http.server</code>).</div>`;
       return;
     }
-    $("#busca").addEventListener("input", e => { estado.termo = MD.norm(e.target.value.trim()); estado.pagina = 1; render(); });
+    $("#busca").addEventListener("input", e => { estado.termo = MD.norm(e.target.value.trim()); estado.pagina = 1; digitando = true; render(); });
     // busca/filtros/página vindos da URL (ex.: do detalhe de um produto: index.html?q=termo)
     lerURL();
     const bf = $("#btn-filtrar");
@@ -427,7 +455,8 @@
     bf.addEventListener("click", abrirGaveta);
     $("#backdrop").addEventListener("click", fecharGaveta);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fecharGaveta(); });
-    document.addEventListener("orcamento:mudou", () => { sincronizarBotoes(); faixaProposta(); });
+    document.addEventListener("orcamento:mudou", () => { sincronizarBotoes(); faixaProposta(); faixaAjuda(); });
+    faixaAjuda();
     try { const r = await fetch("propostas.json"); PROPOSTAS = (r.ok ? await r.json() : []).filter(k => k.id && (k.itens_lista || []).length); } catch (e) { PROPOSTAS = []; }
 
     montarFiltros();
