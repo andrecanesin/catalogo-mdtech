@@ -20,7 +20,8 @@
     if (tipo === "nova senha")
       return `${ola} Aqui está o link para criar uma nova senha no catálogo MDTech:\n${link}\n\nO link vale por ${dias} dias e funciona uma vez só.`;
     return `${ola} Seu acesso de vendedor ao catálogo MDTech está pronto. Toque no link para criar a sua senha:\n${link}\n\n` +
-      `O link vale por ${dias} dias. Depois, é só entrar com o seu e-mail (${v.email}) e a senha que você criou: os preços de tabela aparecem no catálogo.`;
+      `O link vale por ${dias} dias. Depois, é só entrar com o seu e-mail (${v.email}) e a senha que você criou: os preços de tabela aparecem no catálogo.\n\n` +
+      `Depois de entrar, instale o app no celular: o catálogo funciona até sem internet.`;
   }
   function mostrarConvite(v, codigo, tipo, dias) {
     const link = linkEntrar() + "#convite=" + codigo;

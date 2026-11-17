@@ -8,15 +8,25 @@
   const instalado = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
-  // ---------- 1) faixa de conexão: "Sem internet: catálogo de dd/mm" e "Conexão de volta: catálogo atualizado" ----------
+  // ---------- 1) faixa de conexão, dentro do topo (fixo): não cobre nada, empurra o conteúdo ----------
+  // sem internet: azul bem claro, fica enquanto durar; conexão de volta / pedido enviado: azul MDTech, some sozinha
+  const ICONE_FAIXA = {
+    off: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M7 18h10a4 4 0 0 0 .9-7.9A6 6 0 0 0 6.3 9 4.5 4.5 0 0 0 7 18z"/><path d="M3 3l18 18"/></svg>',
+    on: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+  };
   let faixa = null, tempo = null;
   function mostrarFaixa(texto, tipo, ms) {
     if (!faixa) {
       faixa = document.createElement("div");
       faixa.className = "app-faixa"; faixa.setAttribute("role", "status"); faixa.setAttribute("aria-live", "polite");
-      document.body.appendChild(faixa);
+      const topo = document.querySelector("header.top");
+      if (topo) topo.appendChild(faixa); else document.body.prepend(faixa);
     }
-    faixa.textContent = texto; faixa.dataset.tipo = tipo; faixa.hidden = false;
+    faixa.innerHTML = ICONE_FAIXA[tipo] + "<span></span>";
+    faixa.querySelector("span").textContent = texto;
+    faixa.dataset.tipo = tipo; faixa.hidden = false;
     clearTimeout(tempo);
     if (ms) tempo = setTimeout(() => { faixa.hidden = true; }, ms);
   }
@@ -27,17 +37,17 @@
   function semInternet() {
     if (navigator.onLine) return;
     const d = dataCatalogo();
-    mostrarFaixa("Sem internet" + (d ? ": catálogo de " + d : "") + ". Pedidos ficam guardados e saem quando a conexão voltar.", "off");
+    mostrarFaixa("Sem internet" + (d ? " · catálogo de " + d : ""), "off");
   }
   window.addEventListener("offline", semInternet);
   window.addEventListener("online", async () => {
-    mostrarFaixa("Conexão de volta: catálogo atualizado.", "on", 4000);   // antes: o aviso de pedido enviado (se houver) vem depois
+    mostrarFaixa("Conectado · catálogo atualizado", "on", 4000);   // antes: o aviso de pedido enviado (se houver) vem depois
     try { await fetch("produtos.json", { cache: "no-store" }); ls.set("mdtech_catalogo_em", String(Date.now())); } catch (e) { /* ainda instável */ }
     guardarFotos();
   });
   document.addEventListener("envios:enviados", e => {
     const n = (e.detail && e.detail.n) || 1;
-    mostrarFaixa(n === 1 ? "O pedido guardado sem internet foi enviado." : n + " pedidos guardados sem internet foram enviados.", "on", 5000);
+    mostrarFaixa(n === 1 ? "Pedido guardado sem internet: enviado" : n + " pedidos guardados sem internet: enviados", "on", 5000);
   });
   document.addEventListener("DOMContentLoaded", semInternet);
 
