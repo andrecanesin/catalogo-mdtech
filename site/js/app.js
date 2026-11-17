@@ -80,7 +80,19 @@
     if (Date.now() < Number(ls.get("mdtech_instalar_depois") || 0)) return;
     const tipo = pedido ? "android" : ios ? "ios" : "";
     if (tipo) setTimeout(() => { if (!document.querySelector(".app-convite") && !instalado()) montar(pedido ? "android" : tipo); }, 1200);
+    else if (android && !esperandoMenu) {
+      // Android sem o aviso "dá para instalar" do navegador (ex.: Samsung Internet, que não o envia): depois de alguns segundos,
+      // mostra o passo a passo pelo menu do próprio navegador. Se o aviso chegar antes, vale o botão "Instalar o app".
+      esperandoMenu = true;
+      setTimeout(() => {
+        if (pedido || document.querySelector(".app-convite") || instalado()) return;
+        if (Date.now() < Number(ls.get("mdtech_instalar_depois") || 0)) return;
+        montar(/SamsungBrowser/i.test(navigator.userAgent) ? "samsung" : "menu");
+      }, 8000);
+    }
   }
+  const android = /Android/i.test(navigator.userAgent);
+  let esperandoMenu = false;
   let soltarFoco = null, focoAntes = null;
   function fechar() {
     const c = document.querySelector(".app-convite");
@@ -106,6 +118,14 @@
     const c = document.createElement("div");
     c.className = "app-convite"; c.setAttribute("role", "dialog"); c.setAttribute("aria-modal", "true");
     c.setAttribute("aria-labelledby", "app-conv-t"); c.setAttribute("aria-describedby", "app-conv-d");
+    const PASSOS = {
+      ios: [`Toque em <b>Compartilhar</b> <i>${ICONE.compartilhar}</i> na barra do Safari`,
+            `Escolha <b>Adicionar à Tela de Início</b> <i>${ICONE.adicionar}</i>`, "Toque em <b>Adicionar</b>, no canto de cima"],
+      samsung: ["Toque no menu <b>☰</b>, na barra de baixo", "Escolha <b>Adicionar página a</b> e depois <b>Tela inicial</b>",
+                "Confirme em <b>Adicionar</b>"],
+      menu: ["Toque no menu <b>⋮</b>, no canto de cima", "Escolha <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>",
+             "Confirme em <b>Instalar</b>"]
+    };
     const LISTA = `<ul class="app-conv-lista">
           <li><i>${ICONE.ok}</i>Catálogo, fotos e busca sem internet</li>
           <li><i>${ICONE.ok}</i>Preços de tabela à mão, também offline</li>
@@ -118,13 +138,10 @@
         <p class="app-conv-sobre">App MDTech · vendedores</p>
         <h2 id="app-conv-t">Leve o catálogo<br>no seu celular</h2>
         <p class="app-conv-sub" id="app-conv-d">Abre direto da tela inicial, como um app, e funciona mesmo sem internet.</p>
-        ${tipo === "ios" ? "" : LISTA}
-        ${tipo === "ios" ? `<ol class="app-conv-passos" aria-label="Como instalar no iPhone">
-          <li><span class="n">1</span><span>Toque em <b>Compartilhar</b> <i>${ICONE.compartilhar}</i> na barra do Safari</span></li>
-          <li><span class="n">2</span><span>Escolha <b>Adicionar à Tela de Início</b> <i>${ICONE.adicionar}</i></span></li>
-          <li><span class="n">3</span><span>Toque em <b>Adicionar</b>, no canto de cima</span></li>
-        </ol>` : ""}
-        ${tipo === "ios" ? LISTA : ""}
+        ${PASSOS[tipo] ? "" : LISTA}
+        ${PASSOS[tipo] ? `<ol class="app-conv-passos" aria-label="Como instalar">${PASSOS[tipo].map((t, i) =>
+          `<li><span class="n">${i + 1}</span><span>${t}</span></li>`).join("")}</ol>` : ""}
+        ${PASSOS[tipo] ? LISTA : ""}
       </div>
       <div class="app-conv-acoes">
         ${tipo === "android" ? '<button type="button" class="app-instalar">Instalar o app</button>' : '<button type="button" class="app-ok">Entendi</button>'}
