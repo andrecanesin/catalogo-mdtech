@@ -72,7 +72,9 @@
   document.addEventListener("conta:pronta", e => { vendedor = !!(e.detail && e.detail.status === 200); convidar(); });
 
   // Celular e tablet (toque, sem mouse). No computador o convite não aparece: lá fica só o botão de instalar do próprio navegador.
-  const movel = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  // (alguns Android, ex.: Samsung, dizem ter "hover"; por isso vale também o aparelho se identificar como celular/tablet)
+  const movel = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches || ios
+    || !!(navigator.userAgentData && navigator.userAgentData.mobile) || /Android|Mobi|iPhone|iPad|iPod/i.test(navigator.userAgent);
   function convidar() {
     if (!vendedor || !movel() || instalado() || document.querySelector(".app-convite")) return;
     if (Date.now() < Number(ls.get("mdtech_instalar_depois") || 0)) return;
