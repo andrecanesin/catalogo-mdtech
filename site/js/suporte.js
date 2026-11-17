@@ -46,7 +46,7 @@
         <label class="sup-campo" id="sup-ret-l">Como te respondo? <input id="sup-ret" type="text" autocomplete="email" placeholder="E-mail ou telefone (opcional)"></label>
         <label class="sup-campo">Descreva <textarea id="sup-msg" rows="4" placeholder="Conte o que aconteceu ou o que você sugere"></textarea></label>
         <label class="sup-isca" aria-hidden="true">Não preencha este campo <input id="sup-isca" type="text" tabindex="-1" autocomplete="off"></label>
-        <p class="sup-lgpd">Usamos o que você informa só para responder a esta mensagem. O envio passa pelo serviço Web3Forms (EUA) e chega por e-mail à equipe da MDTech; nada fica salvo neste aparelho. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></p>
+        <p class="sup-lgpd">Usamos o que você informa só para responder a esta mensagem. O envio passa pelo serviço Web3Forms (EUA) e chega por e-mail à equipe da MDTech; sem internet, a mensagem espera neste aparelho até poder ser enviada. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></p>
         <p class="sup-ctx" id="sup-ctx"></p>
         <p class="sup-st" id="sup-st" role="status" aria-live="polite"></p>
         <button class="sup-go sup-mail" id="sup-send" type="button" aria-disabled="true">Enviar mensagem</button>
@@ -112,9 +112,11 @@
         "Página: " + x.pagina, "Aparelho: " + x.aparelho].filter(l => l !== null).join("\n");
       enviando = true; e.st.className = "sup-st"; e.st.textContent = "Enviando…"; atualizar();
       try {
-        await MD.enviarEmail({ assunto: "Suporte catálogo MDTech · " + c.nome, nome, contato: ret, corpo, armadilha: e.isca.value });
-        e.feitoT.textContent = ret ? "Recebemos e vamos responder pelo contato informado."
+        const res = await MD.enviarEmail({ assunto: "Suporte catálogo MDTech · " + c.nome, nome, contato: ret, corpo, armadilha: e.isca.value });
+        e.feitoT.textContent = res && res.pendente ? "Sem internet agora: a mensagem fica neste aparelho e é enviada sozinha quando a conexão voltar."
+          : ret ? "Recebemos e vamos responder pelo contato informado."
           : "Recebemos. Como você não informou um contato de retorno, não conseguiremos responder.";
+        e.feito.querySelector(".sup-ok-t").textContent = res && res.pendente ? "✓ Mensagem guardada" : "✓ Mensagem enviada";
         zerar(); e.form.hidden = true; e.feito.hidden = false; e.outra.focus();
       } catch (err) {
         e.st.className = "sup-st erro";

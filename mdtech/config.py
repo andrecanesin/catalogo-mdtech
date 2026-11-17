@@ -15,6 +15,8 @@ SAIDA   = RAIZ / "saida"
 # só escreve produtos.json/meta.json/fotos/fichas direto dentro dela (arquivos
 # gerados, no .gitignore; o GitHub Actions os recria a cada publicação).
 SITE = RAIZ / "site"
+# Endereço de produção: usado nos links absolutos das prévias de compartilhamento (Open Graph) de cada produto.
+SITE_URL = "https://catalogo.mdtechsm.com.br/"
 
 # Base = fonte única da verdade
 BASE_XLSX = DADOS / "Base_MDTech_Consolidada.xlsx"
