@@ -9,6 +9,8 @@
   const num = ((C.contato && C.contato.whatsapp) || "").replace(/\D/g, "");
   const chave = (S.chaveEmail || "").trim();      // envio por e-mail: ver MD.enviarEmail (dados.js)
   if (S.ativo === false || (!num && !chave)) return;
+  // decisão de 16/11: Suporte só para vendedores conectados (clientes não veem o botão; no GitHub Pages não há login)
+  if (!(window.MD && MD.contaAtiva && MD.contaAtiva() && MD.ehVendedor())) return;
   const esc = s => (window.MD && MD.esc) ? MD.esc(s) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const cats = S.categorias || [], faq = S.faq || [];
   // Nada é gravado no aparelho: ao enviar, o formulário é limpo e volta uma tela de confirmação.
@@ -127,10 +129,14 @@
       ultimo = document.activeElement;
       e.painel.hidden = false; e.bg.hidden = false; e.fab.setAttribute("aria-expanded", "true");
       atualizar(); const p = e.painel.querySelector("input[type=radio]"); if (p) p.focus();
+      if (soltar) soltar();
+      soltar = MD.prenderFoco(e.painel);
     };
+    let soltar = null;
     const fechar = () => {
       if (e.painel.hidden) return;
       e.painel.hidden = true; e.bg.hidden = true; e.fab.setAttribute("aria-expanded", "false");
+      if (soltar) { soltar(); soltar = null; }
       if (!e.feito.hidden) { e.form.hidden = false; e.feito.hidden = true; }
       (ultimo && ultimo.focus ? ultimo : e.fab).focus();
     };

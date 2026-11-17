@@ -38,14 +38,34 @@ window.MD = (function () {
   }
 
   // ---- dados ----
-  async function carregar() {
+  // esperarPrecos=false (grade): devolve na hora, sem esperar o /conta.py/precos (CGI pode ser lento); "precos" é uma
+  // promessa que resolve quando os preços do vendedor chegarem (true = algum preço mudou: vale redesenhar).
+  async function carregar(op) {
+    const esperar = !op || op.esperarPrecos !== false;
     const [prod, meta] = await Promise.all([
       fetch("produtos.json").then(r => r.json()),
       fetch("meta.json").then(r => r.json()).catch(() => null)
     ]);
-    await aplicarPrecosVendedor(prod);
     detectarPrecos(prod);
-    return { produtos: prod, meta };
+    const precos = aplicarPrecosVendedor(prod).then(mudou => { detectarPrecos(prod); return mudou; }).catch(() => false);
+    if (esperar) await precos;
+    return { produtos: prod, meta, precos };
+  }
+
+  // Foco preso num painel aberto (Tab e Shift+Tab circulam só dentro dele). Devolve a função que solta.
+  function prenderFoco(painel) {
+    const sel = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const ao = e => {
+      if (e.key !== "Tab") return;
+      const itens = [...painel.querySelectorAll(sel)].filter(x => x.offsetParent !== null && !x.closest("[hidden]"));
+      if (!itens.length) return;
+      const pri = itens[0], ult = itens[itens.length - 1];
+      if (e.shiftKey && document.activeElement === pri) { e.preventDefault(); ult.focus(); }
+      else if (!e.shiftKey && document.activeElement === ult) { e.preventDefault(); pri.focus(); }
+      else if (!painel.contains(document.activeElement)) { e.preventDefault(); pri.focus(); }
+    };
+    document.addEventListener("keydown", ao);
+    return () => document.removeEventListener("keydown", ao);
   }
 
   // ---- login dos vendedores (app /conta.py no servidor; ver servidor/LEIA-ME.md) ----
@@ -66,16 +86,18 @@ window.MD = (function () {
   }
   // Com sessão de vendedor, troca o preço de cada produto pelo preço real. Sem sessão (ou fora do servidor), não mexe em nada.
   async function aplicarPrecosVendedor(prod) {
-    if (!contaAtiva()) return;
-    if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaTopo(); return; }
+    if (!contaAtiva()) return false;
+    if (!ehVendedor()) { _estadoConta = { status: 401 }; montarContaTopo(); return false; }
     const r = await contaReq("/precos");
     if (r.status === 401) esquecerVendedor();          // sessão expirou ou foi encerrada
     _estadoConta = { status: r.status, email: r.dados.email || "", admin: !!r.dados.admin };
+    let mudou = false;
     if (r.status === 200 && r.dados.precos) {
       (prod || []).forEach(p => { const v = r.dados.precos[p.codigo];
-        if (v) { p.preco = v; p.preco_ficticio = false; } });
+        if (v) { p.preco = v; p.preco_ficticio = false; mudou = true; } });
     }
     montarContaTopo();
+    return mudou;
   }
   // Topo (ao lado de "Catálogos e propostas"): "Entrar" para quem não entrou; para o vendedor, ícone de conectado com menu
   // (e-mail, preços de tabela, trocar a senha, sair). Criado via JS: não depende de markup fixo nas páginas.
@@ -96,7 +118,7 @@ window.MD = (function () {
     const email = _estadoConta.email || "";
     const bt = document.createElement("button");
     bt.type = "button"; bt.className = "conta-topo on";
-    bt.setAttribute("aria-haspopup", "true"); bt.setAttribute("aria-expanded", "false");
+    bt.setAttribute("aria-expanded", "false");
     bt.setAttribute("aria-label", "Minha conta: conectado como " + email);
     bt.innerHTML = icone + '<span class="l-conta">Conectado</span><i class="conta-ponto" aria-hidden="true"></i>';
     const menu = document.createElement("div");
@@ -325,7 +347,7 @@ window.MD = (function () {
       let enviando = false;
       const pronto = () => o.nome.value.trim() && o.ret.value.trim() && lista().length > 0 && !enviando;
       const checar = () => { const ok = !!pronto(); o.send.setAttribute("aria-disabled", ok ? "false" : "true"); o.send.classList.toggle("off", !ok); };
-      o.fecharTudo = () => { o.painel.hidden = true; o.bg.hidden = true; o.form.hidden = false; o.feito.hidden = true; if ($("bt-mail")) $("bt-mail").focus(); };
+      o.fecharTudo = () => { if (o.soltar) { o.soltar(); o.soltar = null; } o.painel.hidden = true; o.bg.hidden = true; o.form.hidden = false; o.feito.hidden = true; if ($("bt-mail")) $("bt-mail").focus(); };
       o.x.onclick = o.bg.onclick = o.fechar.onclick = o.fecharTudo;
       document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !o.painel.hidden) o.fecharTudo(); });
       [o.nome, o.ret].forEach(i => i.addEventListener("input", checar));
@@ -356,6 +378,8 @@ window.MD = (function () {
         (mostrarPreco() && t.total ? " · total estimado " + brl(t.total) + (t.ficticio ? " (valores ilustrativos)" : "") : "") + ".";
       orc.st.textContent = ""; orc.form.hidden = false; orc.feito.hidden = true;
       orc.painel.hidden = false; orc.bg.hidden = false; orc.checar(); orc.nome.focus();
+      if (orc.soltar) orc.soltar();
+      orc.soltar = prenderFoco(orc.painel);
     }
 
     function rodapeTotal() {
@@ -392,14 +416,18 @@ window.MD = (function () {
       pop.querySelectorAll("[data-mais]").forEach(b => b.onclick = () => definirQtd(b.dataset.mais, qtd(b.dataset.mais) + 1));
       pop.querySelectorAll("[data-qtd]").forEach(i => i.onchange = () => definirQtd(i.dataset.qtd, i.value));
     }
+    let soltarLista = null;
     function abrirLista() {
       renderLista(); pop.hidden = false;
+      if (soltarLista) soltarLista();
+      soltarLista = prenderFoco(pop);
       if (btLista) btLista.setAttribute("aria-expanded", "true");
       pop.querySelector(".lista-x").focus();
     }
     function fecharLista() {
       if (pop.hidden) return;
       pop.hidden = true;
+      if (soltarLista) { soltarLista(); soltarLista = null; }
       if (btLista) { btLista.setAttribute("aria-expanded", "false"); btLista.focus(); }
     }
     if (btLista) {
@@ -411,6 +439,8 @@ window.MD = (function () {
     function atualizar() {
       const n = lista().length;
       bandeja.classList.toggle("on", n > 0);
+      bandeja.inert = n === 0;                       // vazia = escondida: nem Tab nem leitor de tela chegam nela
+      if (n === 0) bandeja.setAttribute("aria-hidden", "true"); else bandeja.removeAttribute("aria-hidden");
       document.body.classList.toggle("com-bandeja", n > 0);
       const tq = mostrarPreco() ? totalLista(produtos) : { total: 0 };
       $("qt").innerHTML = `<span>${n}</span> ite${n === 1 ? "m" : "ns"} no orçamento` +
@@ -464,13 +494,18 @@ window.MD = (function () {
 
     const abrir = () => { const topo = document.querySelector(".top");
       if (topo) menu.style.top = Math.round(topo.getBoundingClientRect().bottom + 6) + "px";
-      menu.classList.add("on"); bd.classList.add("on"); btn.setAttribute("aria-expanded", "true"); };
-    const fechar = () => { menu.classList.remove("on"); bd.classList.remove("on"); btn.setAttribute("aria-expanded", "false"); };
+      menu.classList.add("on"); bd.classList.add("on"); btn.setAttribute("aria-expanded", "true");
+      soltar = prenderFoco(menu); const a = menu.querySelector("a"); if (a) a.focus(); };
+    const fechar = () => { if (!menu.classList.contains("on")) return;
+      menu.classList.remove("on"); bd.classList.remove("on"); btn.setAttribute("aria-expanded", "false");
+      if (soltar) { soltar(); soltar = null; } btn.focus(); };
+    let soltar = null;
+    btn.setAttribute("aria-controls", menu.id);
     btn.addEventListener("click", () => menu.classList.contains("on") ? fechar() : abrir());
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, prenderFoco, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

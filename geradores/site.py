@@ -35,7 +35,7 @@ Pré-requisitos para os dois passos novos (fichas/catálogos):
   Se um PDF não existir em saida/, o passo correspondente é pulado sem erro
   (o botão/link some no front até o arquivo existir).
 """
-import json, os, shutil, unicodedata
+import hashlib, json, os, re, shutil, unicodedata
 from pathlib import Path
 
 from mdtech import config, base as B, fotos as F, textos as T, marca as M
@@ -312,6 +312,25 @@ def _aplicar_precos(produtos, precos):
     return sem
 
 
+_REF_ASSET = re.compile(r'((?:href|src)=")((?:css|js)/[^"?#]+\.(?:css|js))(?:\?v=[^"]*)?(")')
+
+
+def versionar_html(pasta):
+    """Põe ?v=<hash do conteúdo> nos css/js dos HTML de <pasta>: o celular baixa de novo só o arquivo que mudou, em vez de
+    ficar com o CSS/JS velho em cache. Só nas CÓPIAS publicadas (saida/servidor e o Pages do Actions), nunca no site/ do repositório."""
+    pasta = Path(pasta)
+    for html in pasta.glob("*.html"):
+        texto = html.read_text(encoding="utf-8")
+        def troca(m):
+            arq = pasta / m.group(2)
+            if not arq.is_file():
+                return m.group(0)
+            return f"{m.group(1)}{m.group(2)}?v={hashlib.sha1(arq.read_bytes()).hexdigest()[:10]}{m.group(3)}"
+        novo = _REF_ASSET.sub(troca, texto)
+        if novo != texto:
+            html.write_text(novo, encoding="utf-8")
+
+
 def _montar_servidor(produtos_internos, meta):
     """Monta saida/servidor/ = o que vai por SSH ao servidor: raiz = clientes (sem preço) e interno/ = vendedores (com preço,
     atrás de login no Apache). Mesmo HTML/JS/fotos nos dois; só produtos.json/meta.json mudam."""
@@ -323,6 +342,8 @@ def _montar_servidor(produtos_internos, meta):
     shutil.copytree(config.SITE, interno)
     (interno / "produtos.json").write_text(json.dumps(produtos_internos, ensure_ascii=False, indent=2), encoding="utf-8")
     (interno / "meta.json").write_text(json.dumps({**meta, "precos": True}, ensure_ascii=False, indent=2), encoding="utf-8")
+    versionar_html(dest)
+    versionar_html(interno)
     return dest
 
 

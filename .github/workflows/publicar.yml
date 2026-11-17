@@ -65,7 +65,7 @@ jobs:
       - name: Dados do site (produtos.json, fotos, fichas, catálogos, propostas)
         env:
           SITE_PUBLICO: "1"        # Pages é público: preço REAL na base derruba a publicação (ver mdtech/config.py)
-        run: python gerar.py site
+        run: python gerar.py site --versionar      # ?v=<hash> nos css/js: o celular não fica com versão velha em cache
 
       - name: Conferir resultado
         run: |
