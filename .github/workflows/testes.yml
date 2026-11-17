@@ -1,0 +1,28 @@
+# Rede de proteção: roda a cada PR (e a cada push na main) e avisa se algo quebrou antes do merge.
+# ruff = só erros de verdade (config em pyproject.toml); testes do núcleo (tests/) e do login (servidor/testes/).
+name: Testes
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependências
+        run: pip install openpyxl pillow ruff
+      - name: ruff
+        run: ruff check .
+      - name: Testes do núcleo
+        run: python -m unittest discover -s tests -t . -v
+      - name: Testes do login
+        run: python -m unittest discover -s servidor/testes -v

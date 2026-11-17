@@ -64,7 +64,6 @@ def _foto_html(item, ac):
             f'<span class="phc">{esc(codigo)}</span>{selo}</div>')
 
 def _linha_marca(item):
-    m=(item.get("marca") or "").strip()
     return "MDTech"   # marca própria (origem) — padrão da ficha
 
 def _autoclav(item):

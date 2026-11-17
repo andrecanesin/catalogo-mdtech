@@ -289,5 +289,27 @@ class TesteConta(unittest.TestCase):
         self.assertEqual(self.banco.stat().st_mode & 0o777, 0o660)   # www-data + grupo catalogo_mdtech (pasta 2770), ver deploy.sh
 
 
+class TesteBackup(unittest.TestCase):
+    def test_copia_integra_e_mantem_so_as_ultimas(self):
+        import backup
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            banco = d / "usuarios.sqlite"
+            B.Banco(banco).fechar()
+            out = io.StringIO(); sys.stdout, velho = out, sys.stdout
+            try:
+                admin.main(["adicionar", "a@mdtech.com.br"], banco)
+            finally:
+                sys.stdout = velho
+            for dia in range(20):
+                feito = backup.copiar(banco, d / "bk", agora=1_700_000_000 + dia * 86400)
+            copias = sorted((d / "bk").glob("usuarios-*.sqlite"))
+            self.assertEqual(len(copias), backup.MANTER)
+            self.assertEqual(oct(feito.stat().st_mode & 0o777), "0o600")
+            import sqlite3
+            n = sqlite3.connect(feito).execute("SELECT COUNT(*) FROM usuarios").fetchone()[0]
+            self.assertEqual(n, 1)
+
+
 if __name__ == "__main__":
     unittest.main()
