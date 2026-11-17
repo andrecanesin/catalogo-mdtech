@@ -97,11 +97,14 @@ class TesteConta(unittest.TestCase):
         self.assertEqual(corpo["erro"], "E-mail ou senha incorretos.")
 
     def test_bloqueio_por_tentativas(self):
-        for _ in range(B.MAX_POR_EMAIL):
+        for _ in range(B.INICIO_PAR):
             self.assertEqual(self.entrar("errada123")[0], 401)
-        st, corpo, *_ = self.entrar()                  # até a senha certa fica bloqueada
+        st, corpo, *_ = self.entrar()                  # até a senha certa espera (atraso progressivo)
         self.assertEqual(st, 429)
-        self.assertIn("15 minutos", corpo["erro"])
+        self.assertIn("segundos", corpo["erro"])
+        # outro IP não é afetado: ninguém de fora trava o vendedor
+        self.assertEqual(self.entrar(ip="8.8.8.8")[0], 200)
+        self.c.cookie = None
         out = io.StringIO(); sys.stdout, velho = out, sys.stdout
         try:
             admin.main(["desbloquear", "vendedor@mdtech.com.br"], self.banco)
@@ -152,6 +155,8 @@ class TesteConta(unittest.TestCase):
         self.assertFalse(S.conferir("abc", "lixo"))
         self.assertIsNotNone(S.problema_nova_senha("aaaaaaaaaaaa"))
         self.assertIsNotNone(S.problema_nova_senha("vendedor2026!", "vendedor@x.com"))
+        self.assertIsNotNone(S.problema_nova_senha("Senha-123-456"[:0] + "12345678910"))
+        self.assertIsNotNone(S.problema_nova_senha("MDTech@2026"))
         self.assertIsNone(S.problema_nova_senha("cirurgia-laparo-26"))
 
     def _admin_pronto(self):
@@ -218,8 +223,8 @@ class TesteConta(unittest.TestCase):
         conv5 = self.c.req("POST", "/admin/reativar", {"email": "novo@mdtech.com.br"})[1]["convite"]
         self.assertEqual(outro.req("POST", "/convite/usar", {"convite": conv5, "nova": "volta-pra-casa-26"})[0], 200)
         # bloqueio aparece na lista e o desbloqueio funciona
-        for _ in range(B.MAX_POR_EMAIL):
-            Cliente(self.app).req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "errada"}, ip="9.9.9.9")
+        for i in range(B.INICIO_EMAIL):                # ataque vindo de vários IPs
+            Cliente(self.app).req("POST", "/entrar", {"email": "novo@mdtech.com.br", "senha": "errada"}, ip=f"9.9.9.{i}")
         lista = {v["email"]: v for v in self.c.req("GET", "/admin/vendedores")[1]["vendedores"]}
         self.assertTrue(lista["novo@mdtech.com.br"]["bloqueado"])
         self.c.req("POST", "/admin/desbloquear", {"email": "novo@mdtech.com.br"})

@@ -53,6 +53,8 @@ def _cookies_sessao(token, seguro, apagar=False):
 
 
 def _minutos(segundos):
+    if segundos < 60:
+        return f"{max(1, segundos)} segundos"
     m = max(1, (segundos + 59) // 60)
     return f"{m} minuto{'s' if m > 1 else ''}"
 
@@ -141,22 +143,24 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
         if not email or not senha:
             return Resposta(400, {"erro": "Informe o e-mail e a senha."})
         ip = environ.get("REMOTE_ADDR", "?")
-        k_email, k_ip = "email:" + email, "ip:" + ip
-        for chave, limite in ((k_email, B.MAX_POR_EMAIL), (k_ip, B.MAX_POR_IP)):
-            n, falta = db.falhas(chave)
-            if n >= limite:
-                return Resposta(429, {"erro": f"Muitas tentativas erradas. Tente de novo em {_minutos(falta)}."})
+        k_email, k_ip, k_par = "email:" + email, "ip:" + ip, f"par:{email}|{ip}"
+        n, falta = db.falhas(k_ip)
+        if n >= B.MAX_POR_IP:
+            return Resposta(429, {"erro": f"Muitas tentativas erradas. Tente de novo em {_minutos(falta)}."})
+        # atraso progressivo: pesa mais no IP que errou do que no e-mail, para ninguém travar o vendedor de fora
+        falta = max(db.espera(k_par, B.INICIO_PAR), db.espera(k_email, B.INICIO_EMAIL))
+        if falta:
+            return Resposta(429, {"erro": f"Muitas tentativas erradas. Tente de novo em {_minutos(falta)}."})
         u = db.usuario(email)
         ok = S.conferir(senha, u["hash"]) if u else S.conferir_falso(senha)
         if not ok or not u["ativo"]:
-            db.registrar_falha(k_email, k_ip)
-            n, _ = db.falhas(k_email)
-            resta = B.MAX_POR_EMAIL - n
+            db.registrar_falha(k_email, k_ip, k_par)
             msg = "E-mail ou senha incorretos."
-            if 0 < resta <= 2:
-                msg += f" Depois de mais {resta} erro{'s' if resta > 1 else ''}, o acesso fica bloqueado por 15 minutos."
+            falta = db.espera(k_par, B.INICIO_PAR)
+            if falta:
+                msg += f" Aguarde {_minutos(falta)} antes de tentar de novo."
             return Resposta(401, {"erro": msg})
-        db.limpar_falhas(k_email)
+        db.limpar_falhas(k_par)
         db.marcar_login(u["id"])
         token = db.criar_sessao(u["id"])
         return Resposta(200, {"email": u["email"], "nome": u["nome"], "trocar_senha": bool(u["trocar_senha"])},
@@ -169,12 +173,12 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
             return Resposta(401, {"erro": "Sua sessão expirou. Entre de novo."})
         atual = str(dados.get("senha_atual", ""))[:200]
         nova = str(dados.get("nova", ""))[:201]
-        k_email = "email:" + u["email"]
-        n, falta = db.falhas(k_email)
-        if n >= B.MAX_POR_EMAIL:
+        k_email, k_par = "email:" + u["email"], f"par:{u['email']}|{environ.get('REMOTE_ADDR', '?')}"
+        falta = max(db.espera(k_par, B.INICIO_PAR), db.espera(k_email, B.INICIO_EMAIL))
+        if falta:
             return Resposta(429, {"erro": f"Muitas tentativas erradas. Tente de novo em {_minutos(falta)}."})
         if not S.conferir(atual, u["hash"]):
-            db.registrar_falha(k_email)
+            db.registrar_falha(k_email, k_par)
             return Resposta(400, {"erro": "A senha atual não confere."})
         problema = S.problema_nova_senha(nova, u["email"], atual)
         if problema:

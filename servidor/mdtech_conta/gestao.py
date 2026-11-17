@@ -66,7 +66,7 @@ def usar_convite(db, token, nova):
     db.definir_senha(u["id"], S.gerar_hash(nova), trocar_senha=False)
     db.apagar_convites(u["id"])
     db.encerrar_sessoes(u["id"])
-    db.limpar_falhas("email:" + u["email"])
+    db.limpar_falhas_email(u["email"])
     db.registrar_evento(u["email"], "criou a senha pelo link", u["email"])
     return u
 
@@ -77,7 +77,7 @@ def redefinir(db, email, autor="terminal"):
     senha = S.senha_inicial()
     db.definir_senha(u["id"], S.gerar_hash(senha), trocar_senha=True)
     db.encerrar_sessoes(u["id"])
-    db.limpar_falhas("email:" + u["email"])
+    db.limpar_falhas_email(u["email"])
     db.registrar_evento(autor, "gerou nova senha para", u["email"])
     return senha
 
@@ -96,7 +96,7 @@ def reativar(db, email, autor="terminal", convite=False):
     senha = S.senha_inicial()
     db.definir_senha(u["id"], S.gerar_hash(senha), trocar_senha=True)
     db.definir_ativo(u["id"], True)
-    db.limpar_falhas("email:" + u["email"])
+    db.limpar_falhas_email(u["email"])
     db.registrar_evento(autor, "reativou", u["email"])
     if convite:
         return convidar(db, email, autor)[0]
@@ -105,7 +105,7 @@ def reativar(db, email, autor="terminal", convite=False):
 
 def desbloquear(db, email, autor="terminal"):
     u = _usuario(db, email)
-    db.limpar_falhas("email:" + u["email"])
+    db.limpar_falhas_email(u["email"])
     db.registrar_evento(autor, "desbloqueou", u["email"])
 
 
@@ -126,10 +126,10 @@ def definir_nome(db, email, nome, autor="terminal"):
 def listar(db):
     out = []
     for u in db.listar():
-        n, _ = db.falhas("email:" + u["email"])
+        espera = db.espera("email:" + u["email"], B.INICIO_EMAIL)
         out.append({"email": u["email"], "nome": u["nome"], "ativo": bool(u["ativo"]), "admin": bool(u["admin"]),
                     "trocar_senha": bool(u["trocar_senha"]), "ultimo_login": u["ultimo_login"], "criado": u["criado"],
-                    "bloqueado": n >= B.MAX_POR_EMAIL, "convite_expira": db.convite_pendente(u["id"])})
+                    "bloqueado": espera > 0, "convite_expira": db.convite_pendente(u["id"])})
     return out
 
 
