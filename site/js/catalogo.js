@@ -28,7 +28,7 @@
     const kit = propostaAtiva();
     if (kit && !kit.itens_lista.some(i => i.codigo === p.codigo)) return false;
     if (termo) {
-      const alvo = MD.norm(`${p.codigo} ${p.nome} ${p.descricao}`);
+      const alvo = MD.textoBusca(`${p.codigo} ${p.nome} ${p.descricao}`);
       // todas as palavras precisam aparecer, em qualquer ordem ("pinça maryland" = "maryland pinça")
       if (!termo.split(/\s+/).filter(Boolean).every(t => alvo.includes(t))) return false;
     }

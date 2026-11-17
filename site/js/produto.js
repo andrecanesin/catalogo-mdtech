@@ -76,7 +76,7 @@
            <img class="principal" src="${esc(p.foto)}" alt="${esc(p.codigo + " — " + p.nome)}" tabindex="0"
                 role="button" aria-label="Ampliar foto de ${esc(p.codigo)}">
            <span class="zoom-hint">🔍 ${toque ? "Toque" : "Clique"} na imagem para ampliar</span>
-           ${MD.seloAngulo(p.angulo, p.familia)}
+           ${MD.ehOtica(p) ? MD.seloAngulo(p.angulo, p.familia) : ""}
          </div>`
       : `<div class="foto-g sem"><span class="t">sem foto</span><span class="mono" style="color:var(--mut)">${esc(p.codigo)}</span></div>`;
 
@@ -108,7 +108,7 @@
             <tr><td class="k">Diâmetro (Ø)</td><td class="v">${diametroTxt ? esc(diametroTxt) : miss}</td></tr>
             <tr><td class="k">Comprimento útil</td><td class="v">${p.comprimento ? esc(p.comprimento) + " mm" : miss}</td></tr>
             <tr><td class="k">Ângulo</td><td class="v">${p.angulo ? esc(p.angulo) : (MD.ehOtica(p) ? miss : naoAplica)}</td></tr>
-            <tr><td class="k">Autoclavável</td><td class="v">${v(p.autoclavavel)}</td></tr>
+            <tr><td class="k">Autoclavável</td><td class="v">${!p.autoclavavel && MD.usoUnico(p) ? naoAplica : v(p.autoclavavel)}</td></tr>
           </table>
           <div class="regbox">
             <div class="col a"><div class="rlab">Registro ANVISA</div>

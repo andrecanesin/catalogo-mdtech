@@ -34,18 +34,12 @@ def esc(x): return html.escape("" if x is None else str(x))
 FALTA = '<span class="falta">—</span>'   # placeholder vermelho de campo pendente
 def val(x): return esc(x) if x not in (None,"") else FALTA
 
-import re as _re
 
-def _eh_pinca(familia):
-    return bool(_re.search(r"pin[cç]a", familia or "", _re.IGNORECASE))
-
-def _selo_angulo_html(angulo, familia):
-    """Selo com o ícone de ângulo sobre a foto. Aparece em qualquer
-    ótica/endoscópio (Uro, Histero e as óticas HD-4K — todos usam 'ângulo' como
-    ângulo de visão da lente); a única exceção é a pinça Mixter 90°
-    (Laparoscopia), onde 'ângulo' é geometria da ponta, não vista de lente.
+def _selo_angulo_html(angulo, descricao):
+    """Selo com o ícone de ângulo sobre a foto. Só em ótica/endoscópio (ângulo de visão da lente). Nos demais itens
+    (pinça Mixter 90°, eletrodos 30°, pinça de litotripsia para ótica de 70°) o ângulo é da ponta ou de outro item: sem selo.
     Sem ícone correspondente ao valor = sem selo."""
-    if _eh_pinca(familia):
+    if not T.eh_otica(descricao or ""):
         return ""
     ic = T.icone_angulo_b64(angulo)
     if not ic:
@@ -55,7 +49,7 @@ def _selo_angulo_html(angulo, familia):
 def _foto_html(item, ac):
     codigo = item.get("codigo", "")
     p = F.buscar(codigo)
-    selo = _selo_angulo_html(item.get("angulo"), item.get("familia"))
+    selo = _selo_angulo_html(item.get("angulo"), item.get("descricao"))
     if p:
         # foto reduzida (1200 px, JPEG): a original embutida deixava cada ficha com até 5 MB
         return f'<div class="photo"><img src="data:image/jpeg;base64,{F.jpeg_reduzido_b64(str(p))}">{selo}</div>'
@@ -67,7 +61,11 @@ def _linha_marca(item):
     return "MDTech"   # marca própria (origem) — padrão da ficha
 
 def _autoclav(item):
-    return "Sim (134 °C)" if T.eh_sim(item.get("autoclavavel")) else val(item.get("autoclavavel"))
+    if T.eh_sim(item.get("autoclavavel")):
+        return "Sim (134 °C)"
+    if not (item.get("autoclavavel") or "").strip() and T.uso_unico(item):
+        return "Não se aplica (uso único)"
+    return val(item.get("autoclavavel"))
 
 def _doc_html(item):
     ac=accent(item.get("especialidade"))
@@ -96,7 +94,7 @@ def _doc_html(item):
               f'<td><div class="lab">{l2}</div><div class="v">{v2}</div></td></tr>')
 
     anv = esc(item.get("anvisa")) if item.get("anvisa") else '<span class="reg falta">em registro</span>'
-    ncm = val(item.get("ncm"))
+    ncm = val(T.ncm_fmt(item.get("ncm")))
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
     {faces}

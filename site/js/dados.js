@@ -22,6 +22,9 @@ window.MD = (function () {
   // ângulo só é dado pendente em ótica/endoscópio; nos demais itens "não se aplica"
   function ehOtica(p) { return /^(endosc[oó]pio|[oó]tica|telesc)/i.test((p && p.nome) || ""); }
 
+  // item de uso único (clips): "Autoclavável" não se aplica (espelha mdtech/textos.py::uso_unico)
+  function usoUnico(p) { return /^clips?\b/i.test((p && p.nome) || ""); }
+
   // ---- normalização p/ busca (sem acento, minúsculo) ----
   function norm(s) {
     return (s || "").toString().toLowerCase()
@@ -123,6 +126,17 @@ window.MD = (function () {
   // ótica nova que apareça em qualquer especialidade).
   function _ehPinca(familia) {
     return /pin[cç]a/i.test(familia || "");
+  }
+
+  // Grafias que o mercado usa para a mesma coisa: quem busca por uma acha todas.
+  const GRAFIAS = [
+    [/\btroc(?:arte|ater|arter)s?\b/, "trocarte trocater trocarter"],
+    [/\bres?sectosc[oó]pi\w*/, "ressectoscopio resectoscopio ressectoscopia resectoscopia"],
+  ];
+  // texto de busca de um produto: o normal + todas as grafias dos termos que ele tem
+  function textoBusca(s) {
+    const n = norm(s);
+    return GRAFIAS.reduce((t, [re, todas]) => re.test(n) ? t + " " + todas : t, n);
   }
 
   // "30°" -> "img/angulos/30.png". Ícones que ainda não existirem em
@@ -456,7 +470,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };
