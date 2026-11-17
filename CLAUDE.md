@@ -128,7 +128,8 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
 ## Servidor (no ar desde 16/11)
 - `https://catalogo.mdtechsm.com.br/` = clientes (aberto, sem preço); `/interno/` = vendedores (com preço). Apache 2.4 (Ubuntu), usuário `catalogo_mdtech`,
   pasta `~/public_html`, acesso por **chave SSH** (nunca senha no repositório nem no chat). A sessão na nuvem não alcança o SSH (só HTTPS): o deploy roda na máquina do André.
-- Deploy: `bash deploy/deploy.sh` (ver `deploy/LEIA-ME.md`). No Git Bash do Windows não há `rsync`: o script envia com `tar` por SSH (sobrescreve, não apaga).
+- Deploy: `bash deploy/deploy.sh` (ver `deploy/LEIA-ME.md`). Envia com `tar` por SSH para `~/mdtech_deploy` e troca a versão de uma vez (`deploy/remoto.sh`): arquivo velho sai, o que não é gerado
+  (`.htaccess` da raiz, `.well-known`) é mantido, e se a conferência falhar volta sozinho. Rollback: `bash deploy/deploy.sh --voltar`; teste: `--simular` (17/11).
   Ele gera fichas, catálogos, propostas e `python gerar.py site --interno`, e no fim confere que `/interno` responde 401 e que a raiz não tem preço.
   O Actions só publica a versão de clientes no GitHub Pages (sem preço); o `/interno` só existe no servidor.
 - Particularidades do servidor: `.htaccess` não aceita `Options` nem `Header` (dá erro 500), então o do `/interno` só tem diretivas de autenticação. A raiz tem um
@@ -187,15 +188,16 @@ Revisão completa feita em 16/11 por dois modelos, às cegas (Opus 5.5 e Fable 5
 o modelo (Opus/Sonnet/Haiku) e o gasto de tokens, e atacar primeiro os mais críticos.** Decisões do André (16/11): repositório **continua público**
 (por isso, nada sensível do servidor neste arquivo); senha do servidor **já trocada**; botão **Suporte só para vendedores conectados**; grafias dos
 produtos: **adotar o termo de mercado** (decidido em 17/11: **trocarte**, como Medtronic/Aesculap e a literatura médica; planilha, nomes, família "Trocartes" e busca já ajustados; a busca ainda aceita trocater/trocarter).
-1. **Segurança rápida:** tirar o campo `fornecedor` do `produtos.json`/`meta.json` públicos (`geradores/site.py`; o site não usa); bloqueio de login
+1. ✅ **(17/11, em produção) Segurança rápida:** tirar o campo `fornecedor` do `produtos.json`/`meta.json` públicos (`geradores/site.py`; o site não usa); bloqueio de login
    por e-mail vira atraso progressivo (hoje qualquer um bloqueia um vendedor errando 5 vezes); política de senha com lista de senhas comuns.
-2. **Rede de proteção:** testes + ruff em cada PR (workflow `pull_request`) e no `deploy.sh` (subir só a `main` limpa); backup diário do SQLite
+2. ✅ **(17/11; falta só desligar o `/interno`) Rede de proteção:** testes + ruff em cada PR (workflow `pull_request`) e no `deploy.sh` (subir só a `main` limpa); backup diário do SQLite
    (`sqlite3 .backup`, 14 cópias, cron do usuário + cópia fora do servidor); deploy que apaga arquivos velhos, atômico e com rollback; transações no
    banco (`adicionar`, `usar_convite`); testes do núcleo (`nome_produto`, `diametro_fmt`, fotos, colunas obrigatórias em `base.carregar`);
-   desligar o `/interno` (Fase 1).
-3. **O que o cliente vê errado:** selo de ângulo em não-óticas (usar `MD.ehOtica`, ex.: 1.3-DS-24, A4001); nome dos endoscópios ("AV=30°,") e cards
+   desligar o `/interno` (Fase 1). Backup no cron às 3h10 (`~/backups_mdtech`); cópia fora do servidor ainda não.
+3. ✅ **(17/11, em produção) O que o cliente vê errado:** selo de ângulo em não-óticas (usar `MD.ehOtica`, ex.: 1.3-DS-24, A4001); nome dos endoscópios ("AV=30°,") e cards
    idênticos (A275/A276, A189-x: `mdtech/textos.py::nome_produto`); busca aceitando as grafias; NCM num formato só (88 com ponto, 64 sem);
-   "Autoclavável" de uso único como "não se aplica"; medidas com vírgula.
+   "Autoclavável" de uso único como "não se aplica"; medidas com vírgula. Pendente: eletrodos, evacuadores e A3104 seguem sem
+   "Autoclavável" (o catálogo TIAN SONG urologia 2025 só marca autoclave nos endoscópios; perguntar a instrução de uso à TIAN SONG).
 4. **Celular e acessibilidade:** versão nos CSS/JS (`?v=`); Suporte só para vendedores; ação do produto perto do topo; Voltar desfaz o filtro
    (`pushState`); foco preso nos painéis; bandeja vazia fora do teclado; `role="menu"` errado; paginação com rótulos; botão "Ver resultados" (2,65:1);
    faixa de ajuda que some; textos de 9–11 px; grade sem esperar o `/precos`.
