@@ -291,6 +291,69 @@ class TesteConta(unittest.TestCase):
         self.assertEqual(self.banco.stat().st_mode & 0o777, 0o660)   # www-data + grupo catalogo_mdtech (pasta 2770), ver deploy.sh
 
 
+class TesteTransacoes(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.caminho = Path(self.tmp.name) / "u.sqlite"
+        self.db = B.Banco(self.caminho)
+
+    def tearDown(self):
+        self.db.fechar()
+        self.tmp.cleanup()
+
+    def test_falha_no_meio_desfaz_tudo(self):
+        """Se o registro no histórico falhar, o vendedor não pode ficar cadastrado pela metade."""
+        import mdtech_conta.gestao as G
+        original = self.db.registrar_evento
+        def quebra(*a, **k):
+            raise RuntimeError("disco cheio")
+        self.db.registrar_evento = quebra
+        with self.assertRaises(RuntimeError):
+            G.adicionar(self.db, "novo@mdtech.com.br")
+        self.db.registrar_evento = original
+        self.assertIsNone(self.db.usuario("novo@mdtech.com.br"))
+
+    def test_convite_so_vale_uma_vez_mesmo_com_dois_aparelhos(self):
+        """Dois cliques ao mesmo tempo no mesmo link: só um consegue criar a senha."""
+        import mdtech_conta.gestao as G
+        G.adicionar(self.db, "novo@mdtech.com.br")
+        token = G.convidar(self.db, "novo@mdtech.com.br")[0]
+        outro = B.Banco(self.caminho)                     # segunda conexão = segundo aparelho
+        try:
+            u_velho = outro.convite(token)                # o 2º aparelho leu o link como válido ANTES do 1º gravar
+            self.assertTrue(u_velho)
+            real = outro.convite
+            leituras = []
+            def convite_com_leitura_velha(t):             # a 1ª leitura do 2º aparelho devolve o que ele já tinha lido
+                leituras.append(t)
+                return u_velho if len(leituras) == 1 else real(t)
+            outro.convite = convite_com_leitura_velha
+            G.usar_convite(self.db, token, "primeira-senha-boa-26")
+            with self.assertRaises(G.GestaoErro):
+                G.usar_convite(outro, token, "segunda-senha-boa-26")
+        finally:
+            outro.fechar()
+        self.assertTrue(S.conferir("primeira-senha-boa-26", self.db.usuario("novo@mdtech.com.br")["hash"]))
+
+    def test_falha_ao_usar_convite_nao_gasta_o_link(self):
+        import mdtech_conta.gestao as G
+        G.adicionar(self.db, "novo@mdtech.com.br")
+        token = G.convidar(self.db, "novo@mdtech.com.br")[0]
+        def quebra(*a, **k):
+            raise RuntimeError("falha")
+        self.db.encerrar_sessoes = quebra
+        with self.assertRaises(RuntimeError):
+            G.usar_convite(self.db, token, "primeira-senha-boa-26")
+        self.assertIsNotNone(self.db.convite(token))      # o link continua valendo
+        self.assertTrue(self.db.usuario("novo@mdtech.com.br")["trocar_senha"])   # e a senha não mudou
+
+    def test_cadastro_duplicado_vira_erro_de_uso(self):
+        import mdtech_conta.gestao as G
+        G.adicionar(self.db, "novo@mdtech.com.br")
+        with self.assertRaises(G.GestaoErro):
+            G.adicionar(self.db, "NOVO@mdtech.com.br")
+
+
 class TesteBackup(unittest.TestCase):
     def test_copia_integra_e_mantem_so_as_ultimas(self):
         import backup

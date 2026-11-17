@@ -183,8 +183,10 @@ def criar_app(caminho_banco, caminho_precos, cookie_seguro=True):
         problema = S.problema_nova_senha(nova, u["email"], atual)
         if problema:
             return Resposta(400, {"erro": problema})
-        db.definir_senha(u["id"], S.gerar_hash(nova), trocar_senha=False)
-        db.encerrar_sessoes(u["id"], exceto_token=token)     # sai dos outros aparelhos
+        hash_novo = S.gerar_hash(nova)
+        with db.transacao():
+            db.definir_senha(u["id"], hash_novo, trocar_senha=False)
+            db.encerrar_sessoes(u["id"], exceto_token=token)     # sai dos outros aparelhos
         return Resposta(200, {"ok": True})
 
     def _sair(db, environ, _):
