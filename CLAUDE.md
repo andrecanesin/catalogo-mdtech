@@ -141,8 +141,7 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   O `deploy.sh` também remove o `\r` ao enviar o `conta.py`. O log do Apache em 16/11 mostra **mod_python 3.5 com Python 3.14** carregado: opção a avaliar na
   Fase 2 para servir o app WSGI sem CGI (alternativa ao mod_wsgi).
 - **`sudo` liberado em 16/11** (`(ALL : ALL) ALL`). Regras: **nunca mexer em `/root`** (o administrador configura o sistema dele lá); fora de
-  `/home/catalogo_mdtech`, só com o ok do André e explicando antes o que o comando faz e como desfazer; nunca reiniciar o servidor (é do administrador;
-  em 16/11 havia um reinício de kernel pendente). A senha do `sudo` só no terminal do André (`ssh -t`).
+  `/home/catalogo_mdtech`, só com o ok do André e explicando antes o que o comando faz e como desfazer; nunca reiniciar o servidor (é do administrador). A senha do `sudo` só no terminal do André (`ssh -t`).
 - **Bancos:** PostgreSQL já instalado pelo administrador; **Fase 1 segue em SQLite** e migra para o PostgreSQL no início da Fase 2, com usuário e banco
   próprios (`mdtech`), de preferência com autenticação "peer" (sem senha em arquivo); não usar o superusuário `postgres`. **MariaDB: não usar.**
 - Login dos vendedores **provisório**: Basic Auth do Apache, 1 login por e-mail (`deploy/logins.py`; lista e senhas só locais, fora do git). Planejado: tela de login própria,
@@ -167,13 +166,42 @@ sangria; capa, sangria, marcas de corte e CMYK são feitos no InDesign. Quando o
   por WhatsApp/e-mail para criar a senha (1º acesso e "esqueci a senha"). Tabela `convites` (só hash).
 - **SSO com a GEWEB** só se ela
   oferecer OIDC/OAuth/SAML ou API para validar usuário (o André vai perguntar à GEWEB).
+- **App para os vendedores: PWA** (decidido em 16/11; fazer depois das pendências da Fase 1). O próprio site vira app instalável (Android e iPhone),
+  sem loja: funciona **sem internet** (service worker com `produtos.json`, fotos e busca; ~5 MB) e **atualiza sozinho** quando conecta (baixa só o que mudou;
+  aviso "Sem internet: catálogo de dd/mm" / "Catálogo atualizado"). Preços offline só para quem entrou, com validade (ex.: 15 dias sem conectar) e apagados no "Sair".
+  Lista de orçamento guardada e enviada quando a conexão voltar. **Aviso de instalação:** só para vendedores conectados (e logo depois de criar a senha pelo
+  convite); Android com botão "Instalar" (evento `beforeinstallprompt`), iPhone com o passo a passo (Compartilhar → "Adicionar à Tela de Início");
+  "Agora não" esconde por 30 dias; some quando já instalado. Depois de usar algumas semanas: avaliar Google Play (TWA, US$ 25) e, se preciso,
+  App Store (distribuição privada, US$ 99/ano; a Apple recusa app que é só site). App nativo: não compensa agora.
+  **A decidir:** fichas e catálogos em PDF guardados no celular (download inicial maior) ou baixados só quando tocados.
 - **Fase 2 (depende do administrador): intranet básica** no mesmo app e login: comunicados, aniversariantes e repositório de arquivos e documentos (hoje tudo no grupo de WhatsApp).
   Pedidos preparados para o administrador: mod_wsgi ou proxy + systemd, rewrite/headers, endereços com HTTPS, backup testado, SSH só por chave + firewall, logs, e-mail SMTP,
   PostgreSQL (recomendado), disco e monitoramento. Aguardando o André falar com ele.
 - **Institucional:** páginas estáticas no repositório, editadas pelo André (marketing). Aguardando o conteúdo.
 - **Orçamento (ferramenta + campanha):** conversar depois do login. Perguntas: quem usa (vendedor, cliente ou os dois), saída (PDF com preço, WhatsApp), desconto, registro das
   propostas, objetivo e canais da campanha.
-- **Pendências de segurança do André:** trocar a senha do usuário do servidor (apareceu no chat); enviar os convites aos vendedores pela tela e apagar `deploy/senhas_vendedores.txt` (as senhas dele não são mais usadas).
+- **Pendências do André:** enviar os convites aos vendedores pela tela e apagar `deploy/senhas_vendedores.txt` e `deploy/.htpasswd` (não são mais usados).
+
+## Próxima sessão (combinado em 16/11): revisão do projeto
+Revisão completa feita em 16/11 por dois modelos, às cegas (Opus 5.5 e Fable 5.2; o Fable foi mais completo: 58 itens). **Começar estimando, item a item,
+o modelo (Opus/Sonnet/Haiku) e o gasto de tokens, e atacar primeiro os mais críticos.** Decisões do André (16/11): repositório **continua público**
+(por isso, nada sensível do servidor neste arquivo); senha do servidor **já trocada**; botão **Suporte só para vendedores conectados**; grafias dos
+produtos: **adotar o termo de mercado** (pesquisar antes, ex.: trocarte/trocater/trocarter).
+1. **Segurança rápida:** tirar o campo `fornecedor` do `produtos.json`/`meta.json` públicos (`geradores/site.py`; o site não usa); bloqueio de login
+   por e-mail vira atraso progressivo (hoje qualquer um bloqueia um vendedor errando 5 vezes); política de senha com lista de senhas comuns.
+2. **Rede de proteção:** testes + ruff em cada PR (workflow `pull_request`) e no `deploy.sh` (subir só a `main` limpa); backup diário do SQLite
+   (`sqlite3 .backup`, 14 cópias, cron do usuário + cópia fora do servidor); deploy que apaga arquivos velhos, atômico e com rollback; transações no
+   banco (`adicionar`, `usar_convite`); testes do núcleo (`nome_produto`, `diametro_fmt`, fotos, colunas obrigatórias em `base.carregar`);
+   desligar o `/interno` (Fase 1).
+3. **O que o cliente vê errado:** selo de ângulo em não-óticas (usar `MD.ehOtica`, ex.: 1.3-DS-24, A4001); nome dos endoscópios ("AV=30°,") e cards
+   idênticos (A275/A276, A189-x: `mdtech/textos.py::nome_produto`); busca aceitando as grafias; NCM num formato só (88 com ponto, 64 sem);
+   "Autoclavável" de uso único como "não se aplica"; medidas com vírgula.
+4. **Celular e acessibilidade:** versão nos CSS/JS (`?v=`); Suporte só para vendedores; ação do produto perto do topo; Voltar desfaz o filtro
+   (`pushState`); foco preso nos painéis; bandeja vazia fora do teclado; `role="menu"` errado; paginação com rótulos; botão "Ver resultados" (2,65:1);
+   faixa de ajuda que some; textos de 9–11 px; grade sem esperar o `/precos`.
+5. **Privacidade e dados:** aviso de LGPD (formulários → Web3Forms) e anti-spam (honeypot); fontes locais (`assets/fontes`); retenção de eventos/IPs;
+   grafias e acentos da base e nomes de família (com o André).
+6. Depois: **app offline (PWA)**; Open Graph por produto; deploy pelo Actions (sem a máquina do André); repositório pesado (Git LFS).
 
 ## Estado dos dados (base de 08/11/2026, 175 linhas / 152 SKUs únicos)
 - ANVISA: em 16/11 entraram 31 células com o registro 82568299003 (endoscópios rígidos/Tiansong, aba de conferência da planilha do André).
