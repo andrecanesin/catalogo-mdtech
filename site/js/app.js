@@ -64,25 +64,63 @@
   function convidar() {
     if (!vendedor || instalado() || document.querySelector(".app-convite")) return;
     if (Date.now() < Number(ls.get("mdtech_instalar_depois") || 0)) return;
-    if (pedido) montar("android");
-    else if (ios) montar("ios");
+    const tipo = pedido ? "android" : ios ? "ios" : "";
+    if (tipo) setTimeout(() => { if (!document.querySelector(".app-convite") && !instalado()) montar(pedido ? "android" : tipo); }, 1200);
   }
-  function fechar() { const c = document.querySelector(".app-convite"); if (c) c.remove(); }
+  let soltarFoco = null, focoAntes = null;
+  function fechar() {
+    const c = document.querySelector(".app-convite");
+    if (!c) return;
+    c.remove();
+    document.documentElement.classList.remove("app-conv-aberto");
+    if (soltarFoco) { soltarFoco(); soltarFoco = null; }
+    if (focoAntes && focoAntes.focus) focoAntes.focus();
+  }
+  const adiar = () => { ls.set("mdtech_instalar_depois", String(Date.now() + 30 * 864e5)); fechar(); };
+
+  // ícones em linha (traço, herdam a cor do texto)
+  const svg = d => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const ICONE = {
+    ok: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+    compartilhar: svg('<path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>'),
+    adicionar: svg('<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>')
+  };
+
+  // Convite em tela cheia: fundo azul claro, ícone do app, o que ganha e como instalar (Android: botão; iPhone: passo a passo).
   function montar(tipo) {
+    focoAntes = document.activeElement;
     const c = document.createElement("div");
-    c.className = "app-convite"; c.setAttribute("role", "dialog"); c.setAttribute("aria-labelledby", "app-conv-t");
-    const compartilhar = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
-      '<path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
-    c.innerHTML = `<img src="img/app/icone-192.png" alt="" width="44" height="44">
-      <div class="app-conv-txt"><b id="app-conv-t">Instale o catálogo no celular</b>
-        <span>${tipo === "ios"
-          ? `Toque em <b>Compartilhar</b> ${compartilhar} e depois em <b>“Adicionar à Tela de Início”</b>.`
-          : "Abre como app, direto da tela inicial, e funciona sem internet."}</span></div>
-      <div class="app-conv-bt">${tipo === "android" ? '<button type="button" class="app-instalar">Instalar</button>' : ""}
-        <button type="button" class="app-depois">Agora não</button></div>`;
+    c.className = "app-convite"; c.setAttribute("role", "dialog"); c.setAttribute("aria-modal", "true");
+    c.setAttribute("aria-labelledby", "app-conv-t"); c.setAttribute("aria-describedby", "app-conv-d");
+    const LISTA = `<ul class="app-conv-lista">
+          <li><i>${ICONE.ok}</i>Catálogo, fotos e busca sem internet</li>
+          <li><i>${ICONE.ok}</i>Preços de tabela à mão, também offline</li>
+          <li><i>${ICONE.ok}</i>Atualiza sozinho quando conecta</li>
+        </ul>`;
+    c.innerHTML = `
+      <button type="button" class="app-conv-x" aria-label="Fechar">${svg('<path d="M6 6l12 12M18 6L6 18"/>')}</button>
+      <div class="app-conv-corpo">
+        <img class="app-conv-ic" src="img/app/icone-192.png" alt="" width="96" height="96">
+        <p class="app-conv-sobre">App MDTech · vendedores</p>
+        <h2 id="app-conv-t">Leve o catálogo<br>no seu celular</h2>
+        <p class="app-conv-sub" id="app-conv-d">Abre direto da tela inicial, como um app, e funciona mesmo sem internet.</p>
+        ${tipo === "ios" ? "" : LISTA}
+        ${tipo === "ios" ? `<ol class="app-conv-passos" aria-label="Como instalar no iPhone">
+          <li><span class="n">1</span><span>Toque em <b>Compartilhar</b> <i>${ICONE.compartilhar}</i> na barra do Safari</span></li>
+          <li><span class="n">2</span><span>Escolha <b>Adicionar à Tela de Início</b> <i>${ICONE.adicionar}</i></span></li>
+          <li><span class="n">3</span><span>Toque em <b>Adicionar</b>, no canto de cima</span></li>
+        </ol>` : ""}
+        ${tipo === "ios" ? LISTA : ""}
+      </div>
+      <div class="app-conv-acoes">
+        ${tipo === "android" ? '<button type="button" class="app-instalar">Instalar o app</button>' : '<button type="button" class="app-ok">Entendi</button>'}
+        <button type="button" class="app-depois">Agora não</button>
+      </div>`;
     document.body.appendChild(c);
-    const depois = c.querySelector(".app-depois");
-    depois.onclick = () => { ls.set("mdtech_instalar_depois", String(Date.now() + 30 * 864e5)); fechar(); };
+    document.documentElement.classList.add("app-conv-aberto");
+    c.querySelector(".app-depois").onclick = adiar;
+    c.querySelector(".app-conv-x").onclick = adiar;
+    const ok = c.querySelector(".app-ok"); if (ok) ok.onclick = adiar;
     const bt = c.querySelector(".app-instalar");
     if (bt) bt.onclick = async () => {
       if (!pedido) return fechar();
@@ -90,5 +128,9 @@
       try { await pedido.userChoice; } catch (e) { /* ok */ }
       pedido = null; fechar();
     };
+    c.addEventListener("keydown", e => { if (e.key === "Escape") adiar(); });
+    if (window.MD && MD.prenderFoco) soltarFoco = MD.prenderFoco(c);
+    (bt || ok).focus({ preventScroll: true });   // foco no botão principal, mas a tela começa no topo (ícone e título)
+    c.scrollTop = 0;
   }
 })();
