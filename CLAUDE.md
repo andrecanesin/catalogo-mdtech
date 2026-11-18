@@ -270,3 +270,10 @@ Hoje o app está desligado (ver "App DESLIGADO" acima). Objetivo: o vendedor ins
   Laparoscopia. Fornecedor segue ASAP (marca vem primeiro). **Cores novas por especialidade: Laparoscopia laranja `#F5A623`, Urologia azul
   `#36A9E1`, Histeroscopia rosa `#C64B8C`** (o verde-água saiu). Catálogo PDF "Óticas HD-4K" deixou de existir (agora 3 por especialidade + o
   completo) e a capa do catálogo completo foi refeita com as 3 cores. Sem selo "HD-4K" nos cards.
+
+## Marketing / Instagram (combinado em 18/11) — fazer quando todos os registros ANVISA estiverem na base
+- Público do Instagram da MDTech: **médicos e engenharia clínica do hospital** (tom técnico; sem preço, sem orçamento, sem promessa clínica).
+- Já existem o **post de feed (1080×1350)** e o **story (1080×1920)** "Catálogo digital: Tudo da MDTech, em um só lugar" (contagem por especialidade lida do `site/produtos.json`).
+  Scripts em `marketing/` (rodar da raiz: `python marketing/post_instagram.py saida.png`, `python marketing/story_instagram.py saida.png`; precisam de `python gerar.py site` antes).
+- **Pendente, só depois que saírem todos os registros ANVISA (hoje faltam 18 SKUs, ver "Estado dos dados"):** fazer o **carrossel** (um slide por especialidade, mais detalhe técnico:
+  famílias, diâmetros, comprimentos, registro ANVISA) e a divulgação com o registro. O texto público de produto para saúde deve ser conferido pelo regulatório/jurídico antes de postar (a sessão não valida regra da ANVISA).
