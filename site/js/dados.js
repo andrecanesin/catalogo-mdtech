@@ -262,6 +262,83 @@ window.MD = (function () {
   function remover(cod) { _gravar(_ler().filter(x => x.codigo !== cod)); }
   function limpar() { _gravar([]); }
 
+  // ---- pedido do cliente -> lista do vendedor ----
+  // O pedido que o cliente envia (texto "1. A0322 — nome — qtd: 1", ver texto()) tem também um link ?pedido=COD~QTD,COD~QTD.
+  // Quem recebe abre o link (ou cola o texto em "Colar pedido") e a lista já vem montada, com os preços do vendedor.
+  function substituirLista(novos) {
+    _gravar(novos.map(n => ({ codigo: n.codigo, qtd: Math.min(999, Math.max(1, parseInt(n.qtd, 10) || 1)) })));
+  }
+  // Lê um texto de pedido e devolve {itens: [{codigo, qtd}], desconhecidos: [códigos que não estão no catálogo]}.
+  // Aceita o formato do site e listas soltas ("A0322 x2", "A0322 - 2 un"); código em maiúscula ou minúscula.
+  function lerPedido(texto, produtos) {
+    const reais = {}; produtos.forEach(p => { reais[String(p.codigo).toUpperCase()] = p.codigo; });
+    const itens = [], desconhecidos = [];
+    const somar = (cod, q) => { const i = itens.find(x => x.codigo === cod); if (i) i.qtd += q; else itens.push({ codigo: cod, qtd: q }); };
+    const qtdDe = (resto, ordem) => {
+      let m = /(?:qtd|quant(?:idade)?|qt)\.?\s*[:=]?\s*(\d{1,3})/i.exec(resto)
+        || /(?:^|\s)[x×]\s*(\d{1,3})(?:\s|$)/i.exec(resto)
+        || (ordem ? /^\s*[-–—:]?\s*(\d{1,3})\s*(?:un\w*|pe[çc]as?|p[çc]s?)?\s*$/i.exec(resto) : null);
+      return m ? Math.min(999, Math.max(1, parseInt(m[1], 10))) : 1;
+    };
+    const linhas = String(texto || "").split(/\r?\n/);
+    const numeradas = linhas.filter(l => /^\s*\d+\s*[.)]\s*\S/.test(l));
+    if (numeradas.length) {
+      numeradas.forEach(l => {
+        const cand = /^\s*\d+\s*[.)]\s*([^\s—–,;|]+)/.exec(l)[1];
+        const cod = reais[cand.toUpperCase()];
+        if (cod) somar(cod, qtdDe(l.slice(l.indexOf(cand) + cand.length), false));
+        else if (!desconhecidos.includes(cand)) desconhecidos.push(cand);
+      });
+    } else {
+      linhas.forEach(l => {
+        const toks = l.split(/[\s,;|—–]+/).filter(Boolean);
+        toks.forEach((t, i) => { const cod = reais[t.replace(/[:()]+$/g, "").toUpperCase()];
+          if (cod) somar(cod, qtdDe(toks.slice(i + 1, i + 4).join(" "), true)); });
+      });
+    }
+    // link ?pedido=COD~QTD,... colado junto (ou sozinho)
+    const link = /[?&]pedido=([^\s&#]+)/.exec(String(texto || ""));
+    if (link && !itens.length) {
+      const r = lerLink(link[1], produtos); r.itens.forEach(x => somar(x.codigo, x.qtd));
+      r.desconhecidos.forEach(c => { if (!desconhecidos.includes(c)) desconhecidos.push(c); });
+    }
+    return { itens, desconhecidos };
+  }
+  function lerLink(valor, produtos) {
+    const reais = {}; produtos.forEach(p => { reais[String(p.codigo).toUpperCase()] = p.codigo; });
+    const itens = [], desconhecidos = [];
+    let v = String(valor || ""); try { v = decodeURIComponent(v); } catch (e) { /* já decodificado */ }
+    v.split(",").forEach(par => {
+      const [c, q] = par.split("~"); if (!c) return;
+      const cod = reais[c.trim().toUpperCase()];
+      if (cod) itens.push({ codigo: cod, qtd: Math.min(999, Math.max(1, parseInt(q, 10) || 1)) });
+      else desconhecidos.push(c.trim());
+    });
+    return { itens, desconhecidos };
+  }
+  function linkPedido() {
+    const itens = _ler(); if (!itens.length || !/^https?:$/.test(location.protocol)) return "";
+    const base = new URL("index.html", location.href); base.search = "";
+    return base.href + "?pedido=" + itens.map(x => x.codigo + "~" + x.qtd).join(",");
+  }
+  // Abriu o catálogo por um link de pedido: carrega a lista (substitui a atual) e some com o parâmetro do endereço.
+  function pedidoDoLink() {
+    const v = new URLSearchParams(location.search).get("pedido");
+    if (v === null) return;
+    const q = new URLSearchParams(location.search); q.delete("pedido");
+    try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash); } catch (e) { /* ok */ }
+    fetch("produtos.json").then(r => r.json()).then(prod => {
+      const r = lerLink(v, prod); if (!r.itens.length) return;
+      substituirLista(r.itens);
+      const aviso = document.createElement("div");
+      aviso.className = "aviso-pedido"; aviso.setAttribute("role", "status");
+      aviso.textContent = "Pedido carregado: " + r.itens.length + " ite" + (r.itens.length === 1 ? "m" : "ns") +
+        (r.desconhecidos.length ? " (não encontrado: " + r.desconhecidos.join(", ") + ")" : "") + ". Toque em “Ver lista”.";
+      document.body.appendChild(aviso); setTimeout(() => aviso.remove(), 7000);
+    }).catch(() => { /* sem internet: o link não carrega a lista */ });
+  }
+  document.addEventListener("DOMContentLoaded", pedidoDoLink);
+
   // ---- preços (coluna "Preço (R$)" da base; hoje fictícios) ----
   const _pc = cfg.precos || {};
   // o site de clientes não tem preço nenhum no produtos.json: então não mostra cartão, "sob consulta", total nem aviso
@@ -296,7 +373,8 @@ window.MD = (function () {
     const t = totalLista(produtos);
     const tot = mostrarPreco() && t.total ? `\nTotal estimado: ${brl(t.total)}${t.ficticio ? " (" + (_pc.aviso || "valores ilustrativos") + ")" : ""}` : "";
     return `Olá! Gostaria de um orçamento dos seguintes itens MDTech:\n\n${l.join("\n")}\n\n` +
-      `(${l.length} ite${l.length === 1 ? "m" : "ns"}, ${un} unidade${un === 1 ? "" : "s"})` + tot;
+      `(${l.length} ite${l.length === 1 ? "m" : "ns"}, ${un} unidade${un === 1 ? "" : "s"})` + tot +
+      (linkPedido() ? "\n\nAbrir este pedido no catálogo: " + linkPedido() : "");
   }
   function linkWhatsApp(produtos) {
     const num = (cfg.contato && cfg.contato.whatsapp) || "";
@@ -582,7 +660,7 @@ window.MD = (function () {
     bd.addEventListener("click", fechar);
     document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
   }
-  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, prenderFoco, sair, estadoConta, precosApagar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd,
+  return { contaAtiva, contaReq, ehVendedor, esquecerVendedor, brl, precoHTML, detectarPrecos, totalLista, mostrarPreco, cfg, corEsp, corTexto, corSobre, pillEsp, ehOtica, usoUnico, textoBusca, norm, esc, carregar, prenderFoco, sair, estadoConta, precosApagar, ligarBandeja, montarMenuDownloads, trilha, compartilhar, urlGrade, emailAtivo, emailValido, enviarEmail, qtd, definirQtd, lerPedido, substituirLista, linkPedido,
            iconeAngulo, seloAngulo,
            lista, tem, alternar, adicionarVarios, remover, limpar,
            texto, linkWhatsApp, linkEmail };

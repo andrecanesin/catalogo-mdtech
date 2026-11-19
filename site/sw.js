@@ -14,7 +14,7 @@ const VERSAO = "v1";
 const SHELL = "mdtech-shell-" + VERSAO, DADOS = "mdtech-dados-" + VERSAO, FOTOS = "mdtech-fotos-" + VERSAO, PDFS = "mdtech-pdfs-" + VERSAO;
 const ESCOPO = new URL(self.registration.scope);
 const INICIAIS = ["index.html", "produto.html", "privacidade.html", "manifest.json", "img/logo.png", "img/app/icone-192.png",
-  "css/estilo.css", "js/config.js", "js/dados.js", "js/catalogo.js", "js/produto.js", "js/suporte.js", "js/app.js",
+  "css/estilo.css", "js/config.js", "js/dados.js", "js/catalogo.js", "js/produto.js", "js/suporte.js", "js/pedido.js", "js/app.js",
   "fonts/Poppins-Regular.woff2", "fonts/Poppins-Medium.woff2", "fonts/Poppins-SemiBold.woff2", "fonts/Poppins-Bold.woff2",
   "fonts/IBMPlexMono-Regular.woff2", "fonts/IBMPlexMono-Medium.woff2"];
 
