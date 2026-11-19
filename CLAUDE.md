@@ -277,3 +277,9 @@ Hoje o app está desligado (ver "App DESLIGADO" acima). Objetivo: o vendedor ins
   Scripts em `marketing/` (rodar da raiz: `python marketing/post_instagram.py saida.png`, `python marketing/story_instagram.py saida.png`; precisam de `python gerar.py site` antes).
 - **Pendente, só depois que saírem todos os registros ANVISA (hoje faltam 18 SKUs, ver "Estado dos dados"):** fazer o **carrossel** (um slide por especialidade, mais detalhe técnico:
   famílias, diâmetros, comprimentos, registro ANVISA) e a divulgação com o registro. O texto público de produto para saúde deve ser conferido pelo regulatório/jurídico antes de postar (a sessão não valida regra da ANVISA).
+
+## Pedido do cliente -> orçamento do vendedor (19/11)
+- O texto do pedido que o cliente envia (WhatsApp/e-mail) agora termina com um link `index.html?pedido=COD~QTD,...`: o vendedor toca e a lista já vem montada (com preço, se conectado).
+- Vendedor conectado também tem o botão **"Colar pedido do cliente"** (`site/js/pedido.js`): cola a mensagem (formato do site ou lista solta como "A0322 x2") e a lista é montada;
+  códigos fora do catálogo são avisados. Lógica em `MD.lerPedido`/`MD.substituirLista`/`MD.linkPedido` (`site/js/dados.js`).
+
